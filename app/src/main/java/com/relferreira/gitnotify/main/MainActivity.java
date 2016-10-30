@@ -1,25 +1,28 @@
 package com.relferreira.gitnotify.main;
 
 import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
+import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.base.BaseActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity<MainPresenter> implements MainView {
+public class MainActivity extends BaseActivity implements MainView {
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    @Inject MainPresenter presenter;
 
     private Resources resources;
 
@@ -28,9 +31,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        resources = getResources();
 
         setSupportActionBar(toolbar);
-        resources = getResources();
 
         TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
         adapter.add(GitNotificationsFragment.newInstance(), "teste1");
@@ -40,16 +43,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
+        presenter.attachView(this);
         presenter.loadToastMsg();
     }
 
     @Override
-    public MainPresenter createPresenter() {
-        return new MainPresenter();
+    public void injectActivity(ApplicationComponent component) {
+        component.inject(this);
     }
 
     @Override
     public void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
+
 }
