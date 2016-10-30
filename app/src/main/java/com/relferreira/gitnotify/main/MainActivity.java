@@ -1,5 +1,6 @@
 package com.relferreira.gitnotify.main;
 
+import android.content.res.Resources;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
@@ -20,6 +21,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
+    private Resources resources;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +30,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainVie
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+        resources = getResources();
+
+        TabsAdapter adapter = new TabsAdapter(getSupportFragmentManager());
+        adapter.add(GitNotificationsFragment.newInstance(), "teste1");
+        adapter.add(GitNotificationsFragment.newInstance(), "teste2");
+        adapter.add(GitNotificationsFragment.newInstance(), "teste3");
+
+        viewPager.setAdapter(adapter);
+        tabs.setupWithViewPager(viewPager);
 
         presenter.loadToastMsg();
     }
