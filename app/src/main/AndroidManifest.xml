@@ -10,6 +10,8 @@
         android:theme="@style/AppTheme"
         android:name=".GitNotifyApplication">
         <activity android:name=".main.MainActivity">
+        </activity>
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

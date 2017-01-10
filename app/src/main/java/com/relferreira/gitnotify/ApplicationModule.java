@@ -2,6 +2,7 @@ package com.relferreira.gitnotify;
 
 import android.app.Application;
 
+import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
 
 import javax.inject.Singleton;
@@ -29,6 +30,12 @@ public class ApplicationModule {
     @Singleton
     protected MainPresenter provideMainPresenter() {
         return new MainPresenter();
+    }
+
+    @Provides
+    @Singleton
+    protected LoginPresenter provideLoginPresenter() {
+        return new LoginPresenter();
     }
 
 }
