@@ -22,8 +22,7 @@ public class LoginActivity extends BaseActivity implements LoginView {
 
     @BindView(R.id.login_username) EditText editTextUsername;
     @BindView(R.id.login_password) EditText editTextPassword;
-    @BindView(R.id.login_btn)
-    Button btnLogin;
+    @BindView(R.id.login_btn) Button btnLogin;
     @Inject LoginPresenter presenter;
 
     @Override
@@ -31,6 +30,8 @@ public class LoginActivity extends BaseActivity implements LoginView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+
+        presenter.loginRequest("relferreira", "teste");
 
     }
 

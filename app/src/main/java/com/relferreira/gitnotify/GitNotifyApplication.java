@@ -20,6 +20,7 @@ public class GitNotifyApplication extends Application {
     private void initializeInjector() {
         this.applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
+                .networkModule(new NetworkModule())
                 .build();
     }
 

@@ -2,6 +2,7 @@ package com.relferreira.gitnotify;
 
 import android.app.Application;
 
+import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
 
@@ -34,8 +35,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected LoginPresenter provideLoginPresenter() {
-        return new LoginPresenter();
+    SchedulerProvider provideSchedulerProvider() {
+        return SchedulerProvider.DEFAULT;
+    }
+
+    @Provides
+    @Singleton
+    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, GithubService githubService) {
+        return new LoginPresenter(schedulerProvider, githubService);
     }
 
 }
