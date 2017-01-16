@@ -1,7 +1,12 @@
 package com.relferreira.gitnotify.model;
 
+import org.immutables.value.Value;
+
 /**
  * Created by relferreira on 1/15/17.
  */
-public class Event {
+@Value.Immutable
+public abstract class Event {
+    public abstract String id();
+    public abstract String type();
 }

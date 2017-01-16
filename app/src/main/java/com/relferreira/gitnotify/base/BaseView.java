@@ -6,4 +6,6 @@ package com.relferreira.gitnotify.base;
 public interface BaseView {
 
     void showLoading(boolean state);
+
+    void redirectToLogin();
 }

@@ -1,10 +1,14 @@
 package com.relferreira.gitnotify;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.util.Base64;
 
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
+import com.relferreira.gitnotify.util.CriptographyProvider;
 
 import javax.inject.Singleton;
 
@@ -29,6 +33,12 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
+    SharedPreferences providesSharedPreferences(Application application) {
+        return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    @Singleton
     protected MainPresenter provideMainPresenter() {
         return new MainPresenter();
     }
@@ -41,8 +51,13 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, GithubService githubService) {
-        return new LoginPresenter(schedulerProvider, githubService);
+    CriptographyProvider provideCriptographyProvider() {
+        return new CriptographyProvider();
+    }
+    @Provides
+    @Singleton
+    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, GithubService githubService, CriptographyProvider criptographyProvider, SharedPreferences sharedPreferences) {
+        return new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, sharedPreferences);
     }
 
 }

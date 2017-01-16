@@ -28,4 +28,10 @@ public class BasePresenter<V extends BaseView> implements Presenter<V> {
         return view;
     }
 
+    @Override
+    public void onUnauthorized() {
+        if (isViewAttached())
+            getView().redirectToLogin();
+    }
+
 }

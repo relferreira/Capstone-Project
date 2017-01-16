@@ -1,10 +1,13 @@
 package com.relferreira.gitnotify;
 
+import android.content.SharedPreferences;
+
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.login.LoginView;
 import com.relferreira.gitnotify.model.ImmutableUser;
 import com.relferreira.gitnotify.model.User;
+import com.relferreira.gitnotify.util.CriptographyProvider;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -27,6 +31,13 @@ public class LoginTest {
     LoginView loginView;
     @Mock
     GithubService githubService;
+    @Mock
+    SharedPreferences sharedPreferences;
+    @Mock
+    ApiInterceptor apiInterceptor;
+    @Mock
+    CriptographyProvider criptographyProvider;
+
     private LoginPresenter presenter;
 
     @Before
@@ -38,7 +49,7 @@ public class LoginTest {
                         .observeOn(Schedulers.immediate());
             }
         };
-        presenter = new LoginPresenter(schedulerProvider, githubService);
+        presenter = new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, sharedPreferences);
         presenter.attachView(loginView);
     }
 
@@ -56,7 +67,7 @@ public class LoginTest {
 
     @Test
     public void shouldValidateInvalidLogin() {
-        when(githubService.getUser("relferreira")).thenReturn(Observable.error(new Exception("Invalid login")));
+        when(githubService.login(any())).thenReturn(Observable.error(new Exception("Invalid login")));
         presenter.loginRequest("relferreira", "teste");
         verify(loginView, atLeastOnce()).showError("Invalid login");
     }
