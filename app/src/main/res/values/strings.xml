@@ -3,4 +3,7 @@
     <string name="login_placeholder">Username</string>
     <string name="password_placeholder">Password</string>
     <string name="login_btn">Login</string>
+
+    <string name="sync_account_type">gitnotify.relferreira.com</string>
+    <string name="sync_account_username">username</string>
 </resources>

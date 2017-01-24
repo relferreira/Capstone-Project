@@ -1,11 +1,14 @@
 package com.relferreira.gitnotify;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Base64;
 
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.data.AuthManagerRepository;
+import com.relferreira.gitnotify.data.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
@@ -33,7 +36,13 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    SharedPreferences providesSharedPreferences(Application application) {
+    protected Context providesApplicationContext() {
+        return app;
+    }
+
+    @Provides
+    @Singleton
+    protected SharedPreferences providesSharedPreferences(Application application) {
         return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
@@ -45,19 +54,26 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    SchedulerProvider provideSchedulerProvider() {
+    protected SchedulerProvider provideSchedulerProvider() {
         return SchedulerProvider.DEFAULT;
     }
 
     @Provides
     @Singleton
-    CriptographyProvider provideCriptographyProvider() {
+    protected CriptographyProvider provideCriptographyProvider() {
         return new CriptographyProvider();
     }
+
     @Provides
     @Singleton
-    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, GithubService githubService, CriptographyProvider criptographyProvider, SharedPreferences sharedPreferences) {
-        return new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, sharedPreferences);
+    protected AuthRepository provideAuthRepository(Context context){
+        return new AuthManagerRepository(context);
+    }
+
+    @Provides
+    @Singleton
+    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, GithubService githubService, CriptographyProvider criptographyProvider, AuthRepository authRepository) {
+        return new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, authRepository);
     }
 
 }

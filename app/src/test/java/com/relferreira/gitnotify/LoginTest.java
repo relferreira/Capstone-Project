@@ -3,9 +3,12 @@ package com.relferreira.gitnotify;
 import android.content.SharedPreferences;
 
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.data.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.login.LoginView;
+import com.relferreira.gitnotify.model.ImmutableLogin;
 import com.relferreira.gitnotify.model.ImmutableUser;
+import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.model.User;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 
@@ -37,6 +40,8 @@ public class LoginTest {
     ApiInterceptor apiInterceptor;
     @Mock
     CriptographyProvider criptographyProvider;
+    @Mock
+    AuthRepository authRepository;
 
     private LoginPresenter presenter;
 
@@ -49,7 +54,7 @@ public class LoginTest {
                         .observeOn(Schedulers.immediate());
             }
         };
-        presenter = new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, sharedPreferences);
+        presenter = new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, authRepository);
         presenter.attachView(loginView);
     }
 
@@ -70,6 +75,19 @@ public class LoginTest {
         when(githubService.login(any())).thenReturn(Observable.error(new Exception("Invalid login")));
         presenter.loginRequest("relferreira", "teste");
         verify(loginView, atLeastOnce()).showError("Invalid login");
+    }
+
+    @Test
+    public void shouldStoreAuthInformations() {
+        Login loginResult = ImmutableLogin.builder()
+                .id("1234")
+                .token("1234")
+                .url("https://github.com")
+                .build();
+        when(githubService.login(any())).thenReturn(Observable.just(loginResult));
+        when(criptographyProvider.base64(any())).thenReturn("123");
+        presenter.loginRequest("relferreira", "teste");
+        verify(authRepository, atLeastOnce()).addAccount("relferreira", "Basic 123");
     }
 
 }

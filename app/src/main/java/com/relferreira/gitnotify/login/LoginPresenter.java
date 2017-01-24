@@ -9,6 +9,7 @@ import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.base.BasePresenter;
+import com.relferreira.gitnotify.data.AuthRepository;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.util.AuthErrorHelper;
@@ -25,16 +26,17 @@ public class LoginPresenter extends BasePresenter<LoginView> {
     private final SchedulerProvider schedulerProvider;
     private final ApiInterceptor apiInterceptor;
     private final CriptographyProvider criptographyProvider;
-    private final SharedPreferences sharedPreferences;
+    private final AuthRepository authRepository;
 
     @Inject
     public LoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor,
-                          GithubService githubService, CriptographyProvider criptographyProvider, SharedPreferences sharedPreferences) {
+                          GithubService githubService, CriptographyProvider criptographyProvider,
+                          AuthRepository authRepository) {
         this.githubService = githubService;
         this.schedulerProvider = schedulerProvider;
         this.apiInterceptor = apiInterceptor;
         this.criptographyProvider = criptographyProvider;
-        this.sharedPreferences = sharedPreferences;
+        this.authRepository = authRepository;
     }
 
     public void loginRequest(String username, String password) {
@@ -59,9 +61,10 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.githubService.login(loginRequest)
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(events -> {
-                    this.sharedPreferences.edit()
-                            .putString(ApiInterceptor.AUTH_KEY, basic)
-                            .commit();
+                    authRepository.addAccount(username, basic);
+//                    this.sharedPreferences.edit()
+//                            .putString(ApiInterceptor.AUTH_KEY, basic)
+//                            .commit();
                 }, error -> {
                     if (!AuthErrorHelper.onError(this, error))
                         getView().showError("Invalid login");
