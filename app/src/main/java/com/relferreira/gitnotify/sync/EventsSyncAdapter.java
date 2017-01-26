@@ -37,8 +37,6 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         EventsSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
-
-        syncImmediately(context);
     }
 
     private static Account getSyncAccount(Context context) {

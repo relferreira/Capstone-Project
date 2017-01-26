@@ -2,6 +2,8 @@ package com.relferreira.gitnotify;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
+
 /**
  * Created by relferreira on 10/30/16.
  */
@@ -14,6 +16,7 @@ public class GitNotifyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        Stetho.initializeWithDefaults(this);
         initializeInjector();
     }
 
