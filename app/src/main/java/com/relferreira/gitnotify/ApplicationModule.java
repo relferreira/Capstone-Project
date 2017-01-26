@@ -4,11 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Base64;
 
 import com.relferreira.gitnotify.api.GithubService;
-import com.relferreira.gitnotify.data.AuthManagerRepository;
-import com.relferreira.gitnotify.data.AuthRepository;
+import com.relferreira.gitnotify.repository.AuthManagerRepository;
+import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
 import com.relferreira.gitnotify.util.CriptographyProvider;

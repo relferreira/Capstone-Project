@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.data;
+package com.relferreira.gitnotify.repository;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 
 import javax.inject.Inject;
 
@@ -28,5 +29,6 @@ public class AuthManagerRepository implements AuthRepository {
         Bundle userData = new Bundle();
         userData.putString(context.getString(R.string.sync_account_username), username);
         accountManager.addAccountExplicitly(newAccount, token, userData);
+        EventsSyncAdapter.onAccountCreated(newAccount, context);
     }
 }

@@ -1,15 +1,11 @@
 package com.relferreira.gitnotify.login;
 
-import android.content.SharedPreferences;
-import android.util.Base64;
-import android.util.Log;
-
 import com.relferreira.gitnotify.ApiInterceptor;
 import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.base.BasePresenter;
-import com.relferreira.gitnotify.data.AuthRepository;
+import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.util.AuthErrorHelper;

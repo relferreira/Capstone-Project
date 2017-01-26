@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.data;
+package com.relferreira.gitnotify.repository;
 
 
 /**

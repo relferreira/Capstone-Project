@@ -3,13 +3,11 @@ package com.relferreira.gitnotify;
 import android.content.SharedPreferences;
 
 import com.relferreira.gitnotify.api.GithubService;
-import com.relferreira.gitnotify.data.AuthRepository;
+import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.login.LoginView;
 import com.relferreira.gitnotify.model.ImmutableLogin;
-import com.relferreira.gitnotify.model.ImmutableUser;
 import com.relferreira.gitnotify.model.Login;
-import com.relferreira.gitnotify.model.User;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 
 import org.junit.Before;
@@ -21,7 +19,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
