@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.api.GithubService;
 
 /**
  * Created by relferreira on 1/25/17.
@@ -22,9 +23,11 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
     public static final int SYNC_INTERVAL = 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+    private final GithubService githubService;
 
-    public EventsSyncAdapter(Context context, boolean autoInitialize) {
+    public EventsSyncAdapter(Context context, GithubService githubService, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.githubService = githubService;
     }
 
     @Override

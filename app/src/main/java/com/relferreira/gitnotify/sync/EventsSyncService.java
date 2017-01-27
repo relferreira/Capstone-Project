@@ -5,21 +5,22 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.relferreira.gitnotify.GitNotifyApplication;
+
+import javax.inject.Inject;
+
 /**
  * Created by relferreira on 1/25/17.
  */
 public class EventsSyncService extends Service {
 
-    private static final Object syncAdapterLock = new Object();
-    private static EventsSyncAdapter syncAdapter = null;
+    @Inject
+    EventsSyncAdapter syncAdapter;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        synchronized (syncAdapterLock) {
-            if (syncAdapter == null)
-                syncAdapter = new EventsSyncAdapter(getApplicationContext(), true);
-        }
+        ((GitNotifyApplication)getApplication()).getApplicationComponent().inject(this);
     }
 
     @Nullable

@@ -6,10 +6,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.auth.Authenticator;
 import com.relferreira.gitnotify.repository.AuthManagerRepository;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
+import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 
 import javax.inject.Singleton;
@@ -61,6 +63,17 @@ public class ApplicationModule {
     @Singleton
     protected CriptographyProvider provideCriptographyProvider() {
         return new CriptographyProvider();
+    }
+
+    @Provides
+    protected Authenticator provideAuthenticator(Context context) {
+        return new Authenticator(context);
+    }
+
+    @Provides
+    @Singleton
+    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, GithubService githubService) {
+        return new EventsSyncAdapter(context, githubService, true);
     }
 
     @Provides
