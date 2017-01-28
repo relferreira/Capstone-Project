@@ -2,6 +2,8 @@ package com.relferreira.gitnotify.repository.data;
 
 import android.net.Uri;
 
+import com.relferreira.gitnotify.model.Organization;
+
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
 import net.simonvt.schematic.annotation.TableEndpoint;
@@ -17,6 +19,7 @@ public final class GithubProvider {
 
     interface Path{
         String EVENTS = "events";
+        String ORGANIZATIONS = "organizations";
     }
 
     private static Uri buildUri(String...paths) {
@@ -25,6 +28,16 @@ public final class GithubProvider {
             uri.appendPath(path);
         }
         return uri.build();
+    }
+
+    @TableEndpoint(table = GithubDatabase.ORGANIZATIONS) public static class Organizations {
+
+        @ContentUri(
+                path = Path.ORGANIZATIONS,
+                type = "vnd.android.cursor.dir/orgs",
+                defaultSort = OrganizationColumns.NAME + " ASC")
+        public static final Uri CONTENT_URI = buildUri(Path.ORGANIZATIONS);
+
     }
 
     @TableEndpoint(table = GithubDatabase.EVENTS) public static class Events {

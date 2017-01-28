@@ -14,6 +14,17 @@ import android.util.Log;
 
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.Organization;
+import com.relferreira.gitnotify.repository.OrganizationRepository;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+import rx.Scheduler;
+import rx.functions.FuncN;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by relferreira on 1/25/17.
@@ -23,16 +34,29 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
     public static final int SYNC_INTERVAL = 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+    private final OrganizationRepository organizationRepository;
     private final GithubService githubService;
 
-    public EventsSyncAdapter(Context context, GithubService githubService, boolean autoInitialize) {
+    public EventsSyncAdapter(Context context, OrganizationRepository organizationRepository,
+                             GithubService githubService, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.organizationRepository = organizationRepository;
         this.githubService = githubService;
     }
 
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Log.i(LOG_TAG, "sync");
+        githubService.listOrgs()
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(organizations -> {
+                    Log.i(LOG_TAG, "orgs");
+                    organizationRepository.storeOrganizations(organizations);
+                    //loadEvents(account, organizations);
+                }, throwable -> {
+                    Log.e(LOG_TAG, "error retrieving organizations");
+                });
     }
 
     public static void onAccountCreated(Account newAccount, Context context) {
@@ -51,7 +75,6 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         Account account = getSyncAccount(context);
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // we can enable inexact timers in our periodic sync
             SyncRequest request = new SyncRequest.Builder().
                     syncPeriodic(syncInterval, flexTime).
                     setSyncAdapter(account, authority).
@@ -69,5 +92,27 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
         ContentResolver.requestSync(getSyncAccount(context),
                 context.getString(R.string.content_authority), bundle);
+    }
+
+    private void loadEvents(Account account, List<Organization> organizations) {
+        Context context = getContext();
+        String username = AccountManager.get(context).getUserData(account, context.getString(R.string.sync_account_username));
+
+        for(Organization organization : organizations) {
+            Log.i(LOG_TAG, "teste");
+            loadOrganizationEvents(username, organization);
+        }
+    }
+
+    private void loadOrganizationEvents(String username, Organization organization) {
+        githubService.getOrgs(username, organization.login())
+                .observeOn(Schedulers.immediate())
+                .subscribeOn(Schedulers.immediate())
+                .subscribe(events -> {
+                    Log.i(LOG_TAG, "certo");
+                }, error -> {
+                    error.printStackTrace();
+                    Log.e(LOG_TAG, error.toString());
+                });
     }
 }

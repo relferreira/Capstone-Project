@@ -7,4 +7,6 @@ package com.relferreira.gitnotify.repository;
 public interface AuthRepository {
 
     void addAccount(String username, String token);
+
+    String getToken();
 }

@@ -31,4 +31,13 @@ public class AuthManagerRepository implements AuthRepository {
         accountManager.addAccountExplicitly(newAccount, token, userData);
         EventsSyncAdapter.onAccountCreated(newAccount, context);
     }
+
+    @Override
+    public String getToken() {
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] accounts = accountManager.getAccountsByType(context.getString(R.string.sync_account_type));
+        if(accounts.length > 0)
+            return accountManager.getPassword(accounts[0]);
+        return null;
+    }
 }

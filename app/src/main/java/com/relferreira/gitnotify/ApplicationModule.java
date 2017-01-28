@@ -11,6 +11,9 @@ import com.relferreira.gitnotify.repository.AuthManagerRepository;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
+import com.relferreira.gitnotify.repository.EtagRepository;
+import com.relferreira.gitnotify.repository.EtagSharedPreferencesRepository;
+import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 
@@ -72,14 +75,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, GithubService githubService) {
-        return new EventsSyncAdapter(context, githubService, true);
-    }
-
-    @Provides
-    @Singleton
-    protected AuthRepository provideAuthRepository(Context context){
-        return new AuthManagerRepository(context);
+    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, OrganizationRepository organizationRepository, GithubService githubService) {
+        return new EventsSyncAdapter(context, organizationRepository, githubService, true);
     }
 
     @Provides

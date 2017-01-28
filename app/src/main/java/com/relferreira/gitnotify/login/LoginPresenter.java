@@ -58,9 +58,6 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(events -> {
                     authRepository.addAccount(username, basic);
-//                    this.sharedPreferences.edit()
-//                            .putString(ApiInterceptor.AUTH_KEY, basic)
-//                            .commit();
                 }, error -> {
                     if (!AuthErrorHelper.onError(this, error))
                         getView().showError("Invalid login");

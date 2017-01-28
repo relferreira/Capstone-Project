@@ -13,4 +13,6 @@ public final class GithubDatabase {
 
     @Table(EventColumns.class) public static final String EVENTS = "events";
 
+    @Table(OrganizationColumns.class) public static final String ORGANIZATIONS = "organizations";
+
 }
