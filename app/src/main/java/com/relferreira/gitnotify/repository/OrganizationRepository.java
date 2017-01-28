@@ -10,4 +10,6 @@ import java.util.List;
 public interface OrganizationRepository {
 
     void storeOrganizations(List<Organization> organizations);
+
+    List<Organization> listOrganizations();
 }

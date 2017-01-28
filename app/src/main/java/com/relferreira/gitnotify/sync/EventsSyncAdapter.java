@@ -10,20 +10,17 @@ import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.api.GithubService;
-import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.Organization;
+import com.relferreira.gitnotify.repository.AuthRepository;
+import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
+import com.relferreira.gitnotify.util.RequestErrorHelper;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
-import rx.Scheduler;
-import rx.functions.FuncN;
 import rx.schedulers.Schedulers;
 
 /**
@@ -34,14 +31,20 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
     public static final int SYNC_INTERVAL = 60;
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
+    private Context context;
+    private final AuthRepository authRepository;
     private final OrganizationRepository organizationRepository;
     private final GithubService githubService;
+    private final LogRepository Log;
 
-    public EventsSyncAdapter(Context context, OrganizationRepository organizationRepository,
-                             GithubService githubService, boolean autoInitialize) {
+    public EventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
+                             GithubService githubService, LogRepository logRepository, boolean autoInitialize) {
         super(context, autoInitialize);
+        this.context = context;
+        this.authRepository = authRepository;
         this.organizationRepository = organizationRepository;
         this.githubService = githubService;
+        this.Log = logRepository;
     }
 
     @Override
@@ -53,9 +56,15 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
                 .subscribe(organizations -> {
                     Log.i(LOG_TAG, "orgs");
                     organizationRepository.storeOrganizations(organizations);
-                    //loadEvents(account, organizations);
+                    loadEvents(account, organizations);
                 }, throwable -> {
-                    Log.e(LOG_TAG, "error retrieving organizations");
+                    Throwable teste = throwable;
+                    if(RequestErrorHelper.getCode(throwable) == 304) {
+                        List<Organization> organizations = organizationRepository.listOrganizations();
+                        loadEvents(account, organizations);
+                    } else {
+                        Log.e(LOG_TAG, "error retrieving organizations");
+                    }
                 });
     }
 
@@ -95,8 +104,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void loadEvents(Account account, List<Organization> organizations) {
-        Context context = getContext();
-        String username = AccountManager.get(context).getUserData(account, context.getString(R.string.sync_account_username));
+        String username = authRepository.getUsername(account);
 
         for(Organization organization : organizations) {
             Log.i(LOG_TAG, "teste");

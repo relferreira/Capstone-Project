@@ -17,14 +17,14 @@ public interface OrganizationColumns {
     String _ID = "_id";
 
     @DataType(DataType.Type.TEXT) @NotNull
-    String NAME = "name";
+    String LOGIN = "login";
 
     @DataType(DataType.Type.INTEGER) @NotNull @Unique(onConflict = ConflictResolutionType.REPLACE)
     String ID = "id";
 
     @DataType(DataType.Type.TEXT) @NotNull
-    String URL = "url";
+    String REPOS_URL = "repos_url";
 
     @DataType(DataType.Type.TEXT) @NotNull
-    String IMAGE = "image";
+    String AVATAR_URL = "avatar_url";
 }

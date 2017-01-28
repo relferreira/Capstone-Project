@@ -2,8 +2,6 @@ package com.relferreira.gitnotify.repository.data;
 
 import android.net.Uri;
 
-import com.relferreira.gitnotify.model.Organization;
-
 import net.simonvt.schematic.annotation.ContentProvider;
 import net.simonvt.schematic.annotation.ContentUri;
 import net.simonvt.schematic.annotation.TableEndpoint;
@@ -35,7 +33,7 @@ public final class GithubProvider {
         @ContentUri(
                 path = Path.ORGANIZATIONS,
                 type = "vnd.android.cursor.dir/orgs",
-                defaultSort = OrganizationColumns.NAME + " ASC")
+                defaultSort = OrganizationColumns.LOGIN + " ASC")
         public static final Uri CONTENT_URI = buildUri(Path.ORGANIZATIONS);
 
     }

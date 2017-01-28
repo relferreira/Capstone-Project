@@ -40,4 +40,9 @@ public class AuthManagerRepository implements AuthRepository {
             return accountManager.getPassword(accounts[0]);
         return null;
     }
+
+    @Override
+    public String getUsername(Account account) {
+        return AccountManager.get(context).getUserData(account, context.getString(R.string.sync_account_username));
+    }
 }

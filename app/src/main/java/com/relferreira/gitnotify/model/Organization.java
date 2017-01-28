@@ -17,17 +17,17 @@ public abstract class Organization {
     public abstract String login();
     @SerializedName("repos_url")
     public abstract String reposUrl();
-    @SerializedName("events_url")
+    @SerializedName("events_url")  @Nullable
     public abstract String eventsUrl();
-    @SerializedName("hooks_url")
+    @SerializedName("hooks_url")  @Nullable
     public abstract String hooksUrl();
-    @SerializedName("issues_url")
+    @SerializedName("issues_url")  @Nullable
     public abstract String issuesUrl();
-    @SerializedName("members_url")
+    @SerializedName("members_url")  @Nullable
     public abstract String membersUrl();
-    @SerializedName("public_members_url")
+    @SerializedName("public_members_url")  @Nullable
     public abstract String publicMembersUrl();
-    @SerializedName("avatar_url")
+    @SerializedName("avatar_url")  @Nullable
     public abstract String avatarUrl();
     @Nullable
     public abstract String description();

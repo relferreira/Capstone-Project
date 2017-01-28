@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
@@ -13,6 +14,8 @@ import com.relferreira.gitnotify.login.LoginPresenter;
 import com.relferreira.gitnotify.main.MainPresenter;
 import com.relferreira.gitnotify.repository.EtagRepository;
 import com.relferreira.gitnotify.repository.EtagSharedPreferencesRepository;
+import com.relferreira.gitnotify.repository.LogAndroidRepository;
+import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
@@ -75,8 +78,9 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, OrganizationRepository organizationRepository, GithubService githubService) {
-        return new EventsSyncAdapter(context, organizationRepository, githubService, true);
+    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
+                                                         GithubService githubService, LogRepository logRepository) {
+        return new EventsSyncAdapter(context, authRepository, organizationRepository, githubService, logRepository, true);
     }
 
     @Provides
