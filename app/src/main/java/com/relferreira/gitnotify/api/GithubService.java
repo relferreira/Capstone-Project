@@ -9,10 +9,7 @@ import com.relferreira.gitnotify.model.User;
 import java.util.List;
 
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -25,8 +22,11 @@ public interface GithubService {
     @GET("users/{user}")
     Observable<User> getUser(@Path("user") String user);
 
+    @GET("users/{user}/received_events")
+    Observable<List<Event>> getEventsMe(@Path("user") String user);
+
     @GET("users/{user}/events/orgs/{organization}")
-    Observable<List<Event>> getOrgs(@Path("user") String user, @Path("organization") String organization);
+    Observable<List<Event>> getEventsOrgs(@Path("user") String user, @Path("organization") String organization);
 
     @POST("authorizations")
     Observable<Login> login(@Body LoginRequest loginRequest);

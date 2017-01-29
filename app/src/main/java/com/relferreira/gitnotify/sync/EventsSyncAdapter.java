@@ -109,21 +109,39 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     private void loadEvents(Account account, List<Organization> organizations) {
         String username = authRepository.getUsername(account);
 
+        loadPersonalEvents(username);
         for(Organization organization : organizations) {
             loadOrganizationEvents(username, organization);
         }
     }
 
-    public void loadOrganizationEvents(String username, Organization organization) {
-        githubService.getOrgs(username, organization.login())
+    public void loadPersonalEvents(String username) {
+        githubService.getEventsMe(username)
                 .observeOn(Schedulers.immediate())
                 .subscribeOn(Schedulers.immediate())
                 .subscribe(events -> {
-                    Log.i(LOG_TAG, "certo");
                     eventRepository.storeEvents(events);
                 }, error -> {
-                    error.printStackTrace();
-                    Log.e(LOG_TAG, error.toString());
+                    if(RequestErrorHelper.getCode(error) != 304) {
+                        //TODO error management
+                        error.printStackTrace();
+                        Log.e(LOG_TAG, error.toString());
+                    }
+                });
+    }
+
+    public void loadOrganizationEvents(String username, Organization organization) {
+        githubService.getEventsOrgs(username, organization.login())
+                .observeOn(Schedulers.immediate())
+                .subscribeOn(Schedulers.immediate())
+                .subscribe(events -> {
+                    eventRepository.storeEvents(events);
+                }, error -> {
+                    if(RequestErrorHelper.getCode(error) != 304) {
+                        //TODO error management
+                        error.printStackTrace();
+                        Log.e(LOG_TAG, error.toString());
+                    }
                 });
     }
 }
