@@ -11,6 +11,7 @@ import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -19,6 +20,7 @@ import java.util.List;
 public class EventDbRepository implements EventRepository {
 
     private static final String LOG_TAG = EventDbRepository.class.getSimpleName();
+    private static final int MAX_DAYS_OF_STORAGE = 90;
     private Context context;
     private LogRepository Log;
 
@@ -50,6 +52,13 @@ public class EventDbRepository implements EventRepository {
         try {
             ContentResolver contentResolver = context.getContentResolver();
             contentResolver.applyBatch(GithubProvider.AUTHORITY, batchOperations);
+
+            // Remove events that are more than 90 day old (Github restriction)
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, -MAX_DAYS_OF_STORAGE);
+            contentResolver.delete(GithubProvider.Events.CONTENT_URI,
+                    EventColumns.CREATED_AT + " < ?",
+                    new String[] { String.valueOf(cal.getTimeInMillis()) });
 
         } catch (RemoteException | OperationApplicationException e) {
             Log.e(LOG_TAG, "Error applying batch insert" + e);
