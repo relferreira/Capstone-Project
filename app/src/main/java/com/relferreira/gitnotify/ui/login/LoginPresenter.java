@@ -58,6 +58,8 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(events -> {
                     authRepository.addAccount(username, basic);
+                    if(isViewAttached())
+                        getView().goToMain();
                     //TODO remove cached etags
                 }, error -> {
                     if (!AuthErrorHelper.onError(this, error))

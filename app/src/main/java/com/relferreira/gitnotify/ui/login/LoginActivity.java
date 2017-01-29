@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.ui.base.BaseActivity;
+import com.relferreira.gitnotify.util.Navigator;
 
 import javax.inject.Inject;
 
@@ -20,10 +21,16 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseActivity implements LoginView {
 
-    @BindView(R.id.login_username) EditText editTextUsername;
-    @BindView(R.id.login_password) EditText editTextPassword;
-    @BindView(R.id.login_btn) Button btnLogin;
-    @Inject LoginPresenter presenter;
+    @BindView(R.id.login_username)
+    EditText editTextUsername;
+    @BindView(R.id.login_password)
+    EditText editTextPassword;
+    @BindView(R.id.login_btn)
+    Button btnLogin;
+    @Inject
+    LoginPresenter presenter;
+    @Inject
+    Navigator navigator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,11 @@ public class LoginActivity extends BaseActivity implements LoginView {
     @Override
     public void showError(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void goToMain() {
+        navigator.goToMain(this);
     }
 
     @OnClick(R.id.login_btn)
