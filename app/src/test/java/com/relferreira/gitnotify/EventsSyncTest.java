@@ -8,6 +8,7 @@ import com.relferreira.gitnotify.model.ImmutableEvent;
 import com.relferreira.gitnotify.model.ImmutableOrganization;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.repository.AuthRepository;
+import com.relferreira.gitnotify.repository.EventRepository;
 import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
@@ -49,25 +50,30 @@ public class EventsSyncTest {
     OrganizationRepository organizationRepository;
     @Mock
     LogRepository logRepository;
+    @Mock
+    EventRepository eventRepository;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     private EventsSyncAdapter eventsSyncAdapter;
+    private Organization organization;
 
     @Before
     public void setUp() {
-        eventsSyncAdapter = new EventsSyncAdapter(context, authRepository, organizationRepository, githubService, logRepository, true);
-    }
-
-    @Test
-    public void shouldUpdateOrganizationDb() {
-        List<Organization> organizations = new ArrayList<>();
-        ImmutableOrganization organization = ImmutableOrganization.builder()
+        organization = ImmutableOrganization.builder()
                 .id(123)
                 .login("GitNotify")
                 .avatarUrl("")
                 .reposUrl("https://test.com")
                 .build();
+        eventsSyncAdapter = new EventsSyncAdapter(context, authRepository, organizationRepository, eventRepository,
+                githubService, logRepository, true);
+    }
+
+    @Test
+    public void shouldUpdateOrganizationDb() {
+        List<Organization> organizations = new ArrayList<>();
         organizations.add(organization);
         when(githubService.listOrgs()).thenReturn(Observable.just(organizations));
 
@@ -85,12 +91,6 @@ public class EventsSyncTest {
     @Test
     public void shouldFetchEventsWithOrgsFromNetwork() {
         List<Organization> organizations = new ArrayList<>();
-        Organization organization = ImmutableOrganization.builder()
-                .id(123)
-                .login("GitNotify")
-                .avatarUrl("")
-                .reposUrl("https://test.com")
-                .build();
         Event event = ImmutableEvent.builder()
                 .id("123")
                 .type("commit")
@@ -107,12 +107,6 @@ public class EventsSyncTest {
     @Test
     public void shouldFetchEventsEvenIfOrgsOnCache() {
         List<Organization> organizations = new ArrayList<>();
-        Organization organization = ImmutableOrganization.builder()
-                .id(123)
-                .login("GitNotify")
-                .avatarUrl("")
-                .reposUrl("https://test.com")
-                .build();
         Event event = ImmutableEvent.builder()
                 .id("123")
                 .type("commit")
@@ -124,5 +118,31 @@ public class EventsSyncTest {
         when(githubService.getOrgs("relferreira", organization.login())).thenReturn(Observable.just(Collections.singletonList(event)));
         eventsSyncAdapter.onPerformSync(null, null, null, null, null);
         verify(githubService, atLeastOnce()).getOrgs("relferreira", organization.login());
+    }
+
+    @Test
+    public void shouldStoreEventFromNetwork() {
+        Event event = ImmutableEvent.builder()
+                .id("123")
+                .type("commit")
+                .build();
+        List<Event> events = Collections.singletonList(event);
+        when(githubService.getOrgs("relferreira", organization.login())).thenReturn(Observable.just(events));
+        eventsSyncAdapter.loadOrganizationEvents("relferreira", organization);
+
+        verify(eventRepository, atLeastOnce()).storeEvents(events);
+    }
+
+    @Test
+    public void shouldNotStoreEventWhenNotModified() {
+        Event event = ImmutableEvent.builder()
+                .id("123")
+                .type("commit")
+                .build();
+        List<Event> events = Collections.singletonList(event);
+        when(githubService.getOrgs("relferreira", organization.login())).thenReturn(Observable.error(new MockHttpException(304, "")));
+        eventsSyncAdapter.loadOrganizationEvents("relferreira", organization);
+
+        verify(eventRepository, never()).storeEvents(events);
     }
 }

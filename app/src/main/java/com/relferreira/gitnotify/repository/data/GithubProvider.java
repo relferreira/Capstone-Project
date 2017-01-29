@@ -43,7 +43,7 @@ public final class GithubProvider {
         @ContentUri(
                 path = Path.EVENTS,
                 type = "vnd.android.cursor.dir/events",
-                defaultSort = EventColumns.TITLE + " ASC")
+                defaultSort = EventColumns.CREATED_AT + " DESC")
         public static final Uri CONTENT_URI = buildUri(Path.EVENTS);
 
     }

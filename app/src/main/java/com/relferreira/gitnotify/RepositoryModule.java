@@ -7,6 +7,8 @@ import com.relferreira.gitnotify.repository.AuthManagerRepository;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.repository.EtagRepository;
 import com.relferreira.gitnotify.repository.EtagSharedPreferencesRepository;
+import com.relferreira.gitnotify.repository.EventDbRepository;
+import com.relferreira.gitnotify.repository.EventRepository;
 import com.relferreira.gitnotify.repository.LogAndroidRepository;
 import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationDbRepository;
@@ -38,6 +40,12 @@ public class RepositoryModule {
     @Singleton
     protected AuthRepository provideAuthRepository(Context context){
         return new AuthManagerRepository(context);
+    }
+
+    @Provides
+    @Singleton
+    protected EventRepository provideEventRepository(Context context, LogRepository logRepository) {
+        return new EventDbRepository(context, logRepository);
     }
 
     @Provides

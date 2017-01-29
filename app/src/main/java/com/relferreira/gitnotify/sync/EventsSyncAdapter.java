@@ -15,6 +15,7 @@ import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.repository.AuthRepository;
+import com.relferreira.gitnotify.repository.EventRepository;
 import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.util.RequestErrorHelper;
@@ -34,15 +35,17 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     private Context context;
     private final AuthRepository authRepository;
     private final OrganizationRepository organizationRepository;
+    private final EventRepository eventRepository;
     private final GithubService githubService;
     private final LogRepository Log;
 
     public EventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
-                             GithubService githubService, LogRepository logRepository, boolean autoInitialize) {
+                             EventRepository eventRepository, GithubService githubService, LogRepository logRepository, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
         this.authRepository = authRepository;
         this.organizationRepository = organizationRepository;
+        this.eventRepository = eventRepository;
         this.githubService = githubService;
         this.Log = logRepository;
     }
@@ -57,12 +60,12 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
                     Log.i(LOG_TAG, "orgs");
                     organizationRepository.storeOrganizations(organizations);
                     loadEvents(account, organizations);
-                }, throwable -> {
-                    Throwable teste = throwable;
-                    if(RequestErrorHelper.getCode(throwable) == 304) {
+                }, error -> {
+                    if(RequestErrorHelper.getCode(error) == 304) {
                         List<Organization> organizations = organizationRepository.listOrganizations();
                         loadEvents(account, organizations);
                     } else {
+                        error.printStackTrace();
                         Log.e(LOG_TAG, "error retrieving organizations");
                     }
                 });
@@ -107,17 +110,17 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         String username = authRepository.getUsername(account);
 
         for(Organization organization : organizations) {
-            Log.i(LOG_TAG, "teste");
             loadOrganizationEvents(username, organization);
         }
     }
 
-    private void loadOrganizationEvents(String username, Organization organization) {
+    public void loadOrganizationEvents(String username, Organization organization) {
         githubService.getOrgs(username, organization.login())
                 .observeOn(Schedulers.immediate())
                 .subscribeOn(Schedulers.immediate())
                 .subscribe(events -> {
                     Log.i(LOG_TAG, "certo");
+                    eventRepository.storeEvents(events);
                 }, error -> {
                     error.printStackTrace();
                     Log.e(LOG_TAG, error.toString());

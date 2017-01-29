@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName;
 
 import org.immutables.value.Value;
 
-import java.util.Optional;
-
 /**
  * Created by relferreira on 1/26/17.
  */
@@ -15,7 +13,7 @@ import java.util.Optional;
 public abstract class Organization {
     public abstract Integer id();
     public abstract String login();
-    @SerializedName("repos_url")
+    @SerializedName("repos_url") @Nullable
     public abstract String reposUrl();
     @SerializedName("events_url")  @Nullable
     public abstract String eventsUrl();
@@ -25,10 +23,12 @@ public abstract class Organization {
     public abstract String issuesUrl();
     @SerializedName("members_url")  @Nullable
     public abstract String membersUrl();
-    @SerializedName("public_members_url")  @Nullable
+    @SerializedName("public_members_url") @Nullable
     public abstract String publicMembersUrl();
     @SerializedName("avatar_url")  @Nullable
     public abstract String avatarUrl();
+    @SerializedName("gravatar_id")  @Nullable
+    public abstract String gravatarId();
     @Nullable
     public abstract String description();
 }
