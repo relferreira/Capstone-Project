@@ -1,10 +1,10 @@
-package com.relferreira.gitnotify.login;
+package com.relferreira.gitnotify.ui.login;
 
 import com.relferreira.gitnotify.ApiInterceptor;
 import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
-import com.relferreira.gitnotify.base.BasePresenter;
+import com.relferreira.gitnotify.ui.base.BasePresenter;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.LoginRequest;
@@ -58,11 +58,11 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(events -> {
                     authRepository.addAccount(username, basic);
+                    //TODO remove cached etags
                 }, error -> {
                     if (!AuthErrorHelper.onError(this, error))
                         getView().showError("Invalid login");
                 });
-
     }
 
 }

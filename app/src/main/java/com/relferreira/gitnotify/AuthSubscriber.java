@@ -1,6 +1,6 @@
 package com.relferreira.gitnotify;
 
-import com.relferreira.gitnotify.base.BasePresenter;
+import com.relferreira.gitnotify.ui.base.BasePresenter;
 
 import rx.Subscriber;
 

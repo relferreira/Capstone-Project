@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.main;
+package com.relferreira.gitnotify.ui.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

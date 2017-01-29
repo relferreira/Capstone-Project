@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.base;
+package com.relferreira.gitnotify.ui.base;
 
 /**
  * Created by relferreira on 10/29/16.

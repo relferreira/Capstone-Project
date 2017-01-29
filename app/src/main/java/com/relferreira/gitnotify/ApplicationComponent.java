@@ -1,9 +1,8 @@
 package com.relferreira.gitnotify;
 
 import com.relferreira.gitnotify.auth.AuthenticatorService;
-import com.relferreira.gitnotify.base.BaseActivity;
-import com.relferreira.gitnotify.login.LoginActivity;
-import com.relferreira.gitnotify.main.MainActivity;
+import com.relferreira.gitnotify.ui.login.LoginActivity;
+import com.relferreira.gitnotify.ui.main.MainActivity;
 import com.relferreira.gitnotify.sync.EventsSyncService;
 
 import javax.inject.Singleton;

@@ -4,8 +4,8 @@ import android.content.SharedPreferences;
 
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.login.LoginPresenter;
-import com.relferreira.gitnotify.login.LoginView;
+import com.relferreira.gitnotify.ui.login.LoginPresenter;
+import com.relferreira.gitnotify.ui.login.LoginView;
 import com.relferreira.gitnotify.model.ImmutableLogin;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.util.CriptographyProvider;

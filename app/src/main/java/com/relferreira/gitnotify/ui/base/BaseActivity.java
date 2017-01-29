@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.base;
+package com.relferreira.gitnotify.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.GitNotifyApplication;
-import com.relferreira.gitnotify.login.LoginActivity;
+import com.relferreira.gitnotify.ui.login.LoginActivity;
 
 /**
  * Created by relferreira on 10/29/16.

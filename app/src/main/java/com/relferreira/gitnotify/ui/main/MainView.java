@@ -1,6 +1,6 @@
-package com.relferreira.gitnotify.main;
+package com.relferreira.gitnotify.ui.main;
 
-import com.relferreira.gitnotify.base.BaseView;
+import com.relferreira.gitnotify.ui.base.BaseView;
 
 /**
  * Created by relferreira on 10/29/16.

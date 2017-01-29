@@ -33,6 +33,14 @@ public class AuthManagerRepository implements AuthRepository {
     }
 
     @Override
+    public Account getAccount() {
+        Account[] accounts = AccountManager.get(context).getAccountsByType(context.getString(R.string.sync_account_type));
+        if(accounts.length > 0)
+            return accounts[0];
+        return null;
+    }
+
+    @Override
     public String getToken() {
         AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
         Account[] accounts = accountManager.getAccountsByType(context.getString(R.string.sync_account_type));

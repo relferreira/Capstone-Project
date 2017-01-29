@@ -7,14 +7,15 @@ import android.preference.PreferenceManager;
 
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
-import com.relferreira.gitnotify.login.LoginPresenter;
-import com.relferreira.gitnotify.main.MainPresenter;
+import com.relferreira.gitnotify.ui.login.LoginPresenter;
+import com.relferreira.gitnotify.ui.main.MainPresenter;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.repository.EventRepository;
 import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
+import com.relferreira.gitnotify.util.Navigator;
 
 import javax.inject.Singleton;
 
@@ -28,9 +29,11 @@ import dagger.Provides;
 public class ApplicationModule {
 
     GitNotifyApplication app;
+
     public ApplicationModule(GitNotifyApplication application) {
         app = application;
     }
+
     @Provides
     @Singleton
     protected Application provideApplication() {
@@ -51,8 +54,14 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected MainPresenter provideMainPresenter() {
-        return new MainPresenter();
+    protected Navigator provideNavigator() {
+        return new Navigator();
+    }
+
+    @Provides
+    @Singleton
+    protected MainPresenter provideMainPresenter(AuthRepository authRepository) {
+        return new MainPresenter(authRepository);
     }
 
     @Provides

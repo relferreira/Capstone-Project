@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.main;
+package com.relferreira.gitnotify.ui.main;
 
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.widget.Toast;
 
 import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.R;
-import com.relferreira.gitnotify.base.BaseActivity;
+import com.relferreira.gitnotify.ui.base.BaseActivity;
+import com.relferreira.gitnotify.util.Navigator;
 
 import javax.inject.Inject;
 
@@ -18,11 +19,17 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainView {
 
-    @BindView(R.id.tabs) TabLayout tabs;
-    @BindView(R.id.viewpager) ViewPager viewPager;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.tabs)
+    TabLayout tabs;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    @Inject MainPresenter presenter;
+    @Inject
+    MainPresenter presenter;
+    @Inject
+    Navigator navigator;
 
     private Resources resources;
 
@@ -45,6 +52,14 @@ public class MainActivity extends BaseActivity implements MainView {
 
         presenter.attachView(this);
         presenter.loadToastMsg();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!presenter.checkIfIsLogged())
+            navigator.goToLogin(this);
     }
 
     @Override

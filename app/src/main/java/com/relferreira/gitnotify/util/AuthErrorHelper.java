@@ -1,6 +1,6 @@
 package com.relferreira.gitnotify.util;
 
-import com.relferreira.gitnotify.base.BasePresenter;
+import com.relferreira.gitnotify.ui.base.BasePresenter;
 
 import retrofit2.adapter.rxjava.HttpException;
 

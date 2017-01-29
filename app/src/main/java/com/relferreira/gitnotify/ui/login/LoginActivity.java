@@ -1,15 +1,13 @@
-package com.relferreira.gitnotify.login;
+package com.relferreira.gitnotify.ui.login;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.support.v7.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.R;
-import com.relferreira.gitnotify.base.BaseActivity;
+import com.relferreira.gitnotify.ui.base.BaseActivity;
 
 import javax.inject.Inject;
 

@@ -10,6 +10,8 @@ public interface AuthRepository {
 
     void addAccount(String username, String token);
 
+    Account getAccount();
+
     String getToken();
 
     String getUsername(Account account);
