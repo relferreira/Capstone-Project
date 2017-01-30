@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.OperationApplicationException;
 import android.os.RemoteException;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
@@ -24,6 +27,11 @@ public class EventDbRepository implements EventRepository {
     private Context context;
     private LogRepository Log;
 
+    public interface DescriptionDecoder {
+        String getTitle();
+        String getSubtitle();
+    }
+
     public EventDbRepository(Context context, LogRepository logRepository){
         this.context = context;
         Log = logRepository;
@@ -36,8 +44,9 @@ public class EventDbRepository implements EventRepository {
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
                     GithubProvider.Events.CONTENT_URI);
 
+            String type = event.type();
             builder.withValue(EventColumns.ID, event.id());
-            builder.withValue(EventColumns.TYPE, event.type());
+            builder.withValue(EventColumns.TYPE, type);
             builder.withValue(EventColumns.ACTOR_ID, event.actor().id());
             builder.withValue(EventColumns.ACTOR_NAME, event.actor().displayLogin());
             builder.withValue(EventColumns.ACTOR_IMAGE, event.actor().avatarUrl());
@@ -46,6 +55,12 @@ public class EventDbRepository implements EventRepository {
             builder.withValue(EventColumns.CREATED_AT, event.createdAt().getTime());
             builder.withValue(EventColumns.ORG_ID, event.org().id());
             builder.withValue(EventColumns.PAYLOAD, event.payload().toString());
+
+            DescriptionDecoder encoder = getDecoder(context, event, type);
+            if(encoder != null){
+                builder.withValue(EventColumns.TITLE, encoder.getTitle());
+                builder.withValue(EventColumns.SUB_TITLE, encoder.getSubtitle());
+            }
             batchOperations.add(builder.build());
         }
 
@@ -62,6 +77,76 @@ public class EventDbRepository implements EventRepository {
 
         } catch (RemoteException | OperationApplicationException e) {
             Log.e(LOG_TAG, "Error applying batch insert" + e);
+        }
+    }
+
+    public DescriptionDecoder getDecoder(Context context, Event event, String type){
+        switch (type){
+            case "PullRequestEvent":
+                return new PullRequestDecoder(context, event);
+            case "PushEvent":
+                return new PushEventDecoder(context, event);
+        }
+        return null;
+    }
+
+    private class PullRequestDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public PullRequestDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            JsonObject payload = event.payload();
+            String actor = event.actor().displayLogin();
+            String action = payload.get("action").getAsString();
+            String repo = event.repo().name();
+            int number = payload.get("number").getAsInt();
+            return String.format(context.getString(R.string.action_pull_request), actor, action, repo, number);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return payload.getAsJsonObject("pull_request").get("title").getAsString();
+        }
+    }
+
+    public class PushEventDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public PushEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String[] branchRef = payload.get("ref").getAsString().split("/");
+            String branch = branchRef[branchRef.length - 1];
+            String repo = payload.getAsJsonObject("repo").get("name").getAsString();
+
+            return String.format(context.getString(R.string.action_push), actor, branch, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            JsonArray commits = payload.getAsJsonArray("commits");
+            if(commits.size() > 1)
+                return String.format(context.getString(R.string.action_push_multiple_commits), commits.size());
+            else
+                return commits.get(0).getAsJsonObject().get("message").getAsString();
         }
     }
 }

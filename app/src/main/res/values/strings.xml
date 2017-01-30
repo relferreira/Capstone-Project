@@ -7,4 +7,8 @@
     <string name="sync_account_type">gitnotify.relferreira.com</string>
     <string name="content_authority">com.relferreira.gitnotify</string>
     <string name="sync_account_username">username</string>
+
+    <string name="action_pull_request">%1$s %2$s pull request %3$s#%4$d</string>
+    <string name="action_push">%1$s pushed to %2$s at %3$s</string>
+    <string name="action_push_multiple_commits">%1$d commits</string>
 </resources>

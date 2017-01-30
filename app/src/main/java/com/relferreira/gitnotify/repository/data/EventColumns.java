@@ -44,5 +44,11 @@ public interface EventColumns {
     String ORG_ID = "org_id";
 
     @DataType(DataType.Type.TEXT)
+    String TITLE = "title";
+
+    @DataType(DataType.Type.TEXT)
+    String SUB_TITLE = "sub_title";
+
+    @DataType(DataType.Type.TEXT)
     String PAYLOAD = "payload";
 }

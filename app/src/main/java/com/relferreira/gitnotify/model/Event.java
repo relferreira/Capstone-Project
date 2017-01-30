@@ -23,4 +23,5 @@ public abstract class Event {
     public abstract Date createdAt();
     public abstract Organization org();
 
+
 }
