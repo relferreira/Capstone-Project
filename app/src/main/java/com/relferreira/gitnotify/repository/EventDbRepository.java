@@ -86,6 +86,20 @@ public class EventDbRepository implements EventRepository {
                 return new PullRequestDecoder(context, event);
             case "PushEvent":
                 return new PushEventDecoder(context, event);
+            case "IssueCommentEvent":
+                return new IssueCommentEventDecoder(context, event);
+            case "PullRequestReviewCommentEvent":
+                return new PullRequestReviewCommentEventDecoder(context, event);
+            case "CommitCommentEvent":
+                return new CommitCommentEventDecoder(context, event);
+            case "CreateEvent":
+                return new CreateDeleteEventDecoder(context, event, true);
+            case "DeleteEvent":
+                return new CreateDeleteEventDecoder(context, event, false);
+            case "WatchEvent":
+                return new StarredDecoder(context, event);
+            case "ForkEvent":
+                return new ForkEventDecoder(context, event);
         }
         return null;
     }
@@ -109,6 +123,9 @@ public class EventDbRepository implements EventRepository {
             String action = payload.get("action").getAsString();
             String repo = event.repo().name();
             int number = payload.get("number").getAsInt();
+            if(action.equals(context.getString(R.string.action_closed)) &&
+                    payload.getAsJsonObject("pull_request").get("merged").getAsBoolean())
+                action = context.getString(R.string.action_merged);
             return String.format(context.getString(R.string.action_pull_request), actor, action, repo, number);
         }
 
@@ -135,7 +152,7 @@ public class EventDbRepository implements EventRepository {
             String actor = event.actor().displayLogin();
             String[] branchRef = payload.get("ref").getAsString().split("/");
             String branch = branchRef[branchRef.length - 1];
-            String repo = payload.getAsJsonObject("repo").get("name").getAsString();
+            String repo = event.repo().name();
 
             return String.format(context.getString(R.string.action_push), actor, branch, repo);
         }
@@ -147,6 +164,168 @@ public class EventDbRepository implements EventRepository {
                 return String.format(context.getString(R.string.action_push_multiple_commits), commits.size());
             else
                 return commits.get(0).getAsJsonObject().get("message").getAsString();
+        }
+    }
+
+    public class IssueCommentEventDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public IssueCommentEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            JsonObject issue = payload.getAsJsonObject("issue");
+            int number = issue.get("number").getAsInt();
+            if(issue.has("pull_request"))
+                return String.format(context.getString(R.string.action_commented_on_pull_request), actor, repo, number);
+            else
+                return String.format(context.getString(R.string.action_commented_on_issue), actor, repo, number);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return payload.getAsJsonObject("comment").get("body").getAsString();
+        }
+    }
+
+    public class PullRequestReviewCommentEventDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public PullRequestReviewCommentEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            JsonObject issue = payload.getAsJsonObject("pull_request");
+            int number = issue.get("number").getAsInt();
+            return String.format(context.getString(R.string.action_commented_on_pull_request), actor, repo, number);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return payload.getAsJsonObject("comment").get("body").getAsString();
+        }
+    }
+
+    public class CommitCommentEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public CommitCommentEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            return String.format(context.getString(R.string.action_commented_on_commit), actor, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return payload.getAsJsonObject("comment").get("body").getAsString();
+        }
+    }
+
+    public class CreateDeleteEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+        private final boolean create;
+
+        public CreateDeleteEventDecoder(Context context, Event event, boolean create){
+            this.context = context;
+            this.event = event;
+            this.create = create;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            String ref = payload.get("ref").getAsString();
+            String refType = payload.get("ref_type").getAsString();
+            if(create)
+                return String.format(context.getString(R.string.action_create_event), actor, refType, ref, repo);
+            else
+                return String.format(context.getString(R.string.action_deleted_event), actor, refType, ref, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return null;
+        }
+    }
+
+    public class StarredDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public StarredDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            return String.format(context.getString(R.string.action_starred), actor, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return null;
+        }
+    }
+
+    public class ForkEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public ForkEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            String repo = event.repo().name();
+            String toRepo = payload.getAsJsonObject("forkee").get("full_name").getAsString();
+            return String.format(context.getString(R.string.action_fork), actor, repo, toRepo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return null;
         }
     }
 }

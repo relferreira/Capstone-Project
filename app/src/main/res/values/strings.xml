@@ -11,4 +11,13 @@
     <string name="action_pull_request">%1$s %2$s pull request %3$s#%4$d</string>
     <string name="action_push">%1$s pushed to %2$s at %3$s</string>
     <string name="action_push_multiple_commits">%1$d commits</string>
+    <string name="action_commented_on_issue">%1$s commented on issue %2$s#%3$d</string>
+    <string name="action_commented_on_pull_request">%1$s commented on pull request %2$s#%3$d</string>
+    <string name="action_commented_on_commit">%1$s commented on commit %2$s</string>
+    <string name="action_closed">closed</string>
+    <string name="action_merged">merged</string>
+    <string name="action_create_event">%1$s created %2$s %3$s at %4$s</string>
+    <string name="action_deleted_event">%1$s deleted %2$s %3$s at %4$s</string>
+    <string name="action_starred">%1$s starred %2$s</string>
+    <string name="action_fork">%1$s forked %2$s to %3$s</string>
 </resources>
