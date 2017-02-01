@@ -316,5 +316,142 @@ public class EventsDecoderTest {
         assertEquals("relferreira forked test/app to GitNotify/app", decoder.getTitle());
     }
 
+    @Test
+    public void shouldDecodeGollumEvent() {
+        JsonObject page = new JsonObject();
+        page.addProperty("action", "edited");
+        page.addProperty("title", "How to run app");
+        JsonArray pages = new JsonArray();
+        pages.add(page);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("pages", pages);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
 
+        doReturn("%1$s %2$s the %3$s wiki").when(context).getString(R.string.action_wiki);
+        doReturn("%1$s %2$s").when(context).getString(R.string.action_wiki_subtitle);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "GollumEvent");
+        assertEquals("relferreira edited the GitNotify/app wiki", decoder.getTitle());
+        assertEquals("Edited How to run app", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodeMultipleGollumEvent() {
+        JsonObject page = new JsonObject();
+        page.addProperty("action", "edited");
+        page.addProperty("title", "How to run app");
+        JsonArray pages = new JsonArray();
+        pages.add(page);
+        pages.add(new JsonObject());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("pages", pages);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("%1$s %2$s the %3$s wiki").when(context).getString(R.string.action_wiki);
+        doReturn("%1$s %2$s pages").when(context).getString(R.string.action_wiki_subtitle_multiple);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "GollumEvent");
+        assertEquals("relferreira edited the GitNotify/app wiki", decoder.getTitle());
+        assertEquals("Edited 2 pages", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodeIssuesEvent() {
+        JsonObject issueObj = new JsonObject();
+        issueObj.addProperty("number", 123);
+        issueObj.addProperty("title", "Problems in unit test");
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("action", "reopened");
+        jsonObject.add("issue", issueObj);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("%1$s %2$s issue %3$s#%4$s").when(context).getString(R.string.action_issue);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "IssuesEvent");
+        assertEquals("relferreira reopened issue GitNotify/app#123", decoder.getTitle());
+        assertEquals("Problems in unit test", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodeMemberEvent() {
+        JsonObject memberObj = new JsonObject();
+        memberObj.addProperty("login", "relferreira2");
+        JsonObject senderObj = new JsonObject();
+        senderObj.addProperty("login", "relferreira");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("action", "added");
+        jsonObject.add("member", memberObj);
+        jsonObject.add("sender", senderObj);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("%1$s %2$s to %3$s").when(context).getString(R.string.action_member);
+        doReturn("By %1$s").when(context).getString(R.string.action_member_by);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "MemberEvent");
+        assertEquals("relferreira2 added to GitNotify/app", decoder.getTitle());
+        assertEquals("By relferreira", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodePublicEvent() {
+        JsonObject repoObj = new JsonObject();
+        repoObj.addProperty("full_name", "GitNotify/app");
+        JsonObject senderObj = new JsonObject();
+        senderObj.addProperty("login", "relferreira");
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("sender", senderObj);
+        jsonObject.add("repository", repoObj);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+        doReturn("%1$s was open sourced").when(context).getString(R.string.action_public);
+        doReturn("By %1$s").when(context).getString(R.string.action_member_by);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PublicEvent");
+        assertEquals("GitNotify/app was open sourced", decoder.getTitle());
+        assertEquals("By relferreira", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodePullRequestReviewEvent() {
+        JsonObject reviewObj = new JsonObject();
+        reviewObj.addProperty("body", "Looks good!");
+
+        JsonObject pullRequestObj = new JsonObject();
+        pullRequestObj.addProperty("number", 123);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("review", reviewObj);
+        jsonObject.add("pull_request", pullRequestObj);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("%1$s reviewed pull request %2$s#%3$s").when(context).getString(R.string.action_pull_request_review);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PullRequestReviewEvent");
+        assertEquals("relferreira reviewed pull request GitNotify/app#123", decoder.getTitle());
+        assertEquals("Looks good!", decoder.getSubtitle());
+    }
+
+    @Test
+    public void shouldDecodeReleaseEvent(){
+        JsonObject releaseObj = new JsonObject();
+        releaseObj.addProperty("tag_name", "v1.0");
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.add("release", releaseObj);
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("Version %1$s of %2$s released").when(context).getString(R.string.action_release);
+        doReturn("By %1$s").when(context).getString(R.string.action_member_by);
+        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "ReleaseEvent");
+        assertEquals("Version v1.0 of GitNotify/app released", decoder.getTitle());
+        assertEquals("By relferreira", decoder.getSubtitle());
+    }
 }

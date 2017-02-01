@@ -20,4 +20,13 @@
     <string name="action_deleted_event">%1$s deleted %2$s %3$s at %4$s</string>
     <string name="action_starred">%1$s starred %2$s</string>
     <string name="action_fork">%1$s forked %2$s to %3$s</string>
+    <string name="action_wiki">%1$s %2$s the %3$s wiki</string>
+    <string name="action_wiki_subtitle">%1$s %2$s</string>
+    <string name="action_wiki_subtitle_multiple">%1$s %2$s pages</string>
+    <string name="action_issue">%1$s %2$s issue %3$s#%4$s</string>
+    <string name="action_member">%1$s %2$s to %3$s</string>
+    <string name="action_member_by">By %1$s</string>
+    <string name="action_public">%1$s was open sourced</string>
+    <string name="action_pull_request_review">%1$s reviewed pull request %2$s#%3$s</string>
+    <string name="action_release">Version %1$s of %2$s released</string>
 </resources>

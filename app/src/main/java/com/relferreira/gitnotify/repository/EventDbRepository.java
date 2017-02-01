@@ -100,6 +100,18 @@ public class EventDbRepository implements EventRepository {
                 return new StarredDecoder(context, event);
             case "ForkEvent":
                 return new ForkEventDecoder(context, event);
+            case "GollumEvent":
+                return new WikiDecoder(context, event);
+            case "IssuesEvent":
+                return new IssuesEventDecoder(context, event);
+            case "MemberEvent":
+                return new MemberEventDecoder(context, event);
+            case "PublicEvent":
+                return new PublicEventDecoder(context, event);
+            case "PullRequestReviewEvent":
+                return new PullRequestReviewEventDecoder(context, event);
+            case "ReleaseEvent":
+                return new ReleaseEventDecoder(context, event);
         }
         return null;
     }
@@ -326,6 +338,169 @@ public class EventDbRepository implements EventRepository {
         @Override
         public String getSubtitle() {
             return null;
+        }
+    }
+
+    public class WikiDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public WikiDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            JsonArray pages = payload.getAsJsonArray("pages");
+            String action = pages.get(0).getAsJsonObject().get("action").getAsString();
+            String repo = event.repo().name();
+            return String.format(context.getString(R.string.action_wiki), actor, action, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            JsonArray pages = payload.getAsJsonArray("pages");
+            String action = pages.get(0).getAsJsonObject().get("action").getAsString();
+            action = action.substring(0, 1).toUpperCase() + action.substring(1, action.length());
+            if(pages.size() > 1)
+                return String.format(context.getString(R.string.action_wiki_subtitle_multiple), action, pages.size());
+            else {
+                String title = pages.get(0).getAsJsonObject().get("title").getAsString();
+                return String.format(context.getString(R.string.action_wiki_subtitle), action, title);
+            }
+        }
+    }
+
+    public class IssuesEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public IssuesEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().displayLogin();
+            JsonObject issue = payload.getAsJsonObject("issue");
+            String action = payload.get("action").getAsString();
+            int number = issue.get("number").getAsInt();
+            String repo = event.repo().name();
+            return String.format(context.getString(R.string.action_issue), actor, action, repo, number);
+        }
+
+        @Override
+        public String getSubtitle() {
+            JsonObject issue = payload.getAsJsonObject("issue");
+            return issue.get("title").getAsString();
+        }
+    }
+
+    public class MemberEventDecoder implements DescriptionDecoder {
+
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public MemberEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String repo = event.repo().name();
+            String member = payload.getAsJsonObject("member").get("login").getAsString();
+            String action = payload.get("action").getAsString();
+            return String.format(context.getString(R.string.action_member), member, action, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            String sender = payload.getAsJsonObject("sender").get("login").getAsString();
+            return String.format(context.getString(R.string.action_member_by), sender);
+        }
+    }
+
+    public class PublicEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public PublicEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String repo = payload.getAsJsonObject("repository").get("full_name").getAsString();
+            return String.format(context.getString(R.string.action_public), repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            String sender = payload.getAsJsonObject("sender").get("login").getAsString();
+            return String.format(context.getString(R.string.action_member_by), sender);
+        }
+    }
+
+    public class PullRequestReviewEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public PullRequestReviewEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String actor = event.actor().login();
+            String repo = event.repo().name();
+            int number = payload.getAsJsonObject("pull_request").get("number").getAsInt();
+            return String.format(context.getString(R.string.action_pull_request_review), actor, repo, number);
+        }
+
+        @Override
+        public String getSubtitle() {
+            return payload.getAsJsonObject("review").get("body").getAsString();
+        }
+    }
+
+    public class ReleaseEventDecoder implements DescriptionDecoder {
+        private final JsonObject payload;
+        private final Context context;
+        private final Event event;
+
+        public ReleaseEventDecoder(Context context, Event event){
+            this.context = context;
+            this.event = event;
+            this.payload = event.payload();
+        }
+
+        @Override
+        public String getTitle() {
+            String repo = event.repo().name();
+            String version = payload.getAsJsonObject("release").get("tag_name").getAsString();
+            return String.format(context.getString(R.string.action_release), version, repo);
+        }
+
+        @Override
+        public String getSubtitle() {
+            String actor = event.actor().login();
+            return String.format(context.getString(R.string.action_member_by), actor);
         }
     }
 }
