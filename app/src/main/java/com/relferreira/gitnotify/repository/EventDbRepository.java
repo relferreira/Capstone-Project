@@ -58,8 +58,10 @@ public class EventDbRepository implements EventRepository {
 
             DescriptionDecoder encoder = getDecoder(context, event, type);
             if(encoder != null){
-                builder.withValue(EventColumns.TITLE, encoder.getTitle());
-                builder.withValue(EventColumns.SUB_TITLE, encoder.getSubtitle());
+                String title = encoder.getTitle();
+                String subtitle = encoder.getSubtitle();
+                builder.withValue(EventColumns.TITLE, title);
+                builder.withValue(EventColumns.SUB_TITLE, subtitle);
             }
             batchOperations.add(builder.build());
         }
@@ -174,8 +176,9 @@ public class EventDbRepository implements EventRepository {
             JsonArray commits = payload.getAsJsonArray("commits");
             if(commits.size() > 1)
                 return String.format(context.getString(R.string.action_push_multiple_commits), commits.size());
-            else
+            else if(commits.size() > 0)
                 return commits.get(0).getAsJsonObject().get("message").getAsString();
+            return null;
         }
     }
 

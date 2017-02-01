@@ -20,6 +20,8 @@ import com.relferreira.gitnotify.repository.data.OrganizationColumns;
 import com.relferreira.gitnotify.ui.base.BaseActivity;
 import com.relferreira.gitnotify.util.Navigator;
 
+import java.util.ArrayList;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -82,18 +84,27 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        String[] projection = new String[]{OrganizationColumns.LOGIN};
+        String[] projection = new String[]{OrganizationColumns.ID, OrganizationColumns.LOGIN};
         return new CursorLoader(this, GithubProvider.Organizations.CONTENT_URI, projection, null, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        ArrayList<String> listOrgNames = new ArrayList<>();
+        ArrayList<Integer> listOrgs = new ArrayList<>();
         data.moveToFirst();
         while (!data.isAfterLast()) {
+            int orgId = data.getInt(data.getColumnIndex(OrganizationColumns.ID));
             String tabName = data.getString(data.getColumnIndex(OrganizationColumns.LOGIN));
-            adapter.add(GitNotificationsFragment.newInstance(), tabName);
+            listOrgs.add(orgId);
+            listOrgNames.add(tabName);
             data.moveToNext();
         }
+        adapter.add(GitNotificationsFragment.newInstance(0, listOrgs, false), getString(R.string.main_tab_me));
+        for(int i = 0; i < listOrgNames.size(); i++)
+            adapter.add(GitNotificationsFragment.newInstance(i, listOrgs, true), listOrgNames.get(i));
+
+
         loading.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }
