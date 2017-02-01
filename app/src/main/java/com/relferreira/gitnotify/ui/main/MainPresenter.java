@@ -14,13 +14,6 @@ public class MainPresenter extends BasePresenter<MainView> {
         this.authRepository = authRepository;
     }
 
-    public void loadToastMsg(){
-        String msg = "teste";
-
-        if(isViewAttached())
-            getView().showToast(msg);
-    }
-
     public boolean checkIfIsLogged() {
         return authRepository.getAccount() != null;
     }

@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.relferreira.gitnotify.ApplicationComponent;
 import com.relferreira.gitnotify.R;
@@ -60,7 +59,6 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         tabs.setupWithViewPager(viewPager);
 
         presenter.attachView(this);
-        presenter.loadToastMsg();
 
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
@@ -77,10 +75,6 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         component.inject(this);
     }
 
-    @Override
-    public void showToast(String msg) {
-        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -100,6 +94,7 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
             listOrgNames.add(tabName);
             data.moveToNext();
         }
+        adapter.reset();
         adapter.add(GitNotificationsFragment.newInstance(0, listOrgs, false), getString(R.string.main_tab_me));
         for(int i = 0; i < listOrgNames.size(); i++)
             adapter.add(GitNotificationsFragment.newInstance(i, listOrgs, true), listOrgNames.get(i));

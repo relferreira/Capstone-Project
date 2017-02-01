@@ -38,4 +38,9 @@ public class TabsAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position){
         return listFragmentsTitle.get(position);
     }
+
+    public void reset() {
+        listFragments.clear();
+        listFragmentsTitle.clear();
+    }
 }
