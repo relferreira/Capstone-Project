@@ -21,6 +21,9 @@ import com.relferreira.gitnotify.repository.data.GithubProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by relferreira on 10/29/16.
  */
@@ -30,12 +33,15 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     private static final String ARG_LIST_ORGS = "arg_list_orgs";
     private static final String ARG_IS_ORG = "arg_is_org";
     private static final int LOADER_ID = 2;
+
     private int orgId;
     private EventsAdapter adapter;
     private Cursor data;
-    private RecyclerView eventsList;
     private ArrayList<Integer> listOrgs;
     private boolean isOrg;
+
+    @BindView(R.id.events_list)
+    RecyclerView eventsList;
 
     public static GitNotificationsFragment newInstance(Integer orgId, ArrayList<Integer> listOrgs, boolean isOrg){
         GitNotificationsFragment frag = new GitNotificationsFragment();
@@ -51,12 +57,13 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_git_notifications, container, false);
+        ButterKnife.bind(this, view);
+
         orgId = getArguments().getInt(ARG_ORG_ID);
         listOrgs = getArguments().getIntegerArrayList(ARG_LIST_ORGS);
         isOrg = getArguments().getBoolean(ARG_IS_ORG);
 
         adapter = new EventsAdapter(getContext(), null);
-        eventsList = (RecyclerView) view.findViewById(R.id.events_list);
         eventsList.setLayoutManager(new LinearLayoutManager(getContext()));
         eventsList.setAdapter(adapter);
         return view;
