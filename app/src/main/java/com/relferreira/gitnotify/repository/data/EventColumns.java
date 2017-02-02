@@ -40,7 +40,7 @@ public interface EventColumns {
     @DataType(DataType.Type.REAL) @NotNull
     String CREATED_AT = "created_at";
 
-    @DataType(DataType.Type.INTEGER) @NotNull
+    @DataType(DataType.Type.INTEGER)
     String ORG_ID = "org_id";
 
     @DataType(DataType.Type.TEXT)

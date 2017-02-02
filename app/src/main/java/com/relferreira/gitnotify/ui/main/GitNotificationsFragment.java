@@ -80,8 +80,8 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
            List<String> listOrgsString = new ArrayList<>();
             for(int orgId : listOrgs)
                 listOrgsString.add(String.valueOf(orgId));
-            selection = EventColumns.ORG_ID + " NOT IN (?)";
-            selectionArgs = new String[]{ TextUtils.join(", ", listOrgsString) };
+            selection = String.format("%1$s NOT IN (%2$s) OR %1$s IS NULL", EventColumns.ORG_ID, TextUtils.join(", ", listOrgsString));
+            selectionArgs = null;
         }
         return new CursorLoader(getActivity(), GithubProvider.Events.CONTENT_URI, null, selection, selectionArgs, null);
     }

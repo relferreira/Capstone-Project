@@ -1,5 +1,7 @@
 package com.relferreira.gitnotify.model;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
@@ -15,12 +17,14 @@ public abstract class Event {
     public abstract String id();
     public abstract String type();
     public abstract Actor actor();
+    @Nullable
     public abstract Repo repo();
     public abstract JsonObject payload();
     @SerializedName("public")
     public abstract Boolean isPublic();
     @SerializedName("created_at")
     public abstract Date createdAt();
+    @Nullable
     public abstract Organization org();
 
 
