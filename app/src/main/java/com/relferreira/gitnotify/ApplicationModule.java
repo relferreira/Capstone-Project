@@ -7,13 +7,13 @@ import android.preference.PreferenceManager;
 
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
-import com.relferreira.gitnotify.ui.login.LoginPresenter;
-import com.relferreira.gitnotify.ui.main.MainPresenter;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.repository.EventRepository;
 import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
+import com.relferreira.gitnotify.ui.login.LoginPresenter;
+import com.relferreira.gitnotify.ui.main.MainPresenter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 import com.relferreira.gitnotify.util.Navigator;
 
@@ -60,12 +60,6 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected MainPresenter provideMainPresenter(AuthRepository authRepository) {
-        return new MainPresenter(authRepository);
-    }
-
-    @Provides
-    @Singleton
     protected SchedulerProvider provideSchedulerProvider() {
         return SchedulerProvider.DEFAULT;
     }
@@ -92,6 +86,12 @@ public class ApplicationModule {
     @Singleton
     protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, GithubService githubService, CriptographyProvider criptographyProvider, AuthRepository authRepository) {
         return new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, authRepository);
+    }
+
+    @Provides
+    @Singleton
+    protected MainPresenter provideMainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthRepository authRepository) {
+        return new MainPresenter(eventsSyncAdapter, authRepository);
     }
 
 }

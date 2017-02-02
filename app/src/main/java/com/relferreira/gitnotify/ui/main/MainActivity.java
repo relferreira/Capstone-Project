@@ -1,6 +1,5 @@
 package com.relferreira.gitnotify.ui.main;
 
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -26,7 +25,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends BaseActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor>, GitNotificationsFragment.EventsCallback {
+
+    private static final int LOADER_ID = 1;
+
+    private TabsAdapter adapter;
 
     @BindView(R.id.tabs)
     TabLayout tabs;
@@ -41,25 +44,18 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     @Inject
     Navigator navigator;
 
-    private Resources resources;
-    private static final int LOADER_ID = 1;
-    private TabsAdapter adapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        resources = getResources();
-
         setSupportActionBar(toolbar);
-
         adapter = new TabsAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
         presenter.attachView(this);
-
+        presenter.requestSync(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -106,5 +102,10 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+    }
+
+    @Override
+    public void syncRequest() {
+        presenter.requestSync(this);
     }
 }

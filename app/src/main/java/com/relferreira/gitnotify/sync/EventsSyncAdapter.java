@@ -50,27 +50,6 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         this.Log = logRepository;
     }
 
-    @Override
-    public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.i(LOG_TAG, "sync");
-        githubService.listOrgs()
-                .subscribeOn(Schedulers.immediate())
-                .observeOn(Schedulers.immediate())
-                .subscribe(organizations -> {
-                    Log.i(LOG_TAG, "orgs");
-                    organizationRepository.storeOrganizations(organizations);
-                    loadEvents(account, organizations);
-                }, error -> {
-                    if(RequestErrorHelper.getCode(error) == 304) {
-                        List<Organization> organizations = organizationRepository.listOrganizations();
-                        loadEvents(account, organizations);
-                    } else {
-                        error.printStackTrace();
-                        Log.e(LOG_TAG, "error retrieving organizations");
-                    }
-                });
-    }
-
     public static void onAccountCreated(Account newAccount, Context context) {
 
         EventsSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
@@ -98,7 +77,28 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private static void syncImmediately(Context context) {
+    @Override
+    public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
+        Log.i(LOG_TAG, "sync");
+        githubService.listOrgs()
+                .subscribeOn(Schedulers.immediate())
+                .observeOn(Schedulers.immediate())
+                .subscribe(organizations -> {
+                    Log.i(LOG_TAG, "orgs");
+                    organizationRepository.storeOrganizations(organizations);
+                    loadEvents(account, organizations);
+                }, error -> {
+                    if(RequestErrorHelper.getCode(error) == 304) {
+                        List<Organization> organizations = organizationRepository.listOrganizations();
+                        loadEvents(account, organizations);
+                    } else {
+                        error.printStackTrace();
+                        Log.e(LOG_TAG, "error retrieving organizations");
+                    }
+                });
+    }
+
+    public void syncImmediately(Context context) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);

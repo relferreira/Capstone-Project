@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -39,9 +40,16 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     private Cursor data;
     private ArrayList<Integer> listOrgs;
     private boolean isOrg;
+    private EventsCallback callback;
 
+    @BindView(R.id.events_refresh)
+    SwipeRefreshLayout refreshList;
     @BindView(R.id.events_list)
     RecyclerView eventsList;
+
+    public interface EventsCallback {
+        void syncRequest();
+    }
 
     public static GitNotificationsFragment newInstance(Integer orgId, ArrayList<Integer> listOrgs, boolean isOrg){
         GitNotificationsFragment frag = new GitNotificationsFragment();
@@ -66,13 +74,20 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
         adapter = new EventsAdapter(getContext(), null);
         eventsList.setLayoutManager(new LinearLayoutManager(getContext()));
         eventsList.setAdapter(adapter);
+        refreshList.setColorSchemeResources(R.color.colorAccent);
+        refreshList.setOnRefreshListener(() -> {
+            this.callback.syncRequest();
+            //TODO eventhub with rxjava
+            refreshList.setRefreshing(false);
+        });
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        this.callback = (EventsCallback) getActivity();
         getLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -103,4 +118,5 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
     }
+
 }
