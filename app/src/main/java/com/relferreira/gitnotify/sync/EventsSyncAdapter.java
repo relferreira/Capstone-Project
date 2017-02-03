@@ -1,7 +1,6 @@
 package com.relferreira.gitnotify.sync;
 
 import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
@@ -30,7 +29,7 @@ import rx.schedulers.Schedulers;
 public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
-    public static final int SYNC_INTERVAL = 60;
+    public static final int SYNC_INTERVAL = 60; // 1 hour
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private Context context;
     private final AuthRepository authRepository;
@@ -52,18 +51,12 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static void onAccountCreated(Account newAccount, Context context) {
 
-        EventsSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        EventsSyncAdapter.configurePeriodicSync(context, newAccount, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         ContentResolver.setSyncAutomatically(newAccount, context.getString(R.string.content_authority), true);
     }
 
-    private static Account getSyncAccount(Context context) {
-        Account[] accounts = AccountManager.get(context).getAccountsByType(context.getString(R.string.sync_account_type));
-        return accounts[0];
-    }
-
-    private static void configurePeriodicSync(Context context, int syncInterval, int flexTime) {
-        Account account = getSyncAccount(context);
+    private static void configurePeriodicSync(Context context, Account account, int syncInterval, int flexTime) {
         String authority = context.getString(R.string.content_authority);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             SyncRequest request = new SyncRequest.Builder().
@@ -102,7 +95,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        ContentResolver.requestSync(getSyncAccount(context),
+        ContentResolver.requestSync(authRepository.getAccount(),
                 context.getString(R.string.content_authority), bundle);
     }
 
