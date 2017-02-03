@@ -55,7 +55,6 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         tabs.setupWithViewPager(viewPager);
 
         presenter.attachView(this);
-        presenter.requestSync(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
 
@@ -64,6 +63,8 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         super.onResume();
         if (!presenter.checkIfIsLogged())
             navigator.goToLogin(this);
+
+        presenter.requestSync(this);
     }
 
     @Override

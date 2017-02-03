@@ -24,7 +24,7 @@ public class MainPresenter extends BasePresenter<MainView> {
     }
 
     public void requestSync(Context context) {
-//        if(checkIfIsLogged())
-//            this.eventsSyncAdapter.syncImmediately(context);
+        if(checkIfIsLogged())
+            this.eventsSyncAdapter.syncImmediately(context);
     }
 }

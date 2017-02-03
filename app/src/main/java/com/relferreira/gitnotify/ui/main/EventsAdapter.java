@@ -20,6 +20,9 @@ import com.relferreira.gitnotify.util.CursorRecyclerViewAdapter;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -28,8 +31,12 @@ import butterknife.ButterKnife;
  */
 public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.EventViewHolder> {
 
+    private final DateFormat dateFormater;
+
     public EventsAdapter(Context context, Cursor cursor) {
         super(context, cursor);
+
+        dateFormater = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
     }
 
     @Override
@@ -37,7 +44,10 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
         String title = cursor.getString(cursor.getColumnIndex(EventColumns.TITLE));
         String subtitle = cursor.getString(cursor.getColumnIndex(EventColumns.SUB_TITLE));
         String userImage = cursor.getString(cursor.getColumnIndex(EventColumns.ACTOR_IMAGE));
+        Long date = cursor.getLong(cursor.getColumnIndex(EventColumns.CREATED_AT));
         Context context = viewHolder.userImageView.getContext();
+
+        viewHolder.dateTextView.setText(dateFormater.format(new Date(date)));
         viewHolder.titleTextView.setText(title);
         viewHolder.subtitleTextView.setText(subtitle);
         Picasso.with(context)
@@ -74,6 +84,8 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
 
         @BindView(R.id.event_user_image)
         ImageView userImageView;
+        @BindView(R.id.event_date)
+        TextView dateTextView;
         @BindView(R.id.event_title)
         TextView titleTextView;
         @BindView(R.id.event_subtitle)

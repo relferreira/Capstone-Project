@@ -11,7 +11,7 @@
         android:scaleType="centerCrop"
         android:layout_centerVertical="true"/>
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="56dp"
         android:orientation="vertical">
@@ -23,14 +23,28 @@
             android:maxLines="2"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             tools:text="relferreira commited to GitNotify/app aldfjla"/>
-        <TextView
-            android:id="@+id/event_subtitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/events_item_subtitle_marginTop"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            tools:text="New layout"/>
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/event_subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="New Layout"/>
+            <TextView
+                android:id="@+id/event_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/events_item_date_marginLeft"
+                android:layout_marginStart="@dimen/events_item_date_marginLeft"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                tools:text="2017-02-01"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

@@ -29,7 +29,7 @@ import rx.schedulers.Schedulers;
 public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
-    public static final int SYNC_INTERVAL = 60; // 1 hour
+    public static final int SYNC_INTERVAL = 60 * 30; // 30 minutes
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
     private Context context;
     private final AuthRepository authRepository;
