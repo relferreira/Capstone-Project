@@ -42,5 +42,6 @@ public class TabsAdapter extends FragmentPagerAdapter {
     public void reset() {
         listFragments.clear();
         listFragmentsTitle.clear();
+        notifyDataSetChanged();
     }
 }

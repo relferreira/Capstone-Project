@@ -40,7 +40,7 @@ public class EventDbRepository implements EventRepository {
     }
 
     @Override
-    public void storeEvents(List<Event> events) {
+    public void storeEvents(List<Event> events, boolean isUserOrganization) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>(events.size());
         for(Event event : events) {
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
@@ -54,6 +54,7 @@ public class EventDbRepository implements EventRepository {
             builder.withValue(EventColumns.ACTOR_IMAGE, event.actor().avatarUrl());
             builder.withValue(EventColumns.CREATED_AT, event.createdAt().getTime());
             builder.withValue(EventColumns.PAYLOAD, event.payload().toString());
+            builder.withValue(EventColumns.USER_ORG, isUserOrganization ? 1 : 0);
             Organization org = event.org();
             if(org != null)
                 builder.withValue(EventColumns.ORG_ID, org.id());

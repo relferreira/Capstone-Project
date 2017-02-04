@@ -1,6 +1,6 @@
 package com.relferreira.gitnotify.util;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 
 import com.relferreira.gitnotify.ui.login.LoginActivity;
@@ -11,13 +11,15 @@ import com.relferreira.gitnotify.ui.main.MainActivity;
  */
 public class Navigator {
 
-    public void goToLogin(Context context) {
+    public void goToLogin(Activity context) {
         Intent intent = new Intent(context, LoginActivity.class);
         context.startActivity(intent);
+        context.finish();
     }
 
-    public void goToMain(Context context) {
+    public void goToMain(Activity context) {
         Intent intent = new Intent(context, MainActivity.class);
         context.startActivity(intent);
+        context.finish();
     }
 }

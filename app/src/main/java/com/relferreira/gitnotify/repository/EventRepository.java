@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface EventRepository {
 
-    void storeEvents(List<Event> events);
+    void storeEvents(List<Event> events, boolean isUserOrganization);
 }

@@ -10,7 +10,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,6 @@ import android.view.ViewGroup;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +34,6 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     private int orgId;
     private EventsAdapter adapter;
     private Cursor data;
-    private ArrayList<Integer> listOrgs;
     private boolean isOrg;
     private EventsCallback callback;
 
@@ -51,11 +46,10 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
         void syncRequest();
     }
 
-    public static GitNotificationsFragment newInstance(Integer orgId, ArrayList<Integer> listOrgs, boolean isOrg){
+    public static GitNotificationsFragment newInstance(Integer orgId, boolean isOrg){
         GitNotificationsFragment frag = new GitNotificationsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_ORG_ID, orgId);
-        bundle.putIntegerArrayList(ARG_LIST_ORGS, listOrgs);
         bundle.putBoolean(ARG_IS_ORG, isOrg);
         frag.setArguments(bundle);
         return frag;
@@ -68,7 +62,6 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
         ButterKnife.bind(this, view);
 
         orgId = getArguments().getInt(ARG_ORG_ID);
-        listOrgs = getArguments().getIntegerArrayList(ARG_LIST_ORGS);
         isOrg = getArguments().getBoolean(ARG_IS_ORG);
 
         adapter = new EventsAdapter(getContext(), null);
@@ -92,18 +85,25 @@ public class GitNotificationsFragment extends Fragment implements LoaderManager.
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         String selection;
         String[] selectionArgs;
         if(isOrg) {
             selection = EventColumns.ORG_ID + " = ?";
-            selectionArgs = new String[]{String.valueOf(listOrgs.get(orgId))};
+            selectionArgs = new String[]{String.valueOf(orgId)};
         } else {
-           List<String> listOrgsString = new ArrayList<>();
-            for(int orgId : listOrgs)
-                listOrgsString.add(String.valueOf(orgId));
-            selection = String.format("%1$s NOT IN (%2$s) OR %1$s IS NULL", EventColumns.ORG_ID, TextUtils.join(", ", listOrgsString));
-            selectionArgs = null;
+            selection = EventColumns.USER_ORG + " = ?";
+            selectionArgs = new String[]{String.valueOf(0)};
+//            List<String> listOrgsString = new ArrayList<>();
+//            for(int orgId : listOrgs)
+//                listOrgsString.add(String.valueOf(orgId));
+//            selection = String.format("%1$s NOT IN (%2$s) OR %1$s IS NULL", EventColumns.ORG_ID, TextUtils.join(", ", listOrgsString));
+//            selectionArgs = null;
         }
         return new CursorLoader(getActivity(), GithubProvider.Events.CONTENT_URI, null, selection, selectionArgs, null);
     }

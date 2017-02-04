@@ -22,21 +22,25 @@ import com.relferreira.gitnotify.util.RequestErrorHelper;
 import java.util.List;
 
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 /**
  * Created by relferreira on 1/25/17.
  */
 public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
+    public static final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
     public static final int SYNC_INTERVAL = 60 * 30; // 30 minutes
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
-    private Context context;
+
     private final AuthRepository authRepository;
     private final OrganizationRepository organizationRepository;
     private final EventRepository eventRepository;
     private final GithubService githubService;
     private final LogRepository Log;
+
+    private Context context;
+    private PublishSubject<String> subject = PublishSubject.create();
 
     public EventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
                              EventRepository eventRepository, GithubService githubService, LogRepository logRepository, boolean autoInitialize) {
@@ -113,7 +117,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
                 .observeOn(Schedulers.immediate())
                 .subscribeOn(Schedulers.immediate())
                 .subscribe(events -> {
-                    eventRepository.storeEvents(events);
+                    eventRepository.storeEvents(events, false);
                 }, error -> {
                     if(RequestErrorHelper.getCode(error) != 304) {
                         //TODO error management
@@ -128,7 +132,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
                 .observeOn(Schedulers.immediate())
                 .subscribeOn(Schedulers.immediate())
                 .subscribe(events -> {
-                    eventRepository.storeEvents(events);
+                    eventRepository.storeEvents(events, true);
                 }, error -> {
                     if(RequestErrorHelper.getCode(error) != 304) {
                         //TODO error management

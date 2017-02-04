@@ -51,4 +51,7 @@ public interface EventColumns {
 
     @DataType(DataType.Type.TEXT)
     String PAYLOAD = "payload";
+
+    @DataType(DataType.Type.INTEGER)
+    String USER_ORG = "user_org";
 }
