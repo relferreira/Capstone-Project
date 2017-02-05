@@ -7,4 +7,5 @@ import com.relferreira.gitnotify.ui.base.BaseView;
  */
 public interface MainView extends BaseView {
 
+    void showError();
 }

@@ -1,6 +1,7 @@
 package com.relferreira.gitnotify.repository;
 
 import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.Organization;
 
 import java.util.List;
 
@@ -9,5 +10,5 @@ import java.util.List;
  */
 public interface EventRepository {
 
-    void storeEvents(List<Event> events, boolean isUserOrganization);
+    void storeEvents(List<Event> events, List<Organization> organizations);
 }

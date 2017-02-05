@@ -1,13 +1,20 @@
 package com.relferreira.gitnotify.ui.main;
 
 import android.database.Cursor;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -29,6 +36,8 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
     private TabsAdapter adapter;
 
+    @BindView(R.id.main_coordinator)
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.tabs)
     TabLayout tabs;
     @BindView(R.id.main_viewpager)
@@ -36,11 +45,13 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.main_loading)
-    ProgressBar loading;
+    ProgressBar loadingProgressBar;
     @Inject
     MainPresenter presenter;
     @Inject
     Navigator navigator;
+
+    private boolean loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +72,35 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         super.onResume();
         if (!presenter.checkIfIsLogged())
             navigator.goToLogin(this);
-        presenter.requestSync(this);
+        syncRequest();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        presenter.dettachView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        MenuItem refreshItem = menu.findItem(R.id.sync);
+        refreshItem.setVisible(loading);
+
+        if(loading) {
+            Drawable drawable = refreshItem.getIcon();
+            Animatable anim = ((Animatable) drawable);
+            if(!anim.isRunning())
+                anim.start();
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -88,7 +127,7 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
             data.moveToNext();
         }
 
-        loading.setVisibility(View.GONE);
+        loadingProgressBar.setVisibility(View.GONE);
         adapter.notifyDataSetChanged();
     }
 
@@ -99,5 +138,19 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     @Override
     public void syncRequest() {
         presenter.requestSync(this);
+    }
+
+    @Override
+    public void showLoading(boolean state) {
+        if(this.loading != state) {
+            this.loading = state;
+            invalidateOptionsMenu();
+        }
+    }
+
+    @Override
+    public void showError() {
+        Snackbar.make(coordinatorLayout, getString(R.string.sync_error), Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.sync_retry), v -> syncRequest()).show();
     }
 }

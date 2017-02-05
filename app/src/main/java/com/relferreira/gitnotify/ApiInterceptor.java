@@ -5,7 +5,6 @@ import com.relferreira.gitnotify.repository.EtagRepository;
 
 import java.io.IOException;
 
-import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -49,11 +48,11 @@ public class ApiInterceptor implements Interceptor {
             requestBuilder.header("If-None-Match", etag);
 
         Response response = chain.proceed(requestBuilder.build());
-
         etag = response.header("ETag");
         if(etag != null){
             etagRepository.setEtag(url, etag);
         }
+
         return response;
     }
 }

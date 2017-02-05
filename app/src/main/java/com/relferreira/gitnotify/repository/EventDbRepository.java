@@ -40,7 +40,7 @@ public class EventDbRepository implements EventRepository {
     }
 
     @Override
-    public void storeEvents(List<Event> events, boolean isUserOrganization) {
+    public void storeEvents(List<Event> events, List<Organization> organizations) {
         ArrayList<ContentProviderOperation> batchOperations = new ArrayList<>(events.size());
         for(Event event : events) {
             ContentProviderOperation.Builder builder = ContentProviderOperation.newInsert(
@@ -54,10 +54,15 @@ public class EventDbRepository implements EventRepository {
             builder.withValue(EventColumns.ACTOR_IMAGE, event.actor().avatarUrl());
             builder.withValue(EventColumns.CREATED_AT, event.createdAt().getTime());
             builder.withValue(EventColumns.PAYLOAD, event.payload().toString());
-            builder.withValue(EventColumns.USER_ORG, isUserOrganization ? 1 : 0);
+
             Organization org = event.org();
-            if(org != null)
+            if(org != null) {
                 builder.withValue(EventColumns.ORG_ID, org.id());
+                builder.withValue(EventColumns.USER_ORG, checkIfIsUserOrganization(org, organizations));
+            } else {
+                builder.withValue(EventColumns.USER_ORG, false);
+            }
+
             Repo repo = event.repo();
             if(repo != null) {
                 builder.withValue(EventColumns.REPO_ID, repo.id());
@@ -124,6 +129,17 @@ public class EventDbRepository implements EventRepository {
                 return new ReleaseEventDecoder(context, event);
         }
         return null;
+    }
+
+    private boolean checkIfIsUserOrganization(Organization org, List<Organization> organizations) {
+        boolean isUserOrganization = false;
+        for(Organization organization : organizations){
+            if(organization.id().equals(org.id())) {
+                isUserOrganization = true;
+                break;
+            }
+        }
+        return isUserOrganization;
     }
 
     private class PullRequestDecoder implements DescriptionDecoder {

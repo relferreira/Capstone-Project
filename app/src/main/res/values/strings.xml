@@ -4,9 +4,12 @@
     <string name="password_placeholder">Password</string>
     <string name="login_btn">Login</string>
 
+    <string name="sync_menu">sync</string>
     <string name="sync_account_type">gitnotify.relferreira.com</string>
     <string name="content_authority">com.relferreira.gitnotify</string>
     <string name="sync_account_username">username</string>
+    <string name="sync_error">Error syncing with the server!</string>
+    <string name="sync_retry">Retry</string>
 
     <string name="main_tab_me">FEED</string>
     <string name="action_pull_request">%1$s %2$s pull request %3$s#%4$d</string>

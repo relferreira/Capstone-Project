@@ -14,7 +14,6 @@ import com.relferreira.gitnotify.ui.login.LoginActivity;
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView{
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

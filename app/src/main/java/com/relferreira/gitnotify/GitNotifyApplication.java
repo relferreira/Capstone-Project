@@ -1,6 +1,7 @@
 package com.relferreira.gitnotify;
 
 import android.app.Application;
+import android.support.v7.app.AppCompatDelegate;
 
 import com.facebook.stetho.Stetho;
 
@@ -9,6 +10,9 @@ import com.facebook.stetho.Stetho;
  */
 public class GitNotifyApplication extends Application {
 
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
     private ApplicationComponent applicationComponent;
 

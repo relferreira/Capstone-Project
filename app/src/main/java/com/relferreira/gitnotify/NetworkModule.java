@@ -1,8 +1,5 @@
 package com.relferreira.gitnotify;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -11,16 +8,11 @@ import com.relferreira.gitnotify.model.GsonAdaptersModel;
 import com.relferreira.gitnotify.repository.AuthRepository;
 import com.relferreira.gitnotify.repository.EtagRepository;
 
-import java.io.IOException;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
