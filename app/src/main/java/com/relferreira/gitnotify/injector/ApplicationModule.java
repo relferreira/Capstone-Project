@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.GitNotifyApplication;
-import com.relferreira.gitnotify.util.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
+import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
@@ -20,6 +19,7 @@ import com.relferreira.gitnotify.ui.main.EventsPresenter;
 import com.relferreira.gitnotify.ui.main.MainPresenter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 import com.relferreira.gitnotify.util.Navigator;
+import com.relferreira.gitnotify.util.SchedulerProvider;
 
 import javax.inject.Singleton;
 
@@ -88,8 +88,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected LoginPresenter provideLoginPresenter(SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, GithubService githubService, CriptographyProvider criptographyProvider, AuthRepository authRepository) {
-        return new LoginPresenter(schedulerProvider, apiInterceptor, githubService, criptographyProvider, authRepository);
+    protected LoginPresenter provideLoginPresenter(GithubInteractor githubInteractor) {
+        return new LoginPresenter(githubInteractor);
     }
 
     @Provides
