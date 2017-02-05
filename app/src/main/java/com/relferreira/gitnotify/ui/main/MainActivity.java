@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor>, GitNotificationsFragment.EventsCallback {
+public class MainActivity extends BaseActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int LOADER_ID = 1;
 
@@ -76,9 +76,9 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
         presenter.dettachView();
+        super.onDestroy();
     }
 
     @Override
@@ -118,12 +118,12 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.reset();
-        adapter.add(GitNotificationsFragment.newInstance(0, false), getString(R.string.main_tab_me));
+        adapter.add(EventsFragment.newInstance(0, false), getString(R.string.main_tab_me));
         data.moveToFirst();
         while (!data.isAfterLast()) {
             int orgId = data.getInt(data.getColumnIndex(OrganizationColumns.ID));
             String tabName = data.getString(data.getColumnIndex(OrganizationColumns.LOGIN));
-            adapter.add(GitNotificationsFragment.newInstance(orgId, true), tabName);
+            adapter.add(EventsFragment.newInstance(orgId, true), tabName);
             data.moveToNext();
         }
 
@@ -135,7 +135,6 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     public void onLoaderReset(Loader<Cursor> loader) {
     }
 
-    @Override
     public void syncRequest() {
         presenter.requestSync(this);
     }

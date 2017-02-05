@@ -13,6 +13,7 @@ import com.relferreira.gitnotify.repository.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.ui.login.LoginPresenter;
+import com.relferreira.gitnotify.ui.main.EventsPresenter;
 import com.relferreira.gitnotify.ui.main.MainPresenter;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 import com.relferreira.gitnotify.util.Navigator;
@@ -92,6 +93,11 @@ public class ApplicationModule {
     @Singleton
     protected MainPresenter provideMainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthRepository authRepository) {
         return new MainPresenter(eventsSyncAdapter, authRepository);
+    }
+
+    @Provides
+    protected EventsPresenter provideEventPresenter(EventsSyncAdapter eventsSyncAdapter) {
+        return new EventsPresenter(eventsSyncAdapter);
     }
 
 }

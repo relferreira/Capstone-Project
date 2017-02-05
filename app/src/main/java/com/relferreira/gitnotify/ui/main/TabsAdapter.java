@@ -12,14 +12,14 @@ import java.util.List;
  */
 public class TabsAdapter extends FragmentPagerAdapter {
 
-    private List<GitNotificationsFragment> listFragments = new ArrayList<>();
+    private List<EventsFragment> listFragments = new ArrayList<>();
     private List<String> listFragmentsTitle =  new ArrayList<>();
 
     public TabsAdapter(FragmentManager fm) {
         super(fm);
     }
 
-    public void add(GitNotificationsFragment frag, String title){
+    public void add(EventsFragment frag, String title){
         this.listFragments.add(frag);
         this.listFragmentsTitle.add(title);
     }
