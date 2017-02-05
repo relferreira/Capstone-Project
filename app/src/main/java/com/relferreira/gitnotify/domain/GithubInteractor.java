@@ -2,14 +2,20 @@ package com.relferreira.gitnotify.domain;
 
 import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.model.LoginRequest;
+import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 import com.relferreira.gitnotify.util.SchedulerProvider;
 
+import java.io.IOException;
+import java.util.List;
+
+import retrofit2.Response;
 import rx.Observable;
 
 /**
@@ -49,5 +55,17 @@ public class GithubInteractor {
                     authRepository.addAccount(username, basic);
                     return login;
                 });
+    }
+
+    public Response<List<Organization>> listOrgsSync() throws IOException {
+        return githubService.listOrgsSync().execute();
+    }
+
+    public Response<List<Event>> getEventsMeSync(String user) throws IOException {
+        return githubService.getEventsMeSync(user).execute();
+    }
+
+    public Response<List<Event>> getEventsOrgsSync(String user, String organization) throws IOException {
+        return githubService.getEventsOrgsSync(user, organization).execute();
     }
 }

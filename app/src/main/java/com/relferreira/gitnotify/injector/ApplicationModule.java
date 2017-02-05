@@ -6,13 +6,13 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.relferreira.gitnotify.GitNotifyApplication;
-import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
+import com.relferreira.gitnotify.domain.AuthInteractor;
+import com.relferreira.gitnotify.domain.EventInteractor;
 import com.relferreira.gitnotify.domain.GithubInteractor;
+import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
-import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
-import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.ui.login.LoginPresenter;
 import com.relferreira.gitnotify.ui.main.EventsPresenter;
@@ -81,9 +81,9 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
-                                                         EventRepository eventRepository, GithubService githubService, LogRepository logRepository) {
-        return new EventsSyncAdapter(context, authRepository, organizationRepository, eventRepository, githubService, logRepository, true);
+    protected EventsSyncAdapter provideEventsSyncAdapter(Context context, AuthInteractor authInteractor, OrganizationInteractor organizationInteractor,
+                                                         EventInteractor eventInteractor, GithubInteractor githubInteractor, LogRepository logRepository) {
+        return new EventsSyncAdapter(context, authInteractor, organizationInteractor, eventInteractor, githubInteractor, logRepository, true);
     }
 
     @Provides

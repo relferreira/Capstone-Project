@@ -11,13 +11,13 @@ import android.os.Build;
 import android.os.Bundle;
 
 import com.relferreira.gitnotify.R;
-import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.domain.AuthInteractor;
+import com.relferreira.gitnotify.domain.EventInteractor;
+import com.relferreira.gitnotify.domain.GithubInteractor;
+import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.Organization;
-import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
-import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
-import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 import com.relferreira.gitnotify.util.RequestException;
 
 import java.io.IOException;
@@ -40,23 +40,23 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int SYNC_INTERVAL = 60 * 30; // 30 minutes
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
-    private final AuthRepository authRepository;
-    private final OrganizationRepository organizationRepository;
-    private final EventRepository eventRepository;
-    private final GithubService githubService;
+    private final AuthInteractor authInteractor;
+    private final OrganizationInteractor organizationInteractor;
+    private final EventInteractor eventInteractor;
+    private final GithubInteractor githubInteractor;
     private final LogRepository Log;
 
     private Context context;
     private PublishSubject<Integer> subject = PublishSubject.create();
 
-    public EventsSyncAdapter(Context context, AuthRepository authRepository, OrganizationRepository organizationRepository,
-                             EventRepository eventRepository, GithubService githubService, LogRepository logRepository, boolean autoInitialize) {
+    public EventsSyncAdapter(Context context, AuthInteractor authInteractor, OrganizationInteractor organizationInteractor,
+                             EventInteractor eventInteractor, GithubInteractor githubInteractor, LogRepository logRepository, boolean autoInitialize) {
         super(context, autoInitialize);
         this.context = context;
-        this.authRepository = authRepository;
-        this.organizationRepository = organizationRepository;
-        this.eventRepository = eventRepository;
-        this.githubService = githubService;
+        this.authInteractor = authInteractor;
+        this.organizationInteractor = organizationInteractor;
+        this.eventInteractor = eventInteractor;
+        this.githubInteractor = githubInteractor;
         this.Log = logRepository;
     }
 
@@ -82,7 +82,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     public Observable<Integer> syncImmediately(Context context) {
-        Account account = authRepository.getAccount();
+        Account account = authInteractor.getAccount();
         String authority = context.getString(R.string.content_authority);
         if(!ContentResolver.isSyncActive(account, authority)) {
             Bundle bundle = new Bundle();
@@ -117,13 +117,13 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void sync(Account account) throws IOException, RequestException {
         subject.onNext(STATUS_PROGRESS);
-        Response<List<Organization>> orgsResponse = githubService.listOrgsSync().execute();
+        Response<List<Organization>> orgsResponse = githubInteractor.listOrgsSync();
         if(orgsResponse.isSuccessful()){
-            organizationRepository.storeOrganizations(orgsResponse.body());
+            organizationInteractor.storeOrganizations(orgsResponse.body());
             loadEvents(account, orgsResponse.body());
         } else {
             if(orgsResponse.code() == 304) {
-                List<Organization> organizations = organizationRepository.listOrganizations();
+                List<Organization> organizations = organizationInteractor.listOrganizations();
                 loadEvents(account, organizations);
             } else {
                 throw new RequestException(orgsResponse.errorBody().string());
@@ -132,7 +132,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void loadEvents(Account account, List<Organization> organizations) throws IOException, RequestException {
-        String username = authRepository.getUsername(account);
+        String username = authInteractor.getUsername(account);
         loadPersonalEvents(username, organizations);
         for(Organization organization : organizations) {
             loadOrganizationEvents(username, organization, organizations);
@@ -141,9 +141,9 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public void loadPersonalEvents(String username, List<Organization> organizations) throws IOException, RequestException {
         subject.onNext(STATUS_PROGRESS);
-        Response<List<Event>> eventsMeRequest = githubService.getEventsMeSync(username).execute();
+        Response<List<Event>> eventsMeRequest = githubInteractor.getEventsMeSync(username);
         if(eventsMeRequest.isSuccessful()){
-            eventRepository.storeEvents(eventsMeRequest.body(), organizations);
+            eventInteractor.storeEvents(eventsMeRequest.body(), organizations);
         } else {
             if(eventsMeRequest.code() != 304)
                 throw new RequestException(eventsMeRequest.errorBody().string());
@@ -152,9 +152,9 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     public void loadOrganizationEvents(String username, Organization organization, List<Organization> organizations) throws IOException, RequestException {
         subject.onNext(STATUS_PROGRESS);
-        Response<List<Event>> eventsOrgRequest = githubService.getEventsOrgsSync(username, organization.login()).execute();
+        Response<List<Event>> eventsOrgRequest = githubInteractor.getEventsOrgsSync(username, organization.login());
         if(eventsOrgRequest.isSuccessful()){
-            eventRepository.storeEvents(eventsOrgRequest.body(), organizations);
+            eventInteractor.storeEvents(eventsOrgRequest.body(), organizations);
         } else {
             if(eventsOrgRequest.code() != 304)
                 throw new RequestException(eventsOrgRequest.errorBody().string());
