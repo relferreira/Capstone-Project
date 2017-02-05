@@ -1,11 +1,11 @@
 package com.relferreira.gitnotify.ui.login;
 
-import com.relferreira.gitnotify.ApiInterceptor;
+import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.BuildConfig;
-import com.relferreira.gitnotify.SchedulerProvider;
+import com.relferreira.gitnotify.util.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.ui.base.BasePresenter;
-import com.relferreira.gitnotify.repository.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.util.AuthErrorHelper;

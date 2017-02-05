@@ -2,6 +2,8 @@ package com.relferreira.gitnotify.repository;
 
 import android.util.Log;
 
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
+
 /**
  * Created by relferreira on 1/28/17.
  */

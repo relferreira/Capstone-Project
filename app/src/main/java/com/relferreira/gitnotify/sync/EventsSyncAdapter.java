@@ -14,10 +14,10 @@ import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.Organization;
-import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.repository.EventRepository;
-import com.relferreira.gitnotify.repository.LogRepository;
-import com.relferreira.gitnotify.repository.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 import com.relferreira.gitnotify.util.RequestException;
 
 import java.io.IOException;

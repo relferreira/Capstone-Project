@@ -12,7 +12,7 @@ import com.relferreira.gitnotify.model.ImmutableRepo;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.model.Repo;
 import com.relferreira.gitnotify.repository.EventDbRepository;
-import com.relferreira.gitnotify.repository.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.injector;
 
 import com.relferreira.gitnotify.auth.AuthenticatorService;
 import com.relferreira.gitnotify.ui.login.LoginActivity;

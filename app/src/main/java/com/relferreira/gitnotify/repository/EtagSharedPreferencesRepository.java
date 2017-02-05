@@ -1,7 +1,8 @@
 package com.relferreira.gitnotify.repository;
 
-import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 
 /**
  * Created by relferreira on 1/27/17.

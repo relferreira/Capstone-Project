@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.repository;
+package com.relferreira.gitnotify.repository.interfaces;
 
 /**
  * Created by relferreira on 1/27/17.

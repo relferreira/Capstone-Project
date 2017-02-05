@@ -12,6 +12,7 @@ import com.relferreira.gitnotify.model.ImmutableOrganization;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.repository.data.OrganizationColumns;
+import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 
 import java.util.ArrayList;
 import java.util.List;

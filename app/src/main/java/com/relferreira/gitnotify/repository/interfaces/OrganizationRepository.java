@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify.repository;
+package com.relferreira.gitnotify.repository.interfaces;
 
 import com.relferreira.gitnotify.model.Organization;
 

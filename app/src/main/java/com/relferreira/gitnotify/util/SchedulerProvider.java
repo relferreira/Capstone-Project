@@ -1,4 +1,4 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.util;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;

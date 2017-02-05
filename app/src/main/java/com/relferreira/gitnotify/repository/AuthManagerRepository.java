@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 
 import javax.inject.Inject;

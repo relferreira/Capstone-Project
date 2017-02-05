@@ -1,12 +1,13 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.injector;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.model.GsonAdaptersModel;
-import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.repository.EtagRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 
 import javax.inject.Singleton;
 

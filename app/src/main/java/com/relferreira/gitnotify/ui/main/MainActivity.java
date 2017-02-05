@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.relferreira.gitnotify.ApplicationComponent;
+import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.repository.data.OrganizationColumns;

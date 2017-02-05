@@ -14,6 +14,8 @@ import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.model.Repo;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 
 import java.util.ArrayList;
 import java.util.Calendar;

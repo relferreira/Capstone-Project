@@ -3,7 +3,7 @@ package com.relferreira.gitnotify.ui.main;
 import android.content.Context;
 import android.util.Log;
 
-import com.relferreira.gitnotify.repository.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.ui.base.BasePresenter;
 

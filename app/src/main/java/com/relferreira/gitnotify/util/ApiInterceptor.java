@@ -1,7 +1,7 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.util;
 
-import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.repository.EtagRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 
 import java.io.IOException;
 

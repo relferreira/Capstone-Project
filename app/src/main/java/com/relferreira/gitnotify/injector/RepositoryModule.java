@@ -1,18 +1,18 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.injector;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.relferreira.gitnotify.repository.AuthManagerRepository;
-import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.repository.EtagRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 import com.relferreira.gitnotify.repository.EtagSharedPreferencesRepository;
 import com.relferreira.gitnotify.repository.EventDbRepository;
-import com.relferreira.gitnotify.repository.EventRepository;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.LogAndroidRepository;
-import com.relferreira.gitnotify.repository.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationDbRepository;
-import com.relferreira.gitnotify.repository.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 
 import javax.inject.Singleton;
 

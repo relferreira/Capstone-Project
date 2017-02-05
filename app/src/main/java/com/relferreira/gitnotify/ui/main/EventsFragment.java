@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.relferreira.gitnotify.ApplicationComponent;
+import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;

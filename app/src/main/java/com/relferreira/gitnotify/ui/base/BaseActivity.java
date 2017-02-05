@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import com.relferreira.gitnotify.ApplicationComponent;
+import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.GitNotifyApplication;
 import com.relferreira.gitnotify.ui.login.LoginActivity;
 

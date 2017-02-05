@@ -1,16 +1,19 @@
-package com.relferreira.gitnotify;
+package com.relferreira.gitnotify.injector;
 
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.relferreira.gitnotify.util.ApiInterceptor;
+import com.relferreira.gitnotify.GitNotifyApplication;
+import com.relferreira.gitnotify.util.SchedulerProvider;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.auth.Authenticator;
-import com.relferreira.gitnotify.repository.AuthRepository;
-import com.relferreira.gitnotify.repository.EventRepository;
-import com.relferreira.gitnotify.repository.LogRepository;
-import com.relferreira.gitnotify.repository.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.ui.login.LoginPresenter;
 import com.relferreira.gitnotify.ui.main.EventsPresenter;
