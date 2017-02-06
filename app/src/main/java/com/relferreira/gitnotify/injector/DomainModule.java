@@ -8,6 +8,7 @@ import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.util.CriptographyProvider;
 import com.relferreira.gitnotify.util.SchedulerProvider;
@@ -31,8 +32,8 @@ public class DomainModule {
 
     @Provides
     @Singleton
-    protected EventInteractor provideEventInteractor(EventRepository eventRepository) {
-        return new EventInteractor(eventRepository);
+    protected EventInteractor provideEventInteractor(StringRepository context, EventRepository eventRepository) {
+        return new EventInteractor(context, eventRepository);
     }
 
     @Provides

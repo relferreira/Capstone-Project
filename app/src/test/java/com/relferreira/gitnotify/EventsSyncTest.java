@@ -18,6 +18,7 @@ import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.util.RequestException;
 
@@ -54,6 +55,8 @@ public class EventsSyncTest {
 
     @Mock
     Context context;
+    @Mock
+    StringRepository stringRepository;
     @Mock
     AuthRepository authRepository;
     @Mock
@@ -109,7 +112,7 @@ public class EventsSyncTest {
 
         authInteractor = new AuthInteractor(authRepository);
         organizationInteractor = new OrganizationInteractor(organizationRepository);
-        eventInteractor = new EventInteractor(eventRepository);
+        eventInteractor = new EventInteractor(stringRepository, eventRepository);
         eventsSyncAdapter = new EventsSyncAdapter(context, authInteractor, organizationInteractor, eventInteractor,
                 githubInteractor, logRepository, true);
     }

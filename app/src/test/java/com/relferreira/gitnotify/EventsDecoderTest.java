@@ -1,9 +1,9 @@
 package com.relferreira.gitnotify;
 
-import android.content.Context;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.relferreira.gitnotify.domain.EventInteractor;
+import com.relferreira.gitnotify.domain.decoder.DescriptionDecoder;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.ImmutableActor;
 import com.relferreira.gitnotify.model.ImmutableEvent;
@@ -11,8 +11,9 @@ import com.relferreira.gitnotify.model.ImmutableOrganization;
 import com.relferreira.gitnotify.model.ImmutableRepo;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.model.Repo;
-import com.relferreira.gitnotify.repository.EventDbRepository;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,14 +34,17 @@ import static org.mockito.Mockito.doReturn;
 public class EventsDecoderTest {
 
     @Mock
-    Context context;
+    StringRepository context;
 
     @Mock
     LogRepository logRepository;
 
-    private EventDbRepository eventRepository;
+    @Mock
+    EventRepository eventRepository;
+
     private Organization organization;
     private ImmutableEvent.Builder eventBuilder;
+    private EventInteractor eventInteractor;
 
     @Before
     public void setup() {
@@ -68,7 +72,7 @@ public class EventsDecoderTest {
                 .isPublic(true)
                 .createdAt(new Date())
                 .org(organization);
-        eventRepository = new EventDbRepository(context, logRepository);
+        eventInteractor = new EventInteractor(context, eventRepository);
     }
 
     @Test
@@ -86,7 +90,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s %2$s pull request %3$s#%4$d").when(context).getString(any(Integer.class));
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PullRequestEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PullRequestEvent");
 
         assertEquals("relferreira opened pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("fix last commit", decoder.getSubtitle());
@@ -110,7 +114,7 @@ public class EventsDecoderTest {
         doReturn("%1$s %2$s pull request %3$s#%4$d").when(context).getString(R.string.action_pull_request);
         doReturn("closed").when(context).getString(R.string.action_closed);
         doReturn("merged").when(context).getString(R.string.action_merged);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PullRequestEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PullRequestEvent");
 
         assertEquals("relferreira merged pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("fix last commit", decoder.getSubtitle());
@@ -133,7 +137,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s pushed to %2$s at %3$s").when(context).getString(R.string.action_push);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PushEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PushEvent");
 
         assertEquals("relferreira pushed to master at GitNotify/app", decoder.getTitle());
         assertEquals("fix unit test", decoder.getSubtitle());
@@ -160,7 +164,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s pushed to %2$s at %3$s").when(context).getString(R.string.action_push);
         doReturn("%1$d commits").when(context).getString(R.string.action_push_multiple_commits);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PushEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PushEvent");
 
         assertEquals("relferreira pushed to master at GitNotify/app", decoder.getTitle());
         assertEquals("2 commits", decoder.getSubtitle());
@@ -183,7 +187,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s commented on issue %2$s#%3$d").when(context).getString(R.string.action_commented_on_issue);
 
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "IssueCommentEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "IssueCommentEvent");
         assertEquals("relferreira commented on issue GitNotify/app#123", decoder.getTitle());
         assertEquals("The unit test is not working", decoder.getSubtitle());
     }
@@ -206,7 +210,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s commented on pull request %2$s#%3$d").when(context).getString(R.string.action_commented_on_pull_request);
 
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "IssueCommentEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "IssueCommentEvent");
         assertEquals("relferreira commented on pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("The unit test is not working", decoder.getSubtitle());
     }
@@ -228,7 +232,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s commented on pull request %2$s#%3$d").when(context).getString(R.string.action_commented_on_pull_request);
 
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PullRequestReviewCommentEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PullRequestReviewCommentEvent");
         assertEquals("relferreira commented on pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("Check if unit test is passing", decoder.getSubtitle());
     }
@@ -246,7 +250,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s commented on commit %2$s").when(context).getString(R.string.action_commented_on_commit);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "CommitCommentEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "CommitCommentEvent");
         assertEquals("relferreira commented on commit GitNotify/app", decoder.getTitle());
         assertEquals("Check if unit test is passing", decoder.getSubtitle());
     }
@@ -262,7 +266,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s created %2$s %3$s at %4$s").when(context).getString(R.string.action_create_event);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "CreateEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "CreateEvent");
         assertEquals("relferreira created branch espresso_tests at GitNotify/app", decoder.getTitle());
         assertEquals(null, decoder.getSubtitle());
     }
@@ -278,7 +282,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s deleted %2$s %3$s at %4$s").when(context).getString(R.string.action_deleted_event);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "DeleteEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "DeleteEvent");
         assertEquals("relferreira deleted branch espresso_tests at GitNotify/app", decoder.getTitle());
         assertEquals(null, decoder.getSubtitle());
     }
@@ -293,7 +297,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s starred %2$s").when(context).getString(R.string.action_starred);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "WatchEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "WatchEvent");
         assertEquals("relferreira starred GitNotify/app", decoder.getTitle());
         assertEquals(null, decoder.getSubtitle());
     }
@@ -312,7 +316,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s forked %2$s to %3$s").when(context).getString(R.string.action_fork);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "ForkEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "ForkEvent");
         assertEquals("relferreira forked test/app to GitNotify/app", decoder.getTitle());
     }
 
@@ -331,7 +335,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s %2$s the %3$s wiki").when(context).getString(R.string.action_wiki);
         doReturn("%1$s %2$s").when(context).getString(R.string.action_wiki_subtitle);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "GollumEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "GollumEvent");
         assertEquals("relferreira edited the GitNotify/app wiki", decoder.getTitle());
         assertEquals("Edited How to run app", decoder.getSubtitle());
     }
@@ -352,7 +356,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s %2$s the %3$s wiki").when(context).getString(R.string.action_wiki);
         doReturn("%1$s %2$s pages").when(context).getString(R.string.action_wiki_subtitle_multiple);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "GollumEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "GollumEvent");
         assertEquals("relferreira edited the GitNotify/app wiki", decoder.getTitle());
         assertEquals("Edited 2 pages", decoder.getSubtitle());
     }
@@ -371,7 +375,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s %2$s issue %3$s#%4$s").when(context).getString(R.string.action_issue);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "IssuesEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "IssuesEvent");
         assertEquals("relferreira reopened issue GitNotify/app#123", decoder.getTitle());
         assertEquals("Problems in unit test", decoder.getSubtitle());
     }
@@ -392,7 +396,7 @@ public class EventsDecoderTest {
 
         doReturn("%1$s %2$s to %3$s").when(context).getString(R.string.action_member);
         doReturn("By %1$s").when(context).getString(R.string.action_member_by);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "MemberEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "MemberEvent");
         assertEquals("relferreira2 added to GitNotify/app", decoder.getTitle());
         assertEquals("By relferreira", decoder.getSubtitle());
     }
@@ -411,7 +415,7 @@ public class EventsDecoderTest {
                 .build();
         doReturn("%1$s was open sourced").when(context).getString(R.string.action_public);
         doReturn("By %1$s").when(context).getString(R.string.action_member_by);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PublicEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PublicEvent");
         assertEquals("GitNotify/app was open sourced", decoder.getTitle());
         assertEquals("By relferreira", decoder.getSubtitle());
     }
@@ -432,7 +436,7 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s reviewed pull request %2$s#%3$s").when(context).getString(R.string.action_pull_request_review);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "PullRequestReviewEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PullRequestReviewEvent");
         assertEquals("relferreira reviewed pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("Looks good!", decoder.getSubtitle());
     }
@@ -450,7 +454,7 @@ public class EventsDecoderTest {
 
         doReturn("Version %1$s of %2$s released").when(context).getString(R.string.action_release);
         doReturn("By %1$s").when(context).getString(R.string.action_member_by);
-        EventDbRepository.DescriptionDecoder decoder = eventRepository.getDecoder(context, event, "ReleaseEvent");
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "ReleaseEvent");
         assertEquals("Version v1.0 of GitNotify/app released", decoder.getTitle());
         assertEquals("By relferreira", decoder.getSubtitle());
     }

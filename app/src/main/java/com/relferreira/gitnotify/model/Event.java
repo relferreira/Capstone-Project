@@ -27,5 +27,11 @@ public abstract class Event {
     @Nullable
     public abstract Organization org();
 
+    @Nullable
+    public abstract String title();
+    @Nullable
+    public abstract String subtitle();
+    @Nullable
+    public abstract Boolean isUserOrg();
 
 }

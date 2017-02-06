@@ -4,15 +4,17 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.relferreira.gitnotify.repository.AuthManagerRepository;
-import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
-import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 import com.relferreira.gitnotify.repository.EtagSharedPreferencesRepository;
 import com.relferreira.gitnotify.repository.EventDbRepository;
-import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.LogAndroidRepository;
-import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 import com.relferreira.gitnotify.repository.OrganizationDbRepository;
+import com.relferreira.gitnotify.repository.StringContextRepository;
+import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
+import com.relferreira.gitnotify.repository.interfaces.EventRepository;
+import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
+import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 
 import javax.inject.Singleton;
 
@@ -30,6 +32,10 @@ public class RepositoryModule {
         return new LogAndroidRepository();
     }
 
+    @Provides
+    protected StringRepository provideStringRepository(Context context) {
+        return new StringContextRepository(context);
+    }
     @Provides
     @Singleton
     protected EtagRepository providesEtagRepository(SharedPreferences sharedPreferences) {
