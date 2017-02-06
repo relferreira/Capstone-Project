@@ -13,11 +13,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.ui.base.BaseFragment;
+import com.relferreira.gitnotify.util.Navigator;
 
 import javax.inject.Inject;
 
@@ -28,7 +29,7 @@ import butterknife.Unbinder;
 /**
  * Created by relferreira on 10/29/16.
  */
-public class EventsFragment extends BaseFragment implements EventsView, LoaderManager.LoaderCallbacks<Cursor>{
+public class EventsFragment extends BaseFragment implements EventsView, EventsAdapter.EventsAdapterListener, LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String ARG_ORG_ID = "arg_org_id";
     private static final String ARG_LIST_ORGS = "arg_list_orgs";
@@ -47,6 +48,9 @@ public class EventsFragment extends BaseFragment implements EventsView, LoaderMa
 
     @Inject
     EventsPresenter presenter;
+    @Inject
+    Navigator navigator;
+
     private Unbinder unbinder;
 
     public static EventsFragment newInstance(Integer orgId, boolean isOrg){
@@ -68,7 +72,7 @@ public class EventsFragment extends BaseFragment implements EventsView, LoaderMa
         orgId = getArguments().getInt(ARG_ORG_ID);
         isOrg = getArguments().getBoolean(ARG_IS_ORG);
 
-        adapter = new EventsAdapter(getContext(), null);
+        adapter = new EventsAdapter(getContext(), null, this);
         eventsList.setLayoutManager(new LinearLayoutManager(getContext()));
         eventsList.setAdapter(adapter);
         refreshList.setColorSchemeResources(R.color.colorAccent);
@@ -135,4 +139,11 @@ public class EventsFragment extends BaseFragment implements EventsView, LoaderMa
         activity.showError();
     }
 
+    @Override
+    public void onSelect(int position) {
+        if(data.moveToPosition(position)){
+            String eventId = data.getString(data.getColumnIndexOrThrow(EventColumns.ID));
+            navigator.gotToDetails(eventId, getActivity());
+        }
+    }
 }

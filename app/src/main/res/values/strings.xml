@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">GitNotify</string>
+    <string name="activity_login">Login</string>
+    <string name="activity_detail">Detail</string>
     <string name="login_placeholder">Username</string>
     <string name="password_placeholder">Password</string>
     <string name="login_btn">Login</string>

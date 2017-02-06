@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.relferreira.gitnotify.R;
@@ -25,6 +26,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by relferreira on 1/31/17.
@@ -32,9 +34,15 @@ import butterknife.ButterKnife;
 public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.EventViewHolder> {
 
     private final DateFormat dateFormater;
+    protected final EventsAdapterListener listener;
 
-    public EventsAdapter(Context context, Cursor cursor) {
+    public interface EventsAdapterListener {
+        void onSelect(int position);
+    }
+
+    public EventsAdapter(Context context, Cursor cursor, EventsAdapterListener listener) {
         super(context, cursor);
+        this.listener = listener;
 
         dateFormater = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT);
     }
@@ -82,6 +90,8 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
 
     public class EventViewHolder extends RecyclerView.ViewHolder{
 
+        @BindView(R.id.event_item)
+        RelativeLayout eventItem;
         @BindView(R.id.event_user_image)
         ImageView userImageView;
         @BindView(R.id.event_date)
@@ -94,6 +104,11 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
         public EventViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.event_item)
+        public void submit() {
+            listener.onSelect(getAdapterPosition());
         }
     }
 }
