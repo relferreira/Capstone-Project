@@ -18,13 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.repository.data.OrganizationColumns;
 import com.relferreira.gitnotify.ui.base.BaseActivity;
 import com.relferreira.gitnotify.util.Navigator;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -46,12 +47,16 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     Toolbar toolbar;
     @BindView(R.id.main_loading)
     ProgressBar loadingProgressBar;
+    @BindView(R.id.main_istablet) @Nullable
+    View isTabletView;
+
     @Inject
     MainPresenter presenter;
     @Inject
     Navigator navigator;
 
     private boolean loading;
+    private boolean tabletMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,7 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         viewPager.setAdapter(adapter);
         tabs.setupWithViewPager(viewPager);
 
+        tabletMode = isTabletView != null;
         presenter.attachView(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
     }
@@ -118,12 +124,12 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.reset();
-        adapter.add(EventsFragment.newInstance(0, false), getString(R.string.main_tab_me));
+        adapter.add(EventsFragment.newInstance(0, false, tabletMode), getString(R.string.main_tab_me));
         data.moveToFirst();
         while (!data.isAfterLast()) {
             int orgId = data.getInt(data.getColumnIndex(OrganizationColumns.ID));
             String tabName = data.getString(data.getColumnIndex(OrganizationColumns.LOGIN));
-            adapter.add(EventsFragment.newInstance(orgId, true), tabName);
+            adapter.add(EventsFragment.newInstance(orgId, true, tabletMode), tabName);
             data.moveToNext();
         }
 

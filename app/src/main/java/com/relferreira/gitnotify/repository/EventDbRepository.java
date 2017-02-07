@@ -53,7 +53,7 @@ public class EventDbRepository implements EventRepository {
             if(org != null) {
                 builder.withValue(EventColumns.ORG_ID, org.id());
             }
-            builder.withValue(EventColumns.USER_ORG, event.isUserOrg());
+            builder.withValue(EventColumns.USER_ORG, (event.isUserOrg() != null && event.isUserOrg()) ? 1 : 0);
 
             Repo repo = event.repo();
             if(repo != null) {

@@ -2,6 +2,7 @@ package com.relferreira.gitnotify.injector;
 
 import com.relferreira.gitnotify.auth.AuthenticatorService;
 import com.relferreira.gitnotify.ui.detail.DetailActivity;
+import com.relferreira.gitnotify.ui.detail.DetailFragment;
 import com.relferreira.gitnotify.ui.login.LoginActivity;
 import com.relferreira.gitnotify.ui.main.EventsFragment;
 import com.relferreira.gitnotify.ui.main.MainActivity;
@@ -24,4 +25,5 @@ public interface ApplicationComponent {
     void inject(EventsSyncService service);
     void inject(EventsFragment fragment);
     void inject(DetailActivity activity);
+    void inject(DetailFragment fragment);
 }

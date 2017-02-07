@@ -32,8 +32,8 @@ import butterknife.Unbinder;
 public class EventsFragment extends BaseFragment implements EventsView, EventsAdapter.EventsAdapterListener, LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String ARG_ORG_ID = "arg_org_id";
-    private static final String ARG_LIST_ORGS = "arg_list_orgs";
     private static final String ARG_IS_ORG = "arg_is_org";
+    private static final String ARG_TABLET_MODE = "arg_tablet_mode";
     private static final int LOADER_ID = 2;
 
     private int orgId;
@@ -52,12 +52,15 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     Navigator navigator;
 
     private Unbinder unbinder;
+    private Bundle arguments;
+    private boolean tabletMode;
 
-    public static EventsFragment newInstance(Integer orgId, boolean isOrg){
+    public static EventsFragment newInstance(Integer orgId, boolean isOrg, boolean tabletMode){
         EventsFragment frag = new EventsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_ORG_ID, orgId);
         bundle.putBoolean(ARG_IS_ORG, isOrg);
+        bundle.putBoolean(ARG_TABLET_MODE, tabletMode);
         frag.setArguments(bundle);
         return frag;
     }
@@ -69,8 +72,10 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
         View view = inflater.inflate(R.layout.fragment_git_notifications, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        orgId = getArguments().getInt(ARG_ORG_ID);
-        isOrg = getArguments().getBoolean(ARG_IS_ORG);
+        arguments = getArguments();
+        orgId = arguments.getInt(ARG_ORG_ID);
+        isOrg = arguments.getBoolean(ARG_IS_ORG);
+        tabletMode = arguments.getBoolean(ARG_TABLET_MODE);
 
         adapter = new EventsAdapter(getContext(), null, this);
         eventsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -143,7 +148,7 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     public void onSelect(int position) {
         if(data.moveToPosition(position)){
             String eventId = data.getString(data.getColumnIndexOrThrow(EventColumns.ID));
-            navigator.gotToDetails(eventId, getActivity());
+            navigator.gotToDetails(eventId, getActivity(), getFragmentManager(), tabletMode);
         }
     }
 }
