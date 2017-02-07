@@ -30,7 +30,7 @@ public class DetailActivity extends BaseActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.detail_container, DetailFragment.newInstance(eventId))
+                    .replace(R.id.detail_container, DetailFragment.newInstance(eventId, false))
                     .commit();
         }
 

@@ -32,7 +32,7 @@ public class Navigator {
             intent.putExtra(DetailActivity.ARG_EVENT_ID, eventId);
             context.startActivity(intent);
         } else {
-            DetailFragment frag = DetailFragment.newInstance(eventId);
+            DetailFragment frag = DetailFragment.newInstance(eventId, true);
             frag.show(fragmentManager, "dialog");
         }
     }

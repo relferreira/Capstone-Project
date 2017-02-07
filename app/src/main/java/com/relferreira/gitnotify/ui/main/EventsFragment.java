@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.injector.ApplicationComponent;
@@ -32,6 +33,7 @@ import butterknife.Unbinder;
 public class EventsFragment extends BaseFragment implements EventsView, EventsAdapter.EventsAdapterListener, LoaderManager.LoaderCallbacks<Cursor>{
 
     private static final String ARG_ORG_ID = "arg_org_id";
+    private static final String ARG_ORG_NAME = "arg_org_name";
     private static final String ARG_IS_ORG = "arg_is_org";
     private static final String ARG_TABLET_MODE = "arg_tablet_mode";
     private static final int LOADER_ID = 2;
@@ -45,6 +47,8 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     SwipeRefreshLayout refreshList;
     @BindView(R.id.events_list)
     RecyclerView eventsList;
+    @BindView(R.id.events_title) @javax.annotation.Nullable
+    TextView eventsTitleTextView;
 
     @Inject
     EventsPresenter presenter;
@@ -54,11 +58,13 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     private Unbinder unbinder;
     private Bundle arguments;
     private boolean tabletMode;
+    private String orgName;
 
-    public static EventsFragment newInstance(Integer orgId, boolean isOrg, boolean tabletMode){
+    public static EventsFragment newInstance(Integer orgId, String orgName, boolean isOrg, boolean tabletMode){
         EventsFragment frag = new EventsFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(ARG_ORG_ID, orgId);
+        bundle.putString(ARG_ORG_NAME, orgName);
         bundle.putBoolean(ARG_IS_ORG, isOrg);
         bundle.putBoolean(ARG_TABLET_MODE, tabletMode);
         frag.setArguments(bundle);
@@ -74,6 +80,7 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
 
         arguments = getArguments();
         orgId = arguments.getInt(ARG_ORG_ID);
+        orgName = arguments.getString(ARG_ORG_NAME);
         isOrg = arguments.getBoolean(ARG_IS_ORG);
         tabletMode = arguments.getBoolean(ARG_TABLET_MODE);
 
@@ -125,6 +132,8 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         this.data = data;
         adapter.swapCursor(data);
+        if(eventsTitleTextView != null)
+            eventsTitleTextView.setText(orgName);
     }
 
     @Override

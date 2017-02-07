@@ -10,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -36,6 +37,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
 
     private static final int LOADER_ID = 3;
     public static final String ARG_EVENT_ID = "arg_event_id";
+    public static final String ARG_TABLET_MODE = "arg_tablet_mode";
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -48,11 +50,13 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
 
     private Unbinder unbinder;
     private String eventId;
+    private boolean tabletMode;
 
-    public static DetailFragment newInstance(String eventId) {
+    public static DetailFragment newInstance(String eventId, boolean tabletMode) {
         DetailFragment frag = new DetailFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_EVENT_ID, eventId);
+        bundle.putBoolean(ARG_TABLET_MODE, tabletMode);
         frag.setArguments(bundle);
         return frag;
     }
@@ -63,14 +67,20 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        Bundle arguments = getArguments();
+        eventId = arguments.getString(ARG_EVENT_ID);
+        tabletMode = arguments.getBoolean(ARG_TABLET_MODE);
+
         BaseActivity activity = (BaseActivity) getActivity();
         activity.setSupportActionBar(toolbar);
         ActionBar actionBar = activity.getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
+            if(tabletMode)
+                actionBar.setHomeAsUpIndicator(R.drawable.ic_close);
         }
 
-        eventId = getArguments().getString(ARG_EVENT_ID);
+        setHasOptionsMenu(true);
         return view;
     }
 
@@ -92,6 +102,15 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home && tabletMode){
+            dismiss();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
