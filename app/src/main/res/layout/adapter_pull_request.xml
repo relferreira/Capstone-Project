@@ -35,12 +35,13 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:text="300 deletions"/>
 
-    <TextView
+    <us.feras.mdv.MarkdownView
         android:id="@+id/pull_request_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/pull_request_body_marginTop"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:background="?android:colorBackground"
         tools:text="body"/>
 
 </LinearLayout>

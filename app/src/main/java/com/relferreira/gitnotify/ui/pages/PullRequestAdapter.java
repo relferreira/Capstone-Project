@@ -15,6 +15,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import us.feras.mdv.MarkdownView;
 
 /**
  * Created by relferreira on 2/12/17.
@@ -53,7 +54,8 @@ public class PullRequestAdapter extends PagesAdapter<PullRequestAdapter.PullRequ
         holder.commits.setText(context.getString(R.string.pull_request_commits, item.commits()));
         holder.additions.setText(context.getString(R.string.pull_request_additions, item.additions()));
         holder.deletions.setText(context.getString(R.string.pull_request_deletions, item.deletions()));
-        holder.body.setText(item.body());
+        holder.body.loadMarkdown(item.body());
+        holder.body.setBackgroundColor(0);
     }
 
     @Override
@@ -72,7 +74,7 @@ public class PullRequestAdapter extends PagesAdapter<PullRequestAdapter.PullRequ
         @BindView(R.id.pull_request_deletions)
         TextView deletions;
         @BindView(R.id.pull_request_body)
-        TextView body;
+        MarkdownView body;
 
         public PullRequestViewHolder(View itemView) {
             super(itemView);
