@@ -9,4 +9,9 @@
     <dimen name="events_item_subtitle_marginTop">5dp</dimen>
     <dimen name="events_item_date_marginLeft">5dp</dimen>
     <dimen name="events_item_imageSize">40dp</dimen>
+    <dimen name="events_item_text_marginLeft">56dp</dimen>
+
+    <dimen name="comments_item_imageSize">35dp</dimen>
+    <dimen name="comments_item_padding">16dp</dimen>
+    <dimen name="comments_item_text_marginLeft">56dp</dimen>
 </resources>

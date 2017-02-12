@@ -14,9 +14,11 @@ public abstract class Actor {
     public abstract Integer id();
     public abstract String login();
     @SerializedName("display_login")
+    @Nullable
     public abstract String displayLogin();
     @SerializedName("gravatar_id") @Nullable
     public abstract String gravatarId();
+    @Nullable
     public abstract String url();
     @SerializedName("avatar_url") @Nullable
     public abstract String avatarUrl();

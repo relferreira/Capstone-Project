@@ -156,8 +156,9 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     @Override
     public void onSelect(int position) {
         if(data.moveToPosition(position)){
-            String eventId = data.getString(data.getColumnIndexOrThrow(EventColumns.ID));
-            navigator.gotToDetails(eventId, getActivity(), getFragmentManager(), tabletMode);
+            String eventId = data.getString(data.getColumnIndex(EventColumns.ID));
+            String eventType = data.getString(data.getColumnIndex(EventColumns.TYPE));
+            navigator.gotToDetails(eventId, eventType, getActivity(), getFragmentManager(), tabletMode);
         }
     }
 }

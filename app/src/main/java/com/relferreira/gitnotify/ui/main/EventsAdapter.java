@@ -1,12 +1,8 @@
 package com.relferreira.gitnotify.ui.main;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +14,7 @@ import android.widget.TextView;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.util.CursorRecyclerViewAdapter;
+import com.relferreira.gitnotify.util.RoundBitmapHelper;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -64,7 +61,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
                     @Override
                     public void onSuccess() {
                         BitmapDrawable img = ((BitmapDrawable) viewHolder.userImageView.getDrawable());
-                        viewHolder.userImageView.setImageDrawable(getRoundImage(img, context.getResources()));
+                        viewHolder.userImageView.setImageDrawable(RoundBitmapHelper.getRoundImage(img, context.getResources()));
                     }
 
                     @Override
@@ -78,14 +75,6 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
     public EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_events, parent, false);
         return new EventViewHolder(itemView);
-    }
-
-    private RoundedBitmapDrawable getRoundImage(BitmapDrawable img, Resources resources) {
-        Bitmap imageBitmap = img.getBitmap();
-        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(resources, imageBitmap);
-        imageDrawable.setCircular(true);
-        imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-        return imageDrawable;
     }
 
     public class EventViewHolder extends RecyclerView.ViewHolder{
@@ -107,7 +96,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
         }
 
         @OnClick(R.id.event_item)
-        public void submit() {
+        public void select() {
             listener.onSelect(getAdapterPosition());
         }
     }

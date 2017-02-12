@@ -26,13 +26,14 @@ public class Navigator {
         context.finish();
     }
 
-    public void gotToDetails(String eventId, Activity context, FragmentManager fragmentManager, boolean tabletMode) {
+    public void gotToDetails(String eventId, String eventType, Activity context, FragmentManager fragmentManager, boolean tabletMode) {
         if(!tabletMode){
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(DetailActivity.ARG_EVENT_ID, eventId);
+            intent.putExtra(DetailActivity.ARG_EVENT_TYPE, eventType);
             context.startActivity(intent);
         } else {
-            DetailFragment frag = DetailFragment.newInstance(eventId, true);
+            DetailFragment frag = DetailFragment.newInstance(eventId, eventType, true);
             frag.show(fragmentManager, "dialog");
         }
     }

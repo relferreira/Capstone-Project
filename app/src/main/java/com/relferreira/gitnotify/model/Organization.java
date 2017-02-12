@@ -12,6 +12,7 @@ import org.immutables.value.Value;
 @Value.Immutable
 public abstract class Organization {
     public abstract Integer id();
+    @Nullable
     public abstract String login();
     @SerializedName("repos_url") @Nullable
     public abstract String reposUrl();

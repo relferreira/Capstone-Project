@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 public class DetailActivity extends BaseActivity {
 
     public static final String ARG_EVENT_ID = "arg_event_id";
+    public static final String ARG_EVENT_TYPE = "arg_event_type";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -26,11 +27,12 @@ public class DetailActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         String eventId = getIntent().getStringExtra(ARG_EVENT_ID);
+        String eventType = getIntent().getStringExtra(ARG_EVENT_TYPE);
         if(savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.detail_container, DetailFragment.newInstance(eventId, false))
+                    .replace(R.id.detail_container, DetailFragment.newInstance(eventId, eventType, false))
                     .commit();
         }
 

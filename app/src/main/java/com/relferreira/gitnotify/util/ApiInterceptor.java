@@ -37,6 +37,8 @@ public class ApiInterceptor implements Interceptor {
         Request original = chain.request();
         String url = original.url().toString();
 
+        Boolean useCache = original.header("Use-Cache") == null || Boolean.parseBoolean(original.header("Use-Cache"));
+
         Request.Builder requestBuilder = original.newBuilder()
                 .method(original.method(), original.body())
                 .header("Accept", "application/json");
@@ -44,12 +46,12 @@ public class ApiInterceptor implements Interceptor {
             requestBuilder.header("Authorization", authValue);
 
         String etag = etagRepository.getEtag(url);
-        if(etag != null)
+        if(useCache && etag != null)
             requestBuilder.header("If-None-Match", etag);
 
         Response response = chain.proceed(requestBuilder.build());
         etag = response.header("ETag");
-        if(etag != null){
+        if(useCache && etag != null){
             etagRepository.setEtag(url, etag);
         }
 

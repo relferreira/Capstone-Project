@@ -1,5 +1,6 @@
 package com.relferreira.gitnotify.api;
 
+import com.relferreira.gitnotify.model.Comment;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.model.LoginRequest;
@@ -11,6 +12,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -43,4 +45,9 @@ public interface GithubService {
 
     @GET("user/orgs")
     Call<List<Organization>> listOrgsSync();
+
+    @Headers("Use-Cache: false")
+    @GET("repos/{owner}/{repo}/issues/{issueId}/comments")
+    Observable<List<Comment>> listIssueComments(@Path("owner") String owner, @Path("repo") String repo,
+                                                @Path("issueId") Integer issueId);
 }

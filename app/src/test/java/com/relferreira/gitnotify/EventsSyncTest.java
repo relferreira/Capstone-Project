@@ -99,6 +99,7 @@ public class EventsSyncTest {
                 .isPublic(true)
                 .createdAt(new Date())
                 .org(organization)
+                .isUserOrg(true)
                 .build();
 
         rawResponse = new okhttp3.Response.Builder() //
@@ -170,6 +171,7 @@ public class EventsSyncTest {
 
     @Test
     public void shouldStoreEventFromNetwork() throws IOException, RequestException {
+
         List<Event> events = Collections.singletonList(event);
         List<Organization> organizations = Collections.singletonList(organization);
         when(githubInteractor.getEventsOrgsSync("relferreira", organization.login())).thenReturn(Response.success(events));
@@ -194,7 +196,6 @@ public class EventsSyncTest {
         List<Organization> organizations = Collections.singletonList(organization);
         when(githubInteractor.getEventsMeSync("relferreira")).thenReturn(Response.success(events));
         eventsSyncAdapter.loadPersonalEvents("relferreira", organizations);
-
         verify(eventRepository).storeEvents(events, organizations);
     }
 

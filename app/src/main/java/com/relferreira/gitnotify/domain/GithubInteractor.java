@@ -2,6 +2,7 @@ package com.relferreira.gitnotify.domain;
 
 import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.api.GithubService;
+import com.relferreira.gitnotify.model.Comment;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.Login;
@@ -67,5 +68,9 @@ public class GithubInteractor {
 
     public Response<List<Event>> getEventsOrgsSync(String user, String organization) throws IOException {
         return githubService.getEventsOrgsSync(user, organization).execute();
+    }
+
+    public Observable<List<Comment>> getIssueComments(String owner, String repo, Integer issueId) {
+        return githubService.listIssueComments(owner, repo, issueId);
     }
 }

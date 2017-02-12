@@ -20,13 +20,12 @@ public abstract class Event {
     @Nullable
     public abstract Repo repo();
     public abstract JsonObject payload();
-    @SerializedName("public")
+    @SerializedName("public") @Nullable
     public abstract Boolean isPublic();
     @SerializedName("created_at")
     public abstract Date createdAt();
     @Nullable
     public abstract Organization org();
-
     @Nullable
     public abstract String title();
     @Nullable

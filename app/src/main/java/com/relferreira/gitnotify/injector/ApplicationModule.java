@@ -13,7 +13,9 @@ import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
+import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
+import com.relferreira.gitnotify.ui.detail.DetailPresenter;
 import com.relferreira.gitnotify.ui.login.LoginPresenter;
 import com.relferreira.gitnotify.ui.main.EventsPresenter;
 import com.relferreira.gitnotify.ui.main.MainPresenter;
@@ -103,4 +105,9 @@ public class ApplicationModule {
         return new EventsPresenter(eventsSyncAdapter);
     }
 
+    @Provides
+    protected DetailPresenter provideDetailPresenter(StringRepository stringRepository, EventInteractor eventInteractor,
+                                                     GithubInteractor githubInteractor, SchedulerProvider schedulerProvider) {
+        return new DetailPresenter(stringRepository, eventInteractor, githubInteractor, schedulerProvider);
+    }
 }

@@ -1,9 +1,13 @@
 package com.relferreira.gitnotify.domain.decoder;
 
+import android.content.Context;
+
 import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.R;
+import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
+import com.relferreira.gitnotify.util.SchedulerProvider;
 
 /**
  * Created by relferreira on 2/5/17.
@@ -18,7 +22,7 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
     public IssueCommentEventDecoder(StringRepository context, Event event){
         this.context = context;
         this.event = event;
-        this.payload = event.payload();
+        this.payload = (event != null) ? event.payload() : null; //TODO return
     }
 
     @Override
@@ -36,5 +40,25 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
     @Override
     public String getSubtitle() {
         return payload.getAsJsonObject("comment").get("body").getAsString();
+    }
+
+    @Override
+    public String getDetailTitle() {
+        JsonObject issue = payload.getAsJsonObject("issue");
+        return issue.get("title").getAsString();
+    }
+
+    @Override
+    public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
+        JsonObject issue = payload.getAsJsonObject("issue");
+        String[] repoName = event.repo().name().split("/");
+
+        interactor.getIssueComments(repoName[0], repoName[1], issue.get("number").getAsInt())
+                .compose(schedulerProvider.applySchedulers())
+                .subscribe(response -> {
+                    listener.successLoadingData(response);
+                }, error -> {
+                    listener.errorLoadingData(error.getMessage());
+                });
     }
 }
