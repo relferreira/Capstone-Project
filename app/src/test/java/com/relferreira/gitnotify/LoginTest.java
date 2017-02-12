@@ -2,9 +2,12 @@ package com.relferreira.gitnotify;
 
 import android.content.SharedPreferences;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.domain.GithubInteractor;
+import com.relferreira.gitnotify.model.GsonAdaptersModel;
 import com.relferreira.gitnotify.model.ImmutableLogin;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
@@ -43,8 +46,6 @@ public class LoginTest {
     CriptographyProvider criptographyProvider;
     @Mock
     AuthRepository authRepository;
-    @Mock
-    Gson gson;
 
     private LoginPresenter presenter;
     private GithubInteractor interactor;
@@ -58,6 +59,10 @@ public class LoginTest {
                         .observeOn(Schedulers.immediate());
             }
         };
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapterFactory(new GsonAdaptersModel())
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
         interactor = new GithubInteractor(criptographyProvider, githubService, authRepository, schedulerProvider, apiInterceptor, gson);
         presenter = new LoginPresenter(interactor);
         presenter.attachView(loginView);
