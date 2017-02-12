@@ -2,6 +2,7 @@ package com.relferreira.gitnotify;
 
 import android.content.SharedPreferences;
 
+import com.google.gson.Gson;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.model.ImmutableLogin;
@@ -42,6 +43,8 @@ public class LoginTest {
     CriptographyProvider criptographyProvider;
     @Mock
     AuthRepository authRepository;
+    @Mock
+    Gson gson;
 
     private LoginPresenter presenter;
     private GithubInteractor interactor;
@@ -55,7 +58,7 @@ public class LoginTest {
                         .observeOn(Schedulers.immediate());
             }
         };
-        interactor = new GithubInteractor(criptographyProvider, githubService, authRepository, schedulerProvider, apiInterceptor);
+        interactor = new GithubInteractor(criptographyProvider, githubService, authRepository, schedulerProvider, apiInterceptor, gson);
         presenter = new LoginPresenter(interactor);
         presenter.attachView(loginView);
     }

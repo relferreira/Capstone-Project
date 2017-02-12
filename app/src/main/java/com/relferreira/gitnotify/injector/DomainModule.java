@@ -1,5 +1,6 @@
 package com.relferreira.gitnotify.injector;
 
+import com.google.gson.Gson;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.domain.AuthInteractor;
 import com.relferreira.gitnotify.domain.EventInteractor;
@@ -39,8 +40,8 @@ public class DomainModule {
     @Provides
     @Singleton
     protected GithubInteractor provideOrganizationRepository(CriptographyProvider criptographyProvider, GithubService githubService, AuthRepository authRepository,
-                                                             SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor) {
-        return new GithubInteractor(criptographyProvider, githubService, authRepository, schedulerProvider, apiInterceptor);
+                                                             SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, Gson gson) {
+        return new GithubInteractor(criptographyProvider, githubService, authRepository, schedulerProvider, apiInterceptor, gson);
     }
 
     @Provides

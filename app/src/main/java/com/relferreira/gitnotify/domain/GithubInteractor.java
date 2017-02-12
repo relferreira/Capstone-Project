@@ -1,5 +1,7 @@
 package com.relferreira.gitnotify.domain;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.BuildConfig;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.model.Comment;
@@ -8,6 +10,7 @@ import com.relferreira.gitnotify.model.ImmutableLoginRequest;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.model.Organization;
+import com.relferreira.gitnotify.model.PullRequest;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.util.ApiInterceptor;
 import com.relferreira.gitnotify.util.CriptographyProvider;
@@ -30,14 +33,16 @@ public class GithubInteractor {
     private final AuthRepository authRepository;
     private final SchedulerProvider schedulerProvider;
     private final ApiInterceptor apiInterceptor;
+    private final Gson gson;
 
     public GithubInteractor(CriptographyProvider criptographyProvider, GithubService githubService, AuthRepository authRepository,
-                            SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor) {
+                            SchedulerProvider schedulerProvider, ApiInterceptor apiInterceptor, Gson gson) {
         this.criptographyProvider = criptographyProvider;
         this.githubService = githubService;
         this.authRepository = authRepository;
         this.schedulerProvider = schedulerProvider;
         this.apiInterceptor = apiInterceptor;
+        this.gson = gson;
     }
 
     public Observable<Login> login(String username, String password) {
@@ -72,5 +77,9 @@ public class GithubInteractor {
 
     public Observable<List<Comment>> getIssueComments(String owner, String repo, Integer issueId) {
         return githubService.listIssueComments(owner, repo, issueId);
+    }
+
+    public PullRequest constructPullRequest(JsonObject pullRequest) {
+        return gson.fromJson(pullRequest, PullRequest.class);
     }
 }

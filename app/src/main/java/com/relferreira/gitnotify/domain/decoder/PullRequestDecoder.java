@@ -6,8 +6,11 @@ import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.PullRequest;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
+
+import java.util.Collections;
 
 /**
  * Created by relferreira on 2/5/17.
@@ -45,11 +48,12 @@ public class PullRequestDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return null;
+        return payload.getAsJsonObject("pull_request").get("title").getAsString();
     }
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
-
+        PullRequest pullRequest = interactor.constructPullRequest(payload.getAsJsonObject("pull_request"));
+        listener.successLoadingData(Collections.singletonList(pullRequest));
     }
 }
