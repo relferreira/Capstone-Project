@@ -6,50 +6,33 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/pull_request_item_padding">
     <TextView
-        android:id="@+id/pull_request_date"
+        android:id="@+id/issue_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="10 febuary 2017"/>
 
     <TextView
-        android:id="@+id/pull_request_title"
+        android:id="@+id/issue_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/pull_request_info_marginTop"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:text="New feature"/>
+        tools:text="Issue with adapter"/>
 
     <TextView
-        android:id="@+id/pull_request_commits"
+        android:id="@+id/issue_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/pull_request_info_marginTop"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:text="10 commits"/>
-
-    <TextView
-        android:id="@+id/pull_request_additions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/pull_request_info_marginTop"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:text="100 additions"/>
-
-    <TextView
-        android:id="@+id/pull_request_deletions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/pull_request_info_marginTop"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:text="300 deletions"/>
+        tools:text="Open"/>
 
     <us.feras.mdv.MarkdownView
-        android:id="@+id/pull_request_body"
+        android:id="@+id/issue_body"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/pull_request_body_marginTop"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:background="?android:colorBackground"
         tools:text="body"/>
 
 </LinearLayout>

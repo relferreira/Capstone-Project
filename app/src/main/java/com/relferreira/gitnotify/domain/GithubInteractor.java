@@ -7,6 +7,7 @@ import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.model.Comment;
 import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.model.ImmutableLoginRequest;
+import com.relferreira.gitnotify.model.Issue;
 import com.relferreira.gitnotify.model.Login;
 import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.model.Organization;
@@ -81,5 +82,9 @@ public class GithubInteractor {
 
     public PullRequest constructPullRequest(JsonObject pullRequest) {
         return gson.fromJson(pullRequest, PullRequest.class);
+    }
+
+    public Issue constructIssue(JsonObject pullRequest) {
+        return gson.fromJson(pullRequest, Issue.class);
     }
 }

@@ -36,7 +36,10 @@
     <string name="action_pull_request_review">%1$s reviewed pull request %2$s#%3$d</string>
     <string name="action_release">Version %1$s of %2$s released</string>
 
+    <string name="pull_request_title">Pull Request</string>
     <string name="pull_request_commits">%d commits</string>
     <string name="pull_request_additions">%d additions</string>
     <string name="pull_request_deletions">%d deletions</string>
+
+    <string name="issues_title">Issues</string>
 </resources>

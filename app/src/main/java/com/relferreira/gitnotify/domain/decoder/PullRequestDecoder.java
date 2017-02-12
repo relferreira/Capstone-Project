@@ -48,7 +48,7 @@ public class PullRequestDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return payload.getAsJsonObject("pull_request").get("title").getAsString();
+        return context.getString(R.string.pull_request_title);
     }
 
     @Override

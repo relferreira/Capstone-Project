@@ -22,7 +22,6 @@
             app:contentScrim="?attr/colorPrimary"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Body1"
             android:fitsSystemWindows="true">
 
             <ImageView

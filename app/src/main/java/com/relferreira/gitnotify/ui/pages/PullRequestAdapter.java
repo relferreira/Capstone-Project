@@ -51,6 +51,7 @@ public class PullRequestAdapter extends PagesAdapter<PullRequestAdapter.PullRequ
         PullRequest item = items.get(position);
 
         holder.date.setText(dateFormater.format(item.createdAt()));
+        holder.title.setText(item.title());
         holder.commits.setText(context.getString(R.string.pull_request_commits, item.commits()));
         holder.additions.setText(context.getString(R.string.pull_request_additions, item.additions()));
         holder.deletions.setText(context.getString(R.string.pull_request_deletions, item.deletions()));
@@ -67,6 +68,8 @@ public class PullRequestAdapter extends PagesAdapter<PullRequestAdapter.PullRequ
 
         @BindView(R.id.pull_request_date)
         TextView date;
+        @BindView(R.id.pull_request_title)
+        TextView title;
         @BindView(R.id.pull_request_commits)
         TextView commits;
         @BindView(R.id.pull_request_additions)

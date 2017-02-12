@@ -32,8 +32,8 @@ public class PagesFactory {
 //                return new ForkEventDecoder(context, event);
 //            case "GollumEvent":
 //                return new WikiDecoder(context, event);
-//            case "IssuesEvent":
-//                return new IssuesEventDecoder(context, event);
+            case "IssuesEvent":
+                return new IssuesEventAdapter(context, items);
 //            case "MemberEvent":
 //                return new MemberEventDecoder(context, event);
 //            case "PublicEvent":
