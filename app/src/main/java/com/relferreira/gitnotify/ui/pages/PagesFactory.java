@@ -10,12 +10,13 @@ import java.util.List;
 
 public class PagesFactory {
 
+    @SuppressWarnings("unchecked")
     public static PagesAdapter getAdapter(Context context, List items, String type) {
         switch (type){
             case "PullRequestEvent":
                 return new PullRequestAdapter(context, items);
-//            case "PushEvent":
-//                return new PushEventDecoder(context, event);
+            case "PushEvent":
+                return new PushAdapter(context, items);
             case "IssueCommentEvent":
                 return new IssueCommentAdapter(context, items);
 //            case "PullRequestReviewCommentEvent":

@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.Push;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
 
@@ -48,11 +49,12 @@ public class PushEventDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return null;
+        return context.getString(R.string.push_title);
     }
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
-
+        Push push = interactor.constructPush(payload);
+        listener.successLoadingData(push.commits());
     }
 }

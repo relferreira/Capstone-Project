@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/push_item_padding">
+
+    <TextView
+        android:id="@+id/push_author"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Renan Ferreira"/>
+
+    <TextView
+        android:id="@+id/push_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        tools:text="New Adapter"/>
+
+</LinearLayout>

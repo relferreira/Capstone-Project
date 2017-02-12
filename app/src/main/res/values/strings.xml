@@ -42,4 +42,6 @@
     <string name="pull_request_deletions">%d deletions</string>
 
     <string name="issues_title">Issues</string>
+
+    <string name="push_title">Push</string>
 </resources>
