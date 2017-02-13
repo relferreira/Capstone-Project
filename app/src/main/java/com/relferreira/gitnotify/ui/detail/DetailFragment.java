@@ -222,6 +222,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         return ImmutableActor.builder()
                 .id(data.getInt(data.getColumnIndex(EventColumns.ACTOR_ID)))
                 .login(data.getString(data.getColumnIndex(EventColumns.ACTOR_NAME)))
+                .displayLogin(data.getString(data.getColumnIndex(EventColumns.ACTOR_NAME)))
                 .avatarUrl(data.getString(data.getColumnIndex(EventColumns.ACTOR_IMAGE)))
                 .build();
     }

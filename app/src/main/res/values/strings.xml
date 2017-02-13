@@ -23,6 +23,7 @@
     <string name="action_closed">closed</string>
     <string name="action_merged">merged</string>
     <string name="action_create_event">%1$s created %2$s %3$s at %4$s</string>
+    <string name="action_create_repository">%1$s created repository %2$s</string>
     <string name="action_deleted_event">%1$s deleted %2$s %3$s at %4$s</string>
     <string name="action_starred">%1$s starred %2$s</string>
     <string name="action_fork">%1$s forked %2$s to %3$s</string>
@@ -44,4 +45,7 @@
     <string name="issues_title">Issues</string>
 
     <string name="push_title">Push</string>
+
+    <string name="create_title">Create</string>
+    <string name="delete_title">Delete</string>
 </resources>

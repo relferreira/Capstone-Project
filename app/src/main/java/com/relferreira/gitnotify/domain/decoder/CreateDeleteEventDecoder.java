@@ -9,6 +9,8 @@ import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
 
+import java.util.Collections;
+
 /**
  * Created by relferreira on 2/5/17.
  */
@@ -30,9 +32,11 @@ public class CreateDeleteEventDecoder implements DescriptionDecoder {
     public String getTitle() {
         String actor = event.actor().displayLogin();
         String repo = event.repo().name();
-        String ref = payload.get("ref").getAsString();
+        String ref = !payload.get("ref").isJsonNull() ? payload.get("ref").getAsString() : null;
         String refType = payload.get("ref_type").getAsString();
-        if(create)
+        if(ref == null || ref.isEmpty())
+            return String.format(context.getString(R.string.action_create_repository), actor, repo);
+        else if(create)
             return String.format(context.getString(R.string.action_create_event), actor, refType, ref, repo);
         else
             return String.format(context.getString(R.string.action_deleted_event), actor, refType, ref, repo);
@@ -45,11 +49,11 @@ public class CreateDeleteEventDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return null;
+        return (create) ? context.getString(R.string.create_title) : context.getString(R.string.delete_title);
     }
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
-
+        listener.successLoadingData(Collections.singletonList(getTitle()));
     }
 }

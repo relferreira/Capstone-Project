@@ -23,16 +23,16 @@ public class PagesFactory {
 //                return new PullRequestReviewCommentEventDecoder(context, event);
 //            case "CommitCommentEvent":
 //                return new CommitCommentEventDecoder(context, event);
-//            case "CreateEvent":
-//                return new CreateDeleteEventDecoder(context, event, true);
-//            case "DeleteEvent":
-//                return new CreateDeleteEventDecoder(context, event, false);
+            case "CreateEvent":
+                return new TextAdapter(context, items);
+            case "DeleteEvent":
+                return new TextAdapter(context, items);
 //            case "WatchEvent":
 //                return new StarredDecoder(context, event);
 //            case "ForkEvent":
 //                return new ForkEventDecoder(context, event);
-//            case "GollumEvent":
-//                return new WikiDecoder(context, event);
+            case "GollumEvent":
+                return new WikiAdapter(context, items);
             case "IssuesEvent":
                 return new IssuesEventAdapter(context, items);
 //            case "MemberEvent":

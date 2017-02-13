@@ -19,4 +19,6 @@
     <dimen name="pull_request_info_marginTop">5dp</dimen>
     <dimen name="pull_request_body_marginTop">16dp</dimen>
     <dimen name="push_item_padding">16dp</dimen>
+    <dimen name="text_item_padding">16dp</dimen>
+    <dimen name="wiki_item_padding">16dp</dimen>
 </resources>

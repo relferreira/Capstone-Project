@@ -266,9 +266,12 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s created %2$s %3$s at %4$s").when(context).getString(R.string.action_create_event);
+        doReturn("Create").when(context).getString(R.string.create_title);
+        doReturn("Delete").when(context).getString(R.string.delete_title);
         DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "CreateEvent");
         assertEquals("relferreira created branch espresso_tests at GitNotify/app", decoder.getTitle());
         assertEquals(null, decoder.getSubtitle());
+        assertEquals("Create", decoder.getDetailTitle());
     }
 
     @Test
@@ -282,8 +285,27 @@ public class EventsDecoderTest {
                 .build();
 
         doReturn("%1$s deleted %2$s %3$s at %4$s").when(context).getString(R.string.action_deleted_event);
+        doReturn("Create").when(context).getString(R.string.create_title);
+        doReturn("Delete").when(context).getString(R.string.delete_title);
         DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "DeleteEvent");
         assertEquals("relferreira deleted branch espresso_tests at GitNotify/app", decoder.getTitle());
+        assertEquals(null, decoder.getSubtitle());
+        assertEquals("Delete", decoder.getDetailTitle());
+    }
+
+    @Test
+    public void shouldDecodeCreateRepositoryEvent() {
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("ref", "");
+        jsonObject.addProperty("ref_type", "");
+        Event event = eventBuilder
+                .payload(jsonObject)
+                .build();
+
+        doReturn("%1$s created repository %2$s").when(context).getString(R.string.action_create_repository);
+        DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "CreateEvent");
+        assertEquals("relferreira created repository GitNotify/app", decoder.getTitle());
         assertEquals(null, decoder.getSubtitle());
     }
 
