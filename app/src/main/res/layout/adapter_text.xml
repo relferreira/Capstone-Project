@@ -10,7 +10,7 @@
         android:id="@+id/text_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         tools:text="New event"/>
 
 </LinearLayout>

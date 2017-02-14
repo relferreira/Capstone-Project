@@ -51,4 +51,6 @@
 
     <string name="release_title">Release</string>
     <string name="release_pre">Pre-Release</string>
+
+    <string name="member_title">Member</string>
 </resources>

@@ -35,8 +35,8 @@ public class PagesFactory {
                 return new WikiAdapter(context, items);
             case "IssuesEvent":
                 return new IssuesEventAdapter(context, items);
-//            case "MemberEvent":
-//                return new MemberEventDecoder(context, event);
+            case "MemberEvent":
+                return new TextAdapter(context, items);
 //            case "PublicEvent":
 //                return new PublicEventDecoder(context, event);
 //            case "PullRequestReviewEvent":

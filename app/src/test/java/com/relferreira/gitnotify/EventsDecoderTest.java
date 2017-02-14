@@ -406,13 +406,11 @@ public class EventsDecoderTest {
     public void shouldDecodeMemberEvent() {
         JsonObject memberObj = new JsonObject();
         memberObj.addProperty("login", "relferreira2");
-        JsonObject senderObj = new JsonObject();
-        senderObj.addProperty("login", "relferreira");
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("action", "added");
         jsonObject.add("member", memberObj);
-        jsonObject.add("sender", senderObj);
         Event event = eventBuilder
+                .actor(ImmutableActor.builder().id(1).login("relferreira").build())
                 .payload(jsonObject)
                 .build();
 
