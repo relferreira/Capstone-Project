@@ -9,6 +9,8 @@ import com.relferreira.gitnotify.model.Event;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
 
+import java.util.Collections;
+
 /**
  * Created by relferreira on 2/5/17.
  */
@@ -39,11 +41,11 @@ public class PullRequestReviewEventDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return null;
+        return context.getString(R.string.pull_request_review_title);
     }
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
-
+        listener.successLoadingData(Collections.singletonList(getTitle()));
     }
 }

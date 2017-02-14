@@ -425,12 +425,10 @@ public class EventsDecoderTest {
     public void shouldDecodePublicEvent() {
         JsonObject repoObj = new JsonObject();
         repoObj.addProperty("full_name", "GitNotify/app");
-        JsonObject senderObj = new JsonObject();
-        senderObj.addProperty("login", "relferreira");
         JsonObject jsonObject = new JsonObject();
-        jsonObject.add("sender", senderObj);
         jsonObject.add("repository", repoObj);
         Event event = eventBuilder
+                .actor(ImmutableActor.builder().id(1).login("relferreira").build())
                 .payload(jsonObject)
                 .build();
         doReturn("%1$s was open sourced").when(context).getString(R.string.action_public);

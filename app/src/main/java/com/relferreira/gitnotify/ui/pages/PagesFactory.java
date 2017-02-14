@@ -37,10 +37,10 @@ public class PagesFactory {
                 return new IssuesEventAdapter(context, items);
             case "MemberEvent":
                 return new TextAdapter(context, items);
-//            case "PublicEvent":
-//                return new PublicEventDecoder(context, event);
-//            case "PullRequestReviewEvent":
-//                return new PullRequestReviewEventDecoder(context, event);
+            case "PublicEvent":
+                return new TextAdapter(context, items);
+            case "PullRequestReviewEvent":
+                return new TextAdapter(context, items); //Could not find this event in API response
             case "ReleaseEvent":
                 return new ReleaseAdapter(context, items);
         }
