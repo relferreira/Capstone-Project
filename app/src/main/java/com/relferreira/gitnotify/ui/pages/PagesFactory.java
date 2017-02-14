@@ -41,8 +41,8 @@ public class PagesFactory {
 //                return new PublicEventDecoder(context, event);
 //            case "PullRequestReviewEvent":
 //                return new PullRequestReviewEventDecoder(context, event);
-//            case "ReleaseEvent":
-//                return new ReleaseEventDecoder(context, event);
+            case "ReleaseEvent":
+                return new ReleaseAdapter(context, items);
         }
         return null;
     }

@@ -48,4 +48,7 @@
 
     <string name="create_title">Create</string>
     <string name="delete_title">Delete</string>
+
+    <string name="release_title">Release</string>
+    <string name="release_pre">Pre-Release</string>
 </resources>

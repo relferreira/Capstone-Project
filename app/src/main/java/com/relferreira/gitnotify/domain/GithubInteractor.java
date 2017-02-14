@@ -13,6 +13,7 @@ import com.relferreira.gitnotify.model.LoginRequest;
 import com.relferreira.gitnotify.model.Organization;
 import com.relferreira.gitnotify.model.PullRequest;
 import com.relferreira.gitnotify.model.Push;
+import com.relferreira.gitnotify.model.Release;
 import com.relferreira.gitnotify.model.Wiki;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.util.ApiInterceptor;
@@ -96,5 +97,9 @@ public class GithubInteractor {
 
     public Wiki constructWiki(JsonObject obj) {
         return gson.fromJson(obj, Wiki.class);
+    }
+
+    public Release constructRelease(JsonObject obj) {
+        return gson.fromJson(obj, Release.class);
     }
 }

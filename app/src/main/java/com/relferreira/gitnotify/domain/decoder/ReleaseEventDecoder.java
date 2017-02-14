@@ -6,8 +6,13 @@ import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.ImmutableReleaseInfo;
+import com.relferreira.gitnotify.model.Release;
+import com.relferreira.gitnotify.model.ReleaseInfo;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
+
+import java.util.Collections;
 
 /**
  * Created by relferreira on 2/5/17.
@@ -39,11 +44,14 @@ public class ReleaseEventDecoder implements DescriptionDecoder {
 
     @Override
     public String getDetailTitle() {
-        return null;
+        return context.getString(R.string.release_title);
     }
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
+        Release release = interactor.constructRelease(payload.getAsJsonObject("release"));
+        ReleaseInfo releaseInfo = ImmutableReleaseInfo.builder().release(release).repo(event.repo()).build();
 
+        listener.successLoadingData(Collections.singletonList(releaseInfo));
     }
 }

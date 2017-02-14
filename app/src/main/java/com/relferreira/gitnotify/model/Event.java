@@ -32,14 +32,4 @@ public abstract class Event {
     public abstract String subtitle();
     @Nullable
     public abstract Boolean isUserOrg();
-
-//    public static Event fromCursor(Cursor data) {
-//        return ImmutableEvent
-//                .builder()
-//                .id(data.getString(data.getColumnIndex(EventColumns.ID)))
-//                .type(data.getString(data.getColumnIndex(EventColumns.TYPE)))
-//                .actor()
-//                .repo()
-//                .payload(JsonObject)
-//    }
 }

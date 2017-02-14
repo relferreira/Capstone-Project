@@ -21,4 +21,6 @@
     <dimen name="push_item_padding">16dp</dimen>
     <dimen name="text_item_padding">16dp</dimen>
     <dimen name="wiki_item_padding">16dp</dimen>
+    <dimen name="release_item_padding">16dp</dimen>
+    <dimen name="release_item_marginTop">10dp</dimen>
 </resources>
