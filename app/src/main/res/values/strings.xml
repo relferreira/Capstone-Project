@@ -53,4 +53,6 @@
     <string name="release_pre">Pre-Release</string>
 
     <string name="member_title">Member</string>
+
+    <string name="starred_title">Starred</string>
 </resources>

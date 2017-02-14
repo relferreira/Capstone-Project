@@ -27,8 +27,8 @@ public class PagesFactory {
                 return new TextAdapter(context, items);
             case "DeleteEvent":
                 return new TextAdapter(context, items);
-//            case "WatchEvent":
-//                return new StarredDecoder(context, event);
+            case "WatchEvent":
+                return new TextAdapter(context, items);
 //            case "ForkEvent":
 //                return new ForkEventDecoder(context, event);
             case "GollumEvent":
