@@ -29,8 +29,8 @@ public class PagesFactory {
                 return new TextAdapter(context, items);
             case "WatchEvent":
                 return new TextAdapter(context, items);
-//            case "ForkEvent":
-//                return new ForkEventDecoder(context, event);
+            case "ForkEvent":
+                return new TextAdapter(context, items);
             case "GollumEvent":
                 return new WikiAdapter(context, items);
             case "IssuesEvent":

@@ -55,4 +55,6 @@
     <string name="member_title">Member</string>
 
     <string name="starred_title">Starred</string>
+
+    <string name="fork_title">Fork</string>
 </resources>
