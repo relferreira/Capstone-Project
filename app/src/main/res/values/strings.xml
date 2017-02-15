@@ -62,4 +62,6 @@
     <string name="public_title">Open Sourced</string>
 
     <string name="pull_request_review_title">Pull request review</string>
+
+    <string name="commit_comment_title">Commit comments</string>
 </resources>

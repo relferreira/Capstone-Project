@@ -83,8 +83,12 @@ public class GithubInteractor {
         return githubService.listIssueComments(owner, repo, issueId, page);
     }
 
-    public Observable<List<Comment>> getPullComments(String owner, String repo, Integer issueId, Integer page) {
-        return githubService.listPullComments(owner, repo, issueId, page);
+    public Observable<List<Comment>> getPullComments(String owner, String repo, Integer id, Integer page) {
+        return githubService.listPullComments(owner, repo, id, page);
+    }
+
+    public Observable<List<Comment>> getCommitComments(String owner, String repo, String id, Integer page) {
+        return githubService.listCommitComments(owner, repo, id, page);
     }
 
     public PullRequest constructPullRequest(JsonObject pullRequest) {

@@ -21,8 +21,8 @@ public class PagesFactory {
                 return new CommentAdapter(context, items);
             case "PullRequestReviewCommentEvent":
                 return new CommentAdapter(context, items);
-//            case "CommitCommentEvent":
-//                return new CommitCommentEventDecoder(context, event);
+            case "CommitCommentEvent":
+                return new CommentAdapter(context, items);
             case "CreateEvent":
                 return new TextAdapter(context, items);
             case "DeleteEvent":

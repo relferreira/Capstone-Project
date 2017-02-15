@@ -24,5 +24,7 @@ public abstract class Comment {
     @SerializedName("updated_at")
     public abstract Date updatedAt();
     public abstract String body();
+    @SerializedName("commit_id") @Nullable
+    public abstract String commitId();
 
 }
