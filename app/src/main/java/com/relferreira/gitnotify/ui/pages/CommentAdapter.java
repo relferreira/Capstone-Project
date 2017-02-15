@@ -25,13 +25,13 @@ import butterknife.ButterKnife;
  * Created by relferreira on 2/11/17.
  */
 
-public class IssueCommentAdapter extends PagesAdapter<IssueCommentAdapter.IssueCommentViewHolder> {
+public class CommentAdapter extends PagesAdapter<CommentAdapter.IssueCommentViewHolder> {
 
     private final DateFormat dateFormater;
     private Context context;
     private List<Comment> comments;
 
-    public IssueCommentAdapter(Context context, List<Comment> comments) {
+    public CommentAdapter(Context context, List<Comment> comments) {
         this.context = context;
         this.comments = comments;
 

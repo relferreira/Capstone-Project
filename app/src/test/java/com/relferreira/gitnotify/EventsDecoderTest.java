@@ -219,6 +219,7 @@ public class EventsDecoderTest {
     public void shouldDecodePullRequestReviewCommentEvent() {
         JsonObject pullRequestObj = new JsonObject();
         pullRequestObj.addProperty("number", 123);
+        pullRequestObj.addProperty("title", "New model");
 
         JsonObject commentObj = new JsonObject();
         commentObj.addProperty("body", "Check if unit test is passing");
@@ -235,6 +236,7 @@ public class EventsDecoderTest {
         DescriptionDecoder decoder = eventInteractor.getDecoder(context, event, "PullRequestReviewCommentEvent");
         assertEquals("relferreira commented on pull request GitNotify/app#123", decoder.getTitle());
         assertEquals("Check if unit test is passing", decoder.getSubtitle());
+        assertEquals("New model", decoder.getDetailTitle());
     }
 
     @Test

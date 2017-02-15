@@ -18,9 +18,9 @@ public class PagesFactory {
             case "PushEvent":
                 return new PushAdapter(context, items);
             case "IssueCommentEvent":
-                return new IssueCommentAdapter(context, items);
-//            case "PullRequestReviewCommentEvent":
-//                return new PullRequestReviewCommentEventDecoder(context, event);
+                return new CommentAdapter(context, items);
+            case "PullRequestReviewCommentEvent":
+                return new CommentAdapter(context, items);
 //            case "CommitCommentEvent":
 //                return new CommitCommentEventDecoder(context, event);
             case "CreateEvent":

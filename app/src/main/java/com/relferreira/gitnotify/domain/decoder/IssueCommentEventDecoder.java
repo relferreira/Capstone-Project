@@ -5,7 +5,10 @@ import android.content.Context;
 import com.google.gson.JsonObject;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.domain.GithubInteractor;
+import com.relferreira.gitnotify.model.Comment;
 import com.relferreira.gitnotify.model.Event;
+import com.relferreira.gitnotify.model.ImmutableComment;
+import com.relferreira.gitnotify.model.Issue;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.util.SchedulerProvider;
 
@@ -68,6 +71,17 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
         interactor.getIssueComments(repoName[0], repoName[1], issue.get("number").getAsInt(), page)
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(response -> {
+                    if (page == 1) {
+                        Issue issueInfo = interactor.constructIssue(issue);
+                        Comment comment = ImmutableComment.builder()
+                                .id(issueInfo.id())
+                                .user(issueInfo.user())
+                                .body(issueInfo.body())
+                                .createdAt(issueInfo.createdAt())
+                                .updatedAt(issueInfo.updatedAt())
+                                .build();
+                        response.add(0, comment);
+                    }
                     listener.successLoadingData(response);
                 }, error -> {
                     listener.errorLoadingData(error.getMessage());

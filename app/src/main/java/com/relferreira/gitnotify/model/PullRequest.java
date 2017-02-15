@@ -22,8 +22,11 @@ public abstract class PullRequest {
     public abstract Date createdAt();
     @SerializedName("updated_at")
     public abstract Date updatedAt();
+    @Nullable
     public abstract Integer commits();
+    @Nullable
     public abstract Integer additions();
+    @Nullable
     public abstract Integer deletions();
     @SerializedName("changed_files") @Nullable
     public abstract Integer changedFiles();

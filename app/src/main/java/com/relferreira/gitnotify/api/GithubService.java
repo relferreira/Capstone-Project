@@ -51,4 +51,9 @@ public interface GithubService {
     @GET("repos/{owner}/{repo}/issues/{issueId}/comments")
     Observable<List<Comment>> listIssueComments(@Path("owner") String owner, @Path("repo") String repo,
                                                 @Path("issueId") Integer issueId, @Query("page") Integer page);
+
+    @Headers("Use-Cache: false")
+    @GET("repos/{owner}/{repo}/pulls/{id}/comments")
+    Observable<List<Comment>> listPullComments(@Path("owner") String owner, @Path("repo") String repo,
+                                                @Path("id") Integer id, @Query("page") Integer page);
 }
