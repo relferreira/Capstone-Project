@@ -53,4 +53,9 @@ public class IssuesEventDecoder implements DescriptionDecoder {
         Issue issue = interactor.constructIssue(payload.getAsJsonObject("issue"));
         listener.successLoadingData(Collections.singletonList(issue));
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }

@@ -50,4 +50,9 @@ public class MemberEventDecoder implements DescriptionDecoder {
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
         listener.successLoadingData(Collections.singletonList(String.format("%1$s %2$s", getTitle(), getSubtitle())));
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }

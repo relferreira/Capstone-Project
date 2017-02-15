@@ -2,6 +2,8 @@ package com.relferreira.gitnotify.ui.detail;
 
 import android.app.Dialog;
 import android.database.Cursor;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +83,9 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     private boolean tabletMode;
     private PagesAdapter adapter;
     private String eventType;
+    private InfinityScrollListener scrollListener;
+    private Event event;
+    private boolean loading = false;
 
     public static DetailFragment newInstance(String eventId, String eventType, boolean tabletMode) {
         DetailFragment frag = new DetailFragment();
@@ -112,8 +119,18 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         }
 
         adapter = PagesFactory.getAdapter(getContext(), new ArrayList<>(), eventType);
-        detailList.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        scrollListener = new InfinityScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if(event != null) {
+                    presenter.loadPage(getContext(), event, page);
+                }
+            }
+        };
+        detailList.setLayoutManager(layoutManager);
         detailList.setAdapter(adapter);
+        detailList.addOnScrollListener(scrollListener);
         setHasOptionsMenu(true);
 
         presenter.attachView(this);
@@ -142,6 +159,21 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.detail_menu, menu);
+        MenuItem refreshItem = menu.findItem(R.id.sync);
+        refreshItem.setVisible(loading);
+
+        if(loading) {
+            Drawable drawable = refreshItem.getIcon();
+            Animatable anim = ((Animatable) drawable);
+            if(!anim.isRunning())
+                anim.start();
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home && tabletMode){
             dismiss();
@@ -158,6 +190,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     @Override
     public void showLoading(boolean state) {
         loadingProgressBar.setVisibility(state ? View.VISIBLE : View.GONE);
+        loading = false;
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override
@@ -170,7 +204,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(data.moveToFirst()){
-            Event event = fromCursor(data);
+            event = fromCursor(data);
             presenter.getDecoder(getContext(), event);
         }
     }
@@ -200,7 +234,14 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
 
     @Override
     public void showError() {
+        showLoading(false);
+        //TODO
+    }
 
+    @Override
+    public void showPageLoading(boolean status) {
+        loading = status;
+        getActivity().invalidateOptionsMenu();
     }
 
     private Event fromCursor(Cursor data) {

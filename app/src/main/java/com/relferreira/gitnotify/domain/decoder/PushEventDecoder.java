@@ -57,4 +57,9 @@ public class PushEventDecoder implements DescriptionDecoder {
         Push push = interactor.constructPush(payload);
         listener.successLoadingData(push.commits());
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }

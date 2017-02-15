@@ -9,4 +9,5 @@ import java.util.List;
 public interface DecoderListener {
     void successLoadingData(List items);
     void errorLoadingData(String error);
+    void showPageLoading(boolean status);
 }

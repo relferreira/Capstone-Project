@@ -17,4 +17,6 @@ public interface DetailView extends BaseView{
     void setAdapterData(List items);
 
     void showError();
+
+    void showPageLoading(boolean status);
 }

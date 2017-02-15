@@ -15,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -49,5 +50,5 @@ public interface GithubService {
     @Headers("Use-Cache: false")
     @GET("repos/{owner}/{repo}/issues/{issueId}/comments")
     Observable<List<Comment>> listIssueComments(@Path("owner") String owner, @Path("repo") String repo,
-                                                @Path("issueId") Integer issueId);
+                                                @Path("issueId") Integer issueId, @Query("page") Integer page);
 }

@@ -56,4 +56,9 @@ public class PullRequestDecoder implements DescriptionDecoder {
         PullRequest pullRequest = interactor.constructPullRequest(payload.getAsJsonObject("pull_request"));
         listener.successLoadingData(Collections.singletonList(pullRequest));
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }

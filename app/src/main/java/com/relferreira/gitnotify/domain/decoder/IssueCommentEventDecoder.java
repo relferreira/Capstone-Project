@@ -49,11 +49,23 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
     }
 
     @Override
-    public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
+    public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider,
+                         DecoderListener listener) {
+        getPage(interactor, event, schedulerProvider, listener, 1);
+    }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+        listener.showPageLoading(true);
+        getPage(interactor, event, schedulerProvider, listener, page);
+    }
+
+    private void getPage(GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider,
+                         DecoderListener listener, Integer page) {
         JsonObject issue = payload.getAsJsonObject("issue");
         String[] repoName = event.repo().name().split("/");
 
-        interactor.getIssueComments(repoName[0], repoName[1], issue.get("number").getAsInt())
+        interactor.getIssueComments(repoName[0], repoName[1], issue.get("number").getAsInt(), page)
                 .compose(schedulerProvider.applySchedulers())
                 .subscribe(response -> {
                     listener.successLoadingData(response);
@@ -61,4 +73,5 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
                     listener.errorLoadingData(error.getMessage());
                 });
     }
+
 }

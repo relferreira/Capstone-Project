@@ -58,4 +58,9 @@ public class WikiDecoder implements DescriptionDecoder {
         Wiki wiki = interactor.constructWiki(payload);
         listener.successLoadingData(wiki.pages());
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }

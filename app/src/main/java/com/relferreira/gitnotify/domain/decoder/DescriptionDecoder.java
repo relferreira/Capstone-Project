@@ -15,4 +15,5 @@ public interface DescriptionDecoder {
     String getSubtitle();
     String getDetailTitle();
     void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener);
+    void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page);
 }

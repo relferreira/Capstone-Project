@@ -14,6 +14,7 @@
     <dimen name="comments_item_imageSize">35dp</dimen>
     <dimen name="comments_item_padding">16dp</dimen>
     <dimen name="comments_item_text_marginLeft">56dp</dimen>
+    <dimen name="comments_item_text_marginTop">5dp</dimen>
 
     <dimen name="pull_request_item_padding">16dp</dimen>
     <dimen name="pull_request_info_marginTop">5dp</dimen>

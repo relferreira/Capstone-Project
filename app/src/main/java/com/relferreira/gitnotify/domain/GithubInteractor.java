@@ -79,8 +79,8 @@ public class GithubInteractor {
         return githubService.getEventsOrgsSync(user, organization).execute();
     }
 
-    public Observable<List<Comment>> getIssueComments(String owner, String repo, Integer issueId) {
-        return githubService.listIssueComments(owner, repo, issueId);
+    public Observable<List<Comment>> getIssueComments(String owner, String repo, Integer issueId, Integer page) {
+        return githubService.listIssueComments(owner, repo, issueId, page);
     }
 
     public PullRequest constructPullRequest(JsonObject pullRequest) {

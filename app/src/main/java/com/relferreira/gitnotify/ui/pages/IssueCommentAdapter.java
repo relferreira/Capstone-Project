@@ -47,6 +47,7 @@ public class IssueCommentAdapter extends PagesAdapter<IssueCommentAdapter.IssueC
     @Override
     public void onBindViewHolder(IssueCommentViewHolder holder, int position) {
         Comment comment = comments.get(position);
+        holder.author.setText(comment.user().login());
         holder.text.setText(comment.body());
         holder.date.setText(dateFormater.format(comment.createdAt()));
         Picasso.with(context)
@@ -72,12 +73,14 @@ public class IssueCommentAdapter extends PagesAdapter<IssueCommentAdapter.IssueC
 
     @SuppressWarnings("unchecked")
     public void setItems(List items) {
-        comments = (List<Comment>)items;
+        comments.addAll((List<Comment>)items);
         notifyDataSetChanged();
     }
 
     public class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.issue_comment_author)
+        TextView author;
         @BindView(R.id.issue_comment_date)
         TextView date;
         @BindView(R.id.issue_comment_text)

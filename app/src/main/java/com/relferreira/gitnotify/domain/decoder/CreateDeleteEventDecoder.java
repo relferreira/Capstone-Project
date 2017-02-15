@@ -56,4 +56,9 @@ public class CreateDeleteEventDecoder implements DescriptionDecoder {
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
         listener.successLoadingData(Collections.singletonList(getTitle()));
     }
+
+    @Override
+    public void loadPage(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener, Integer page) {
+
+    }
 }
