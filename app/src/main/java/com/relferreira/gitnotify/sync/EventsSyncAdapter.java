@@ -5,6 +5,7 @@ import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.os.Build;
@@ -32,6 +33,7 @@ import rx.subjects.PublishSubject;
  */
 public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
+    public static final String ACTION_UPDATE_DATA = "com.relferreira.gitnotify.ACTION_DATA_UPDATED";
     public static final String LOG_TAG = EventsSyncAdapter.class.getSimpleName();
     public static final int STATUS_INIT = 4;
     public static final int STATUS_PROGRESS = 1;
@@ -102,6 +104,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
         subject.onNext(STATUS_INIT);
         try {
             sync(account);
+            broadcastSync();
             subject.onNext(STATUS_SUCCESS);
             subject.onCompleted();
         } catch (RequestException e) {
@@ -159,5 +162,10 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
             if(eventsOrgRequest.code() != 304)
                 throw new RequestException(eventsOrgRequest.errorBody().string());
         }
+    }
+
+    private void broadcastSync() {
+        Intent dataUpdatedIntent = new Intent(ACTION_UPDATE_DATA);
+        getContext().sendBroadcast(dataUpdatedIntent);
     }
 }

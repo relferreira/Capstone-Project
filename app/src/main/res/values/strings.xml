@@ -64,4 +64,8 @@
     <string name="pull_request_review_title">Pull request review</string>
 
     <string name="commit_comment_title">Commit comments</string>
+
+    <string name="widget_title">Latest events</string>
+    <string name="widget_header_subtitle">latest events</string>
+    <string name="widget_empy_list">No events</string>
 </resources>

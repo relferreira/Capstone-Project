@@ -11,6 +11,8 @@
     <dimen name="events_item_imageSize">40dp</dimen>
     <dimen name="events_item_text_marginLeft">56dp</dimen>
 
+    <dimen name="detail_image_size">200dp</dimen>
+
     <dimen name="comments_item_imageSize">35dp</dimen>
     <dimen name="comments_item_padding">16dp</dimen>
     <dimen name="comments_item_text_marginLeft">56dp</dimen>
@@ -24,4 +26,13 @@
     <dimen name="wiki_item_padding">16dp</dimen>
     <dimen name="release_item_padding">16dp</dimen>
     <dimen name="release_item_marginTop">10dp</dimen>
+
+    <dimen name="widget_header_padding">16dp</dimen>
+    <dimen name="widget_default_width">250dp</dimen>
+    <dimen name="widget_default_height">180dp</dimen>
+    <dimen name="widget_min_resize_width">220dp</dimen>
+    <dimen name="widget_min_resize_height">@dimen/widget_default_height</dimen>
+    <dimen name="widget_item_padding">16dp</dimen>
+    <dimen name="widget_item_imageSize">40dp</dimen>
+    <dimen name="widget_item_text_marginLeft">56dp</dimen>
 </resources>

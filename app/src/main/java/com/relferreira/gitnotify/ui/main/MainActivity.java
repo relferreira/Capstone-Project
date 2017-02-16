@@ -1,5 +1,6 @@
 package com.relferreira.gitnotify.ui.main;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -38,6 +39,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity implements MainView, LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final String ARG_EVENT_ID = "arg_event_id";
+    public static final String ARG_EVENT_TYPE = "arg_event_type";
     private static final int LOADER_ID = 1;
     private static final int COLUMNS_CONTAINER_ID = 76910294;
 
@@ -81,6 +84,10 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
         presenter.attachView(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        // From widget
+        if(getIntent().getStringExtra(ARG_EVENT_ID) != null)
+            redirectToDetails();
     }
 
     @Override
@@ -199,5 +206,12 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         transaction.commitAllowingStateLoss();
         loadingProgressBar.setVisibility(View.GONE);
         columnsList.addView(listOfFragments);
+    }
+
+    private void redirectToDetails() {
+        Intent intent = getIntent();
+        String eventId = intent.getStringExtra(ARG_EVENT_ID);
+        String type = intent.getStringExtra(ARG_EVENT_TYPE);
+        navigator.gotToDetails(eventId, type, this, getSupportFragmentManager(), tabletMode);
     }
 }
