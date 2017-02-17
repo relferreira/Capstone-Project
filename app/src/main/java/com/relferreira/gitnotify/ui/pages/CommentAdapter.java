@@ -61,7 +61,7 @@ public class CommentAdapter extends PagesAdapter<CommentAdapter.IssueCommentView
 
                     @Override
                     public void onError() {
-                        // TODO error image
+                        holder.image.setImageResource(R.drawable.error_placeholder);
                     }
                 });
     }

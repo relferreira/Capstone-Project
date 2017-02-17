@@ -25,7 +25,7 @@ public class IssueCommentEventDecoder implements DescriptionDecoder {
     public IssueCommentEventDecoder(StringRepository context, Event event){
         this.context = context;
         this.event = event;
-        this.payload = (event != null) ? event.payload() : null; //TODO return
+        this.payload = (event != null) ? event.payload() : null;
     }
 
     @Override

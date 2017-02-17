@@ -66,7 +66,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
 
                     @Override
                     public void onError() {
-                        // TODO error image
+                        viewHolder.userImageView.setImageResource(R.drawable.error_placeholder);
                     }
                 });
     }
