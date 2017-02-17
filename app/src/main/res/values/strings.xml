@@ -13,6 +13,7 @@
     <string name="content_authority">com.relferreira.gitnotify</string>
     <string name="sync_account_username">username</string>
     <string name="sync_error">Error syncing with the server!</string>
+    <string name="api_request_error">Error requesting data!</string>
     <string name="sync_retry">Retry</string>
 
     <string name="main_tab_me">FEED</string>

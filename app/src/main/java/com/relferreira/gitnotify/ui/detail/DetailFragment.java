@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -67,6 +69,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     public static final String ARG_EVENT_TYPE = "arg_event_type";
     public static final String ARG_TABLET_MODE = "arg_tablet_mode";
 
+    @BindView(R.id.detail_coordinator)
+    CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.detail_profile)
@@ -246,7 +250,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     @Override
     public void showError() {
         showLoading(false);
-        //TODO
+        Snackbar.make(coordinatorLayout, getString(R.string.api_request_error), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
