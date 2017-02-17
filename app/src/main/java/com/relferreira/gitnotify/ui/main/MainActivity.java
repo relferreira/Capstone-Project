@@ -90,9 +90,11 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
         tracker.sendScreenTrack("MainScreen");
 
-        // From widget
-        if(getIntent().getStringExtra(ARG_EVENT_ID) != null)
-            redirectToDetails();
+        if(savedInstanceState == null) {
+            // From widget
+            if (getIntent().getStringExtra(ARG_EVENT_ID) != null)
+                redirectToDetails();
+        }
     }
 
     @Override

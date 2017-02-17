@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.app.TaskStackBuilder;
 import android.widget.RemoteViews;
 
 import com.relferreira.gitnotify.R;
@@ -28,16 +27,12 @@ public class WidgetProvider extends AppWidgetProvider {
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
 
             Intent intent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
             views.setOnClickPendingIntent(R.id.widget, pendingIntent);
 
             setRemoteAdapter(context, views);
 
-            Intent clickIntentTemplate = new Intent(context, MainActivity.class);
-            PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(clickIntentTemplate)
-                    .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            views.setPendingIntentTemplate(R.id.widget_list, clickPendingIntentTemplate);
+            views.setPendingIntentTemplate(R.id.widget_list, pendingIntent);
             views.setEmptyView(R.id.widget_list, R.id.widget_empty);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);

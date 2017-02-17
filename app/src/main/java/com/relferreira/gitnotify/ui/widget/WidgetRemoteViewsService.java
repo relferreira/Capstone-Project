@@ -91,6 +91,8 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 final Intent fillInIntent = new Intent();
                 fillInIntent.putExtra(MainActivity.ARG_EVENT_ID, eventId);
                 fillInIntent.putExtra(MainActivity.ARG_EVENT_TYPE, eventType);
+                // To mantain intent
+                fillInIntent.setAction(Long.toString(System.currentTimeMillis()));
                 views.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
                 return views;
             }
