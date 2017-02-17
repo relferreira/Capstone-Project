@@ -6,6 +6,7 @@
     <string name="password_placeholder">Password</string>
     <string name="login_btn">Login</string>
     <string name="detail_menu">loading</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
     <string name="sync_menu">sync</string>
     <string name="sync_account_type">gitnotify.relferreira.com</string>

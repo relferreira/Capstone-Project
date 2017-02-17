@@ -24,6 +24,8 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.JsonParser;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.injector.ApplicationComponent;
@@ -75,6 +77,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     ProgressBar loadingProgressBar;
     @BindView(R.id.collapsing_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.detail_ad)
+    AdView adView;
 
     @Inject
     DetailPresenter presenter;
@@ -135,6 +139,9 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         detailList.setAdapter(adapter);
         detailList.addOnScrollListener(scrollListener);
         setHasOptionsMenu(true);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
         presenter.attachView(this);
         tracker.sendScreenTrack("DetailScreen");

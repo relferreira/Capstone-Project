@@ -1,7 +1,4 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="events_column_title_padding">16dp</dimen>
 
     <dimen name="events_column_width">300dp</dimen>
@@ -12,6 +9,7 @@
     <dimen name="events_item_text_marginLeft">56dp</dimen>
 
     <dimen name="detail_image_size">200dp</dimen>
+    <dimen name="detail_list_marginBottom">50dp</dimen>
 
     <dimen name="comments_item_imageSize">35dp</dimen>
     <dimen name="comments_item_padding">16dp</dimen>
