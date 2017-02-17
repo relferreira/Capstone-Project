@@ -41,6 +41,7 @@ import com.relferreira.gitnotify.ui.base.BaseActivity;
 import com.relferreira.gitnotify.ui.base.BaseDialogFragment;
 import com.relferreira.gitnotify.ui.pages.PagesAdapter;
 import com.relferreira.gitnotify.ui.pages.PagesFactory;
+import com.relferreira.gitnotify.util.AnalyticsTracker;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -77,6 +78,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
 
     @Inject
     DetailPresenter presenter;
+    @Inject
+    AnalyticsTracker tracker;
 
     private Unbinder unbinder;
     private String eventId;
@@ -134,6 +137,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         setHasOptionsMenu(true);
 
         presenter.attachView(this);
+        tracker.sendScreenTrack("DetailScreen");
         return view;
     }
 

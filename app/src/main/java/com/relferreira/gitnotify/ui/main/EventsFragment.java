@@ -19,6 +19,7 @@ import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.repository.data.EventColumns;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.ui.base.BaseFragment;
+import com.relferreira.gitnotify.util.AnalyticsTracker;
 import com.relferreira.gitnotify.util.Navigator;
 
 import javax.inject.Inject;
@@ -54,6 +55,8 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     EventsPresenter presenter;
     @Inject
     Navigator navigator;
+    @Inject
+    AnalyticsTracker tracker;
 
     private Unbinder unbinder;
     private Bundle arguments;
@@ -158,6 +161,7 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
         if(data.moveToPosition(position)){
             String eventId = data.getString(data.getColumnIndex(EventColumns.ID));
             String eventType = data.getString(data.getColumnIndex(EventColumns.TYPE));
+            tracker.sendEventSelectionTrack(eventType);
             navigator.gotToDetails(eventId, eventType, getActivity(), getFragmentManager(), tabletMode);
         }
     }

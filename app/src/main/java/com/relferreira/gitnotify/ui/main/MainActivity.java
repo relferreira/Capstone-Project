@@ -29,6 +29,7 @@ import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.repository.data.GithubProvider;
 import com.relferreira.gitnotify.repository.data.OrganizationColumns;
 import com.relferreira.gitnotify.ui.base.BaseActivity;
+import com.relferreira.gitnotify.util.AnalyticsTracker;
 import com.relferreira.gitnotify.util.Navigator;
 
 import javax.annotation.Nullable;
@@ -65,6 +66,8 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     MainPresenter presenter;
     @Inject
     Navigator navigator;
+    @Inject
+    AnalyticsTracker tracker;
 
     private boolean loading;
     private boolean tabletMode;
@@ -84,6 +87,8 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
         presenter.attachView(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
+
+        tracker.sendScreenTrack("MainScreen");
 
         // From widget
         if(getIntent().getStringExtra(ARG_EVENT_ID) != null)
