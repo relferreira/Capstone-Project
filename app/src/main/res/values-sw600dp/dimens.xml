@@ -1,3 +1,4 @@
 <resources>
+    <dimen name="login_container_size">400dp</dimen>
     <dimen name="detail_list_marginBottom">106dp</dimen>
 </resources>

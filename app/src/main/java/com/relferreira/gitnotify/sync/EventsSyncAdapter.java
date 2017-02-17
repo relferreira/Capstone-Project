@@ -166,6 +166,6 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void broadcastSync() {
         Intent dataUpdatedIntent = new Intent(ACTION_UPDATE_DATA);
-        getContext().sendBroadcast(dataUpdatedIntent);
+        context.sendBroadcast(dataUpdatedIntent);
     }
 }

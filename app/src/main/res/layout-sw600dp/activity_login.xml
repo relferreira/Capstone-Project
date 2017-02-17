@@ -8,6 +8,8 @@
     tools:context=".ui.login.LoginActivity"
     android:gravity="center">
 
-    <include layout="@layout/login_content" />
+    <include layout="@layout/login_content"
+        android:layout_width="@dimen/login_container_size"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>

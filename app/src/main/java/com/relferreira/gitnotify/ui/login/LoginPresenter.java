@@ -2,7 +2,6 @@ package com.relferreira.gitnotify.ui.login;
 
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.ui.base.BasePresenter;
-import com.relferreira.gitnotify.util.AuthErrorHelper;
 
 import javax.inject.Inject;
 
@@ -33,8 +32,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     if(isViewAttached())
                         getView().goToMain();
                 }, error -> {
-                    if (!AuthErrorHelper.onError(this, error))
-                        getView().showError("Invalid login");
+                    getView().showError("Invalid login");
                 });
     }
 

@@ -8,6 +8,8 @@
     <string name="detail_menu">loading</string>
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
+    <string name="login_des">Enter your GitHub account informations</string>
+
     <string name="sync_menu">sync</string>
     <string name="sync_account_type">gitnotify.relferreira.com</string>
     <string name="content_authority">com.relferreira.gitnotify</string>

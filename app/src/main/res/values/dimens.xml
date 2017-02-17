@@ -1,6 +1,10 @@
 <resources>
-    <dimen name="events_column_title_padding">16dp</dimen>
+    <dimen name="login_padding">16dp</dimen>
+    <dimen name="login_inputs_marginTop">20dp</dimen>
+    <dimen name="login_button_marginTop">10dp</dimen>
+    <dimen name="login_des_marginTop">5dp</dimen>
 
+    <dimen name="events_column_title_padding">16dp</dimen>
     <dimen name="events_column_width">300dp</dimen>
     <dimen name="events_item_padding">16dp</dimen>
     <dimen name="events_item_subtitle_marginTop">5dp</dimen>

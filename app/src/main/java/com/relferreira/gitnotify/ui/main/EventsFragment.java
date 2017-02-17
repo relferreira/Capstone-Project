@@ -78,7 +78,7 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.fragment_git_notifications, container, false);
+        View view = inflater.inflate(R.layout.fragment_events, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         arguments = getArguments();
