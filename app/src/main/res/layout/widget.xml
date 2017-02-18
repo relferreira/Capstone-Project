@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/widget"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/widget_header_height"
         android:padding="@dimen/widget_header_padding"
         android:background="@color/colorPrimary">
         <TextView

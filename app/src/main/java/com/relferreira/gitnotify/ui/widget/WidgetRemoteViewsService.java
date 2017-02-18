@@ -76,7 +76,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 String eventType = data.getString(data.getColumnIndex(EventColumns.TYPE));
                 String title = data.getString(data.getColumnIndex(EventColumns.TITLE));
                 String userImage = data.getString(data.getColumnIndex(EventColumns.ACTOR_IMAGE));
-                setRemoteContentDescription(views, title);
+                setRemoteContentDescription(views, getString(R.string.a11y_image));
                 try {
                     Bitmap image = Picasso.with(WidgetRemoteViewsService.this)
                             .load(String.format("%1$sv=3&s=60", userImage))

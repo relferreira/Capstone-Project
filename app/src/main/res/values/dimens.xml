@@ -13,6 +13,8 @@
     <dimen name="events_item_text_marginLeft">56dp</dimen>
 
     <dimen name="detail_image_size">200dp</dimen>
+    <dimen name="detail_image_marginStart">48dp</dimen>
+    <dimen name="detail_image_marginEnd">64dp</dimen>
     <dimen name="detail_list_marginBottom">50dp</dimen>
 
     <dimen name="comments_item_imageSize">35dp</dimen>
@@ -24,11 +26,14 @@
     <dimen name="pull_request_info_marginTop">5dp</dimen>
     <dimen name="pull_request_body_marginTop">16dp</dimen>
     <dimen name="push_item_padding">16dp</dimen>
+    <dimen name="push_item_text_marginTop">5dp</dimen>
+
     <dimen name="text_item_padding">16dp</dimen>
     <dimen name="wiki_item_padding">16dp</dimen>
     <dimen name="release_item_padding">16dp</dimen>
     <dimen name="release_item_marginTop">10dp</dimen>
 
+    <dimen name="widget_header_height">56dp</dimen>
     <dimen name="widget_header_padding">16dp</dimen>
     <dimen name="widget_default_width">250dp</dimen>
     <dimen name="widget_default_height">180dp</dimen>

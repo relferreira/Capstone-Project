@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/comments_item_padding">
     <ImageView
-        android:id="@+id/issue_comment_user_image"
+        android:id="@+id/comment_user_image"
         android:layout_width="@dimen/comments_item_imageSize"
         android:layout_height="@dimen/comments_item_imageSize"
         android:scaleType="centerCrop"
@@ -18,19 +18,19 @@
         android:layout_marginStart="@dimen/comments_item_text_marginLeft"
         android:orientation="vertical">
         <TextView
-            android:id="@+id/issue_comment_author"
+            android:id="@+id/comment_author"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="Renan Ferreira"/>
         <TextView
-            android:id="@+id/issue_comment_date"
+            android:id="@+id/comment_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             tools:text="10 febuary 2017"/>
         <TextView
-            android:id="@+id/issue_comment_text"
+            android:id="@+id/comment_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/comments_item_text_marginTop"

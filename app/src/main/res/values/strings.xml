@@ -43,6 +43,8 @@
     <string name="action_public">%1$s was open sourced</string>
     <string name="action_pull_request_review">%1$s reviewed pull request %2$s#%3$d</string>
     <string name="action_release">Version %1$s of %2$s released</string>
+    <string name="action_a11y_image">%s profile image</string>
+    <string name="a11y_image">profile image</string>
 
     <string name="pull_request_title">Pull Request</string>
     <string name="pull_request_commits">%d commits</string>
@@ -75,5 +77,4 @@
     <string name="widget_header_subtitle">latest events</string>
     <string name="widget_empy_list">No events</string>
 
-    <string name="detail_image_contentDescription">User image</string>
 </resources>

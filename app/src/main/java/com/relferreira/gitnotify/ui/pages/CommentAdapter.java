@@ -47,9 +47,11 @@ public class CommentAdapter extends PagesAdapter<CommentAdapter.IssueCommentView
     @Override
     public void onBindViewHolder(IssueCommentViewHolder holder, int position) {
         Comment comment = comments.get(position);
-        holder.author.setText(comment.user().login());
+        String author = comment.user().login();
+        holder.author.setText(author);
         holder.text.setText(comment.body());
         holder.date.setText(dateFormater.format(comment.createdAt()));
+        holder.image.setContentDescription(String.format(context.getString(R.string.action_a11y_image), author));
         Picasso.with(context)
                 .load(String.format("%1$sv=3&s=60", comment.user().avatarUrl()))
                 .into(holder.image, new Callback() {
@@ -79,13 +81,13 @@ public class CommentAdapter extends PagesAdapter<CommentAdapter.IssueCommentView
 
     public class IssueCommentViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.issue_comment_author)
+        @BindView(R.id.comment_author)
         TextView author;
-        @BindView(R.id.issue_comment_date)
+        @BindView(R.id.comment_date)
         TextView date;
-        @BindView(R.id.issue_comment_text)
+        @BindView(R.id.comment_text)
         TextView text;
-        @BindView(R.id.issue_comment_user_image)
+        @BindView(R.id.comment_user_image)
         ImageView image;
 
         public IssueCommentViewHolder(View itemView) {
