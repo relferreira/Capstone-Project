@@ -152,6 +152,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
 
         presenter.attachView(this);
         tracker.sendScreenTrack("DetailScreen");
+
+        getActivity().supportStartPostponedEnterTransition();
         return view;
     }
 
@@ -160,6 +162,12 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         return dialog;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showLoading(loading);
     }
 
     @Override

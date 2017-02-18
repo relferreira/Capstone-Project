@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".GitNotifyApplication">
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.Main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,7 +32,8 @@
         </activity>
         <activity android:name=".ui.detail.DetailActivity"
             android:label="@string/activity_detail"
-            android:parentActivityName=".ui.main.MainActivity">
+            android:parentActivityName=".ui.main.MainActivity"
+            android:theme="@style/AppTheme.Detail">
         </activity>
         <provider
             android:authorities="@string/content_authority"

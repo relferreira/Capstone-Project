@@ -6,7 +6,8 @@
     <string name="password_placeholder">Password</string>
     <string name="login_btn">Login</string>
     <string name="detail_menu">loading</string>
-    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="image_transition" translatable="false">image_transition</string>
 
     <string name="login_des">Enter your GitHub account informations</string>
     <string name="login_menu">logout</string>

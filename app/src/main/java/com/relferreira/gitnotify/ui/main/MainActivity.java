@@ -229,6 +229,6 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         Intent intent = getIntent();
         String eventId = intent.getStringExtra(ARG_EVENT_ID);
         String type = intent.getStringExtra(ARG_EVENT_TYPE);
-        navigator.gotToDetails(eventId, type, this, getSupportFragmentManager(), tabletMode);
+        navigator.gotToDetails(eventId, type, this, getSupportFragmentManager(), tabletMode, null, null);
     }
 }

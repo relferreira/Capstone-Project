@@ -162,12 +162,13 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     }
 
     @Override
-    public void onSelect(int position) {
+    public void onSelect(int position, EventsAdapter.EventViewHolder viewHolder) {
         if(data.moveToPosition(position)){
             String eventId = data.getString(data.getColumnIndex(EventColumns.ID));
             String eventType = data.getString(data.getColumnIndex(EventColumns.TYPE));
             tracker.sendEventSelectionTrack(eventType);
-            navigator.gotToDetails(eventId, eventType, getActivity(), getFragmentManager(), tabletMode);
+            navigator.gotToDetails(eventId, eventType, getActivity(), getFragmentManager(),
+                    tabletMode, viewHolder.userImageView, getString(R.string.image_transition));
         }
     }
 }

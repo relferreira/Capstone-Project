@@ -34,7 +34,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
     protected final EventsAdapterListener listener;
 
     public interface EventsAdapterListener {
-        void onSelect(int position);
+        void onSelect(int position, EventsAdapter.EventViewHolder viewHolder);
     }
 
     public EventsAdapter(Context context, Cursor cursor, EventsAdapterListener listener) {
@@ -97,7 +97,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
 
         @OnClick(R.id.event_item)
         public void select() {
-            listener.onSelect(getAdapterPosition());
+            listener.onSelect(getAdapterPosition(), this);
         }
     }
 }

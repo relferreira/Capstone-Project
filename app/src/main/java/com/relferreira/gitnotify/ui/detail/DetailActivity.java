@@ -40,6 +40,8 @@ public class DetailActivity extends BaseActivity {
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .replace(R.id.detail_container, DetailFragment.newInstance(eventId, eventType, false))
                     .commit();
+
+            supportPostponeEnterTransition();
         }
 
     }

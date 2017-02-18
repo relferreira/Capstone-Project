@@ -2,8 +2,12 @@ package com.relferreira.gitnotify.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.IntentCompat;
+import android.support.v4.util.Pair;
+import android.view.View;
 
 import com.relferreira.gitnotify.ui.detail.DetailActivity;
 import com.relferreira.gitnotify.ui.detail.DetailFragment;
@@ -28,12 +32,19 @@ public class Navigator {
         context.finish();
     }
 
-    public void gotToDetails(String eventId, String eventType, Activity context, FragmentManager fragmentManager, boolean tabletMode) {
+    public void gotToDetails(String eventId, String eventType, Activity context,
+                             FragmentManager fragmentManager, boolean tabletMode, View sharedElement, String transitionName) {
         if(!tabletMode){
             Intent intent = new Intent(context, DetailActivity.class);
             intent.putExtra(DetailActivity.ARG_EVENT_ID, eventId);
             intent.putExtra(DetailActivity.ARG_EVENT_TYPE, eventType);
-            context.startActivity(intent);
+            if(sharedElement != null) {
+                ActivityOptionsCompat activityOptions =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(context, new Pair<View, String>(sharedElement, transitionName));
+                ActivityCompat.startActivity(context, intent, activityOptions.toBundle());
+            } else {
+                context.startActivity(intent);
+            }
         } else {
             DetailFragment frag = DetailFragment.newInstance(eventId, eventType, true);
             frag.show(fragmentManager, "dialog");
