@@ -11,10 +11,10 @@ import com.relferreira.gitnotify.GitNotifyApplication;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.auth.Authenticator;
 import com.relferreira.gitnotify.domain.AuthInteractor;
+import com.relferreira.gitnotify.domain.CacheInteractor;
 import com.relferreira.gitnotify.domain.EventInteractor;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.domain.OrganizationInteractor;
-import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
 import com.relferreira.gitnotify.repository.interfaces.LogRepository;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
@@ -113,8 +113,9 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    protected MainPresenter provideMainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthRepository authRepository) {
-        return new MainPresenter(eventsSyncAdapter, authRepository);
+    protected MainPresenter provideMainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthInteractor authInteractor,
+                                                 OrganizationInteractor organizationInteractor, EventInteractor eventInteractor, CacheInteractor cacheInteractor) {
+        return new MainPresenter(eventsSyncAdapter, authInteractor, organizationInteractor, eventInteractor, cacheInteractor);
     }
 
     @Provides

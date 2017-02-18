@@ -11,4 +11,6 @@ import java.util.List;
 public interface EventRepository {
 
     void storeEvents(List<Event> events, List<Organization> organizations);
+
+    void removeEvents();
 }

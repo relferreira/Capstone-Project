@@ -46,6 +46,7 @@ import com.relferreira.gitnotify.ui.base.BaseDialogFragment;
 import com.relferreira.gitnotify.ui.pages.PagesAdapter;
 import com.relferreira.gitnotify.ui.pages.PagesFactory;
 import com.relferreira.gitnotify.util.AnalyticsTracker;
+import com.relferreira.gitnotify.util.Navigator;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -88,6 +89,8 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
     DetailPresenter presenter;
     @Inject
     AnalyticsTracker tracker;
+    @Inject
+    Navigator navigator;
 
     private Unbinder unbinder;
     private String eventId;
@@ -207,6 +210,11 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         loadingProgressBar.setVisibility(state ? View.VISIBLE : View.GONE);
         loading = false;
         getActivity().invalidateOptionsMenu();
+    }
+
+    @Override
+    public void redirectToLogin() {
+        navigator.goToLogin(getActivity());
     }
 
     @Override

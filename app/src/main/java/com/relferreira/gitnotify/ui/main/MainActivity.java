@@ -101,7 +101,7 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
     protected void onResume() {
         super.onResume();
         if (!presenter.checkIfIsLogged())
-            navigator.goToLogin(this);
+            redirectToLogin();
         syncRequest();
     }
 
@@ -130,6 +130,11 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                presenter.logout();
+                return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -167,6 +172,11 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
             this.loading = state;
             invalidateOptionsMenu();
         }
+    }
+
+    @Override
+    public void redirectToLogin() {
+        navigator.goToLogin(this);
     }
 
     @Override

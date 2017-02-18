@@ -151,6 +151,11 @@ public class EventsFragment extends BaseFragment implements EventsView, EventsAd
     }
 
     @Override
+    public void redirectToLogin() {
+        navigator.goToLogin(getActivity());
+    }
+
+    @Override
     public void showError() {
         MainActivity activity = (MainActivity) getActivity();
         activity.showError();

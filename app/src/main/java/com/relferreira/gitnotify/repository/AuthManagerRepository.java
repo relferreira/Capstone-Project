@@ -3,6 +3,7 @@ package com.relferreira.gitnotify.repository;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.relferreira.gitnotify.R;
@@ -59,5 +60,14 @@ public class AuthManagerRepository implements AuthRepository {
     @Override
     public String getUsername(Account account) {
         return AccountManager.get(context).getUserData(account, context.getString(R.string.sync_account_username));
+    }
+
+    @Override
+    public void removeAccount() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1)
+            AccountManager.get(context).removeAccount(getAccount(), null, null, null);
+        else
+            AccountManager.get(context).removeAccount(getAccount(), null, null);
+
     }
 }

@@ -75,4 +75,10 @@ public class OrganizationDbRepository implements OrganizationRepository {
         }
         return organization;
     }
+
+    @Override
+    public void removeOrganizations() {
+        ContentResolver contentResolver = context.getContentResolver();
+        contentResolver.delete(GithubProvider.Organizations.CONTENT_URI, null, null);
+    }
 }

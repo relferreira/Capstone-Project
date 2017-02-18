@@ -3,6 +3,7 @@ package com.relferreira.gitnotify.util;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.IntentCompat;
 
 import com.relferreira.gitnotify.ui.detail.DetailActivity;
 import com.relferreira.gitnotify.ui.detail.DetailFragment;
@@ -16,6 +17,7 @@ public class Navigator {
 
     public void goToLogin(Activity context) {
         Intent intent = new Intent(context, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
         context.finish();
     }

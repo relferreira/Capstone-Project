@@ -25,4 +25,8 @@ public class OrganizationInteractor {
     public List<Organization> listOrganizations() {
         return organizationRepository.listOrganizations();
     }
+
+    public void removeOrganizations() {
+        organizationRepository.removeOrganizations();
+    }
 }

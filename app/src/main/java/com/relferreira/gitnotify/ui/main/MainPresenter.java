@@ -1,9 +1,11 @@
 package com.relferreira.gitnotify.ui.main;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.domain.AuthInteractor;
+import com.relferreira.gitnotify.domain.CacheInteractor;
+import com.relferreira.gitnotify.domain.EventInteractor;
+import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.sync.EventsSyncAdapter;
 import com.relferreira.gitnotify.ui.base.BasePresenter;
 
@@ -17,16 +19,23 @@ import rx.schedulers.Schedulers;
 public class MainPresenter extends BasePresenter<MainView> {
 
     private final EventsSyncAdapter eventsSyncAdapter;
-    private final AuthRepository authRepository;
+    private final OrganizationInteractor organizationInteractor;
+    private final EventInteractor eventInteractor;
+    private CacheInteractor cacheInteractor;
+    private final AuthInteractor authInteractor;
     private Subscription subs;
 
-    public MainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthRepository authRepository){
-        this.authRepository = authRepository;
+    public MainPresenter(EventsSyncAdapter eventsSyncAdapter, AuthInteractor authInteractor,
+                         OrganizationInteractor organizationInteractor, EventInteractor eventInteractor, CacheInteractor cacheInteractor){
+        this.authInteractor = authInteractor;
         this.eventsSyncAdapter = eventsSyncAdapter;
+        this.organizationInteractor = organizationInteractor;
+        this.eventInteractor = eventInteractor;
+        this.cacheInteractor = cacheInteractor;
     }
 
     public boolean checkIfIsLogged() {
-        return authRepository.getAccount() != null;
+        return authInteractor.getAccount() != null;
     }
 
     public void requestSync(Context context) {
@@ -40,12 +49,20 @@ public class MainPresenter extends BasePresenter<MainView> {
                         getView().showLoading(s == EventsSyncAdapter.STATUS_PROGRESS);
                 }, error -> {
                     error.printStackTrace();
-                    Log.e("teste", error.toString());
                     if(isViewAttached()) {
                         getView().showLoading(false);
                         getView().showError();
                     }
                 });
+    }
+
+    public void logout() {
+        authInteractor.removeAccount();
+        organizationInteractor.removeOrganizations();
+        eventInteractor.removeEvents();
+        cacheInteractor.invalidateCache();
+        if(isViewAttached())
+            getView().redirectToLogin();
     }
 
     @Override

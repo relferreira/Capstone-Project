@@ -66,4 +66,9 @@ public class LoginActivity extends BaseActivity implements LoginView {
     public void submit() {
         presenter.loginRequest(editTextUsername.getText().toString(), editTextPassword.getText().toString());
     }
+
+    @Override
+    public void redirectToLogin() {
+        // Not necessary
+    }
 }

@@ -26,4 +26,11 @@ public class EtagSharedPreferencesRepository implements EtagRepository {
         editor.putString(key, value);
         editor.apply();
     }
+
+    @Override
+    public void invalidateCache() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 }

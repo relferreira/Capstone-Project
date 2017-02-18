@@ -3,10 +3,12 @@ package com.relferreira.gitnotify.injector;
 import com.google.gson.Gson;
 import com.relferreira.gitnotify.api.GithubService;
 import com.relferreira.gitnotify.domain.AuthInteractor;
+import com.relferreira.gitnotify.domain.CacheInteractor;
 import com.relferreira.gitnotify.domain.EventInteractor;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.domain.OrganizationInteractor;
 import com.relferreira.gitnotify.repository.interfaces.AuthRepository;
+import com.relferreira.gitnotify.repository.interfaces.EtagRepository;
 import com.relferreira.gitnotify.repository.interfaces.EventRepository;
 import com.relferreira.gitnotify.repository.interfaces.OrganizationRepository;
 import com.relferreira.gitnotify.repository.interfaces.StringRepository;
@@ -29,6 +31,12 @@ public class DomainModule {
     @Singleton
     protected AuthInteractor provideAuthInteractor(AuthRepository authRepository) {
         return new AuthInteractor(authRepository);
+    }
+
+    @Provides
+    @Singleton
+    protected CacheInteractor provideCacheInteractor(EtagRepository etagRepository) {
+        return new CacheInteractor(etagRepository);
     }
 
     @Provides

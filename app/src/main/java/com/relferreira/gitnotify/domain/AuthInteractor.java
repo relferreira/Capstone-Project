@@ -21,6 +21,10 @@ public class AuthInteractor {
         authRepository.addAccount(username, token);
     }
 
+    public void removeAccount() {
+        authRepository.removeAccount();
+    }
+
     public Account getAccount() {
         return authRepository.getAccount();
     }
@@ -32,5 +36,6 @@ public class AuthInteractor {
     public String getUsername(Account account) {
         return authRepository.getUsername(account);
     }
+
 }
 

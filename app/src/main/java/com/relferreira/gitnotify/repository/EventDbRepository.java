@@ -81,4 +81,10 @@ public class EventDbRepository implements EventRepository {
             Log.e(LOG_TAG, "Error applying batch insert" + e);
         }
     }
+
+    @Override
+    public void removeEvents() {
+        ContentResolver contentResolver = context.getContentResolver();
+        contentResolver.delete(GithubProvider.Events.CONTENT_URI, null, null);
+    }
 }

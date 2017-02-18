@@ -66,6 +66,10 @@ public class EventInteractor {
         eventRepository.storeEvents(eventsToStore, organizations);
     }
 
+    public void removeEvents() {
+        eventRepository.removeEvents();
+    }
+
     public DescriptionDecoder getDecoder(StringRepository context, Event event, String type){
         switch (type){
             case "PullRequestEvent":

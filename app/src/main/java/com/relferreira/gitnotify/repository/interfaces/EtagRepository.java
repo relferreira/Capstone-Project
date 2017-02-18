@@ -9,4 +9,6 @@ public interface EtagRepository {
 
     void setEtag(String key, String value);
 
+    void invalidateCache();
+
 }

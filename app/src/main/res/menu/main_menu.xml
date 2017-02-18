@@ -6,4 +6,6 @@
         android:title="@string/sync_menu"
         app:showAsAction="always"
         android:visible="false"/>
+    <item android:id="@+id/logout"
+        android:title="@string/login_menu"/>
 </menu>

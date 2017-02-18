@@ -39,7 +39,7 @@ public class EventsSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final int STATUS_PROGRESS = 1;
     public static final int STATUS_SUCCESS = 0;
     public static final int STATUS_ERROR = 2;
-    public static final int SYNC_INTERVAL = 60 * 30; // 30 minutes
+    public static final int SYNC_INTERVAL = 60;// * 30; // 30 minutes
     public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
     private final AuthInteractor authInteractor;

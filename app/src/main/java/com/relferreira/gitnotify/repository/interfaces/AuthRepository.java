@@ -15,4 +15,6 @@ public interface AuthRepository {
     String getToken();
 
     String getUsername(Account account);
+
+    void removeAccount();
 }

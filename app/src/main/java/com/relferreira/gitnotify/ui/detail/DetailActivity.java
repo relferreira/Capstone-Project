@@ -7,6 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.injector.ApplicationComponent;
 import com.relferreira.gitnotify.ui.base.BaseActivity;
+import com.relferreira.gitnotify.util.Navigator;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
@@ -18,6 +21,9 @@ public class DetailActivity extends BaseActivity {
 
     public static final String ARG_EVENT_ID = "arg_event_id";
     public static final String ARG_EVENT_TYPE = "arg_event_type";
+
+    @Inject
+    Navigator navigator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,4 +49,8 @@ public class DetailActivity extends BaseActivity {
         component.inject(this);
     }
 
+    @Override
+    public void redirectToLogin() {
+        navigator.goToLogin(this);
+    }
 }
