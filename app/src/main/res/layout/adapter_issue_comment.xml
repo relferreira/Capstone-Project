@@ -9,7 +9,8 @@
         android:id="@+id/issue_comment_user_image"
         android:layout_width="@dimen/comments_item_imageSize"
         android:layout_height="@dimen/comments_item_imageSize"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@null"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

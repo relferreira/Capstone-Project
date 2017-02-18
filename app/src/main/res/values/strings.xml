@@ -74,4 +74,6 @@
     <string name="widget_title">Latest events</string>
     <string name="widget_header_subtitle">latest events</string>
     <string name="widget_empy_list">No events</string>
+
+    <string name="detail_image_contentDescription">User image</string>
 </resources>

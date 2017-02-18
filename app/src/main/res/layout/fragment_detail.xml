@@ -31,6 +31,7 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.7"
+                android:contentDescription="@string/detail_image_contentDescription"
                 android:transitionName="@string/image_transition"/>
 
             <android.support.v7.widget.Toolbar
