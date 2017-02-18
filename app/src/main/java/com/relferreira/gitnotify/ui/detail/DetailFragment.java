@@ -151,7 +151,7 @@ public class DetailFragment extends BaseDialogFragment implements DetailView, Lo
         adView.loadAd(adRequest);
 
         presenter.attachView(this);
-        tracker.sendScreenTrack("DetailScreen");
+        tracker.sendScreenTrack(getString(R.string.analytics_detail_screen));
 
         getActivity().supportStartPostponedEnterTransition();
         return view;

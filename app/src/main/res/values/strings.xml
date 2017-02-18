@@ -8,9 +8,13 @@
     <string name="detail_menu">loading</string>
     <string name="banner_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
     <string name="image_transition" translatable="false">image_transition</string>
+    <string name="profile_image_format" translatable="false">%1$sv=3&amp;s=60</string>
 
     <string name="login_des">Enter your GitHub account informations</string>
     <string name="login_menu">logout</string>
+    <string name="login_username_empty">Username should not be empty</string>
+    <string name="login_password_empty">Password should not be empty</string>
+    <string name="login_invalid">Invalid login</string>
 
     <string name="sync_menu">sync</string>
     <string name="sync_account_type">gitnotify.relferreira.com</string>
@@ -40,6 +44,7 @@
     <string name="action_issue">%1$s %2$s issue %3$s#%4$d</string>
     <string name="action_member">%1$s %2$s to %3$s</string>
     <string name="action_member_by">By %1$s</string>
+    <string name="action_member_detail" translatable="false">%1$s %2$s</string>
     <string name="action_public">%1$s was open sourced</string>
     <string name="action_pull_request_review">%1$s reviewed pull request %2$s#%3$d</string>
     <string name="action_release">Version %1$s of %2$s released</string>
@@ -77,4 +82,6 @@
     <string name="widget_header_subtitle">latest events</string>
     <string name="widget_empy_list">No events</string>
 
+    <string name="analytics_main_screen" translatable="false">MainScreen</string>
+    <string name="analytics_detail_screen" translatable="false">DetailScreen</string>
 </resources>

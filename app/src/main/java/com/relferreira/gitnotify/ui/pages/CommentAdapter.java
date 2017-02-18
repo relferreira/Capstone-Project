@@ -53,7 +53,7 @@ public class CommentAdapter extends PagesAdapter<CommentAdapter.IssueCommentView
         holder.date.setText(dateFormater.format(comment.createdAt()));
         holder.image.setContentDescription(String.format(context.getString(R.string.action_a11y_image), author));
         Picasso.with(context)
-                .load(String.format("%1$sv=3&s=60", comment.user().avatarUrl()))
+                .load(String.format(context.getString(R.string.profile_image_format), comment.user().avatarUrl()))
                 .into(holder.image, new Callback() {
                     @Override
                     public void onSuccess() {

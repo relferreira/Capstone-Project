@@ -19,6 +19,8 @@ import com.relferreira.gitnotify.ui.main.MainActivity;
  */
 public class Navigator {
 
+    private static final String DIALOG_TAG = "dialog";
+
     public void goToLogin(Activity context) {
         Intent intent = new Intent(context, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | IntentCompat.FLAG_ACTIVITY_CLEAR_TASK);
@@ -47,7 +49,7 @@ public class Navigator {
             }
         } else {
             DetailFragment frag = DetailFragment.newInstance(eventId, eventType, true);
-            frag.show(fragmentManager, "dialog");
+            frag.show(fragmentManager, DIALOG_TAG);
         }
     }
 }

@@ -57,7 +57,7 @@ public class EventsAdapter extends CursorRecyclerViewAdapter<EventsAdapter.Event
         viewHolder.subtitleTextView.setText(subtitle);
         viewHolder.userImageView.setContentDescription(context.getString(R.string.a11y_image));
         Picasso.with(context)
-                .load(String.format("%1$sv=3&s=60", userImage))
+                .load(String.format(context.getString(R.string.profile_image_format), userImage))
                 .into(viewHolder.userImageView, new Callback() {
                     @Override
                     public void onSuccess() {

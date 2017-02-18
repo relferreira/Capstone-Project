@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements MainView, LoaderManage
         presenter.attachView(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, this);
 
-        tracker.sendScreenTrack("MainScreen");
+        tracker.sendScreenTrack(getString(R.string.analytics_main_screen));
 
         if(savedInstanceState == null) {
             // From widget

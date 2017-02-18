@@ -45,7 +45,7 @@ public class PublicEventDecoder implements DescriptionDecoder {
 
     @Override
     public void loadData(Context context, GithubInteractor interactor, Event event, SchedulerProvider schedulerProvider, DecoderListener listener) {
-        listener.successLoadingData(Collections.singletonList(String.format("%1$s %2$s", getTitle(), getSubtitle())));
+        listener.successLoadingData(Collections.singletonList(String.format(context.getString(R.string.action_member_detail), getTitle(), getSubtitle())));
     }
 
     @Override

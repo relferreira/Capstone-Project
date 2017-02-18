@@ -1,5 +1,6 @@
 package com.relferreira.gitnotify;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.FieldNamingPolicy;
@@ -27,6 +28,7 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -46,6 +48,8 @@ public class LoginTest {
     CriptographyProvider criptographyProvider;
     @Mock
     AuthRepository authRepository;
+    @Mock
+    Context context;
 
     private LoginPresenter presenter;
     private GithubInteractor interactor;
@@ -59,6 +63,11 @@ public class LoginTest {
                         .observeOn(Schedulers.immediate());
             }
         };
+
+        doReturn("Username should not be empty").when(context).getString(R.string.login_username_empty);
+        doReturn("Password should not be empty").when(context).getString(R.string.login_password_empty);
+        doReturn("Invalid login").when(context).getString(R.string.login_invalid);
+
         Gson gson = new GsonBuilder()
                 .registerTypeAdapterFactory(new GsonAdaptersModel())
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -91,13 +100,13 @@ public class LoginTest {
 
     @Test
     public void shouldValidateEmptyUsername() {
-        presenter.loginRequest(null, null);
+        presenter.loginRequest(context, null, null);
         verify(loginView).showError("Username should not be empty");
     }
 
     @Test
     public void shouldValidateEmptyPassword() {
-        presenter.loginRequest("relferreira", null);
+        presenter.loginRequest(context, "relferreira", null);
         verify(loginView).showError("Password should not be empty");
     }
 
@@ -107,7 +116,7 @@ public class LoginTest {
                 password = "teste";
         when(githubService.login(any())).thenReturn(Observable.error(new Exception("Invalid login")));
         when(criptographyProvider.base64(any())).thenReturn("123");
-        presenter.loginRequest(login, password);
+        presenter.loginRequest(context, login, password);
         verify(loginView).showError("Invalid login");
     }
 
@@ -120,7 +129,7 @@ public class LoginTest {
                 .build();
         when(githubService.login(any())).thenReturn(Observable.just(loginResult));
         when(criptographyProvider.base64(any())).thenReturn("123");
-        presenter.loginRequest("relferreira", "teste");
+        presenter.loginRequest(context, "relferreira", "teste");
         verify(loginView).goToMain();
     }
 

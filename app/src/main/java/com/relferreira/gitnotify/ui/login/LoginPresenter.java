@@ -1,5 +1,8 @@
 package com.relferreira.gitnotify.ui.login;
 
+import android.content.Context;
+
+import com.relferreira.gitnotify.R;
 import com.relferreira.gitnotify.domain.GithubInteractor;
 import com.relferreira.gitnotify.ui.base.BasePresenter;
 
@@ -17,14 +20,14 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         this.githubInteractor = githubInteractor;
     }
 
-    public void loginRequest(String username, String password) {
+    public void loginRequest(Context context, String username, String password) {
         if (username == null || username.isEmpty()) {
-            getView().showError("Username should not be empty");
+            getView().showError(context.getString(R.string.login_username_empty));
             return;
         }
 
         if (password == null || password.isEmpty()) {
-            getView().showError("Password should not be empty");
+            getView().showError(context.getString(R.string.login_password_empty));
             return;
         }
         githubInteractor.login(username, password)
@@ -32,7 +35,7 @@ public class LoginPresenter extends BasePresenter<LoginView> {
                     if(isViewAttached())
                         getView().goToMain();
                 }, error -> {
-                    getView().showError("Invalid login");
+                    getView().showError(context.getString(R.string.login_invalid));
                 });
     }
 

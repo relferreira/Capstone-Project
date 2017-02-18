@@ -79,7 +79,7 @@ public class WidgetRemoteViewsService extends RemoteViewsService {
                 setRemoteContentDescription(views, getString(R.string.a11y_image));
                 try {
                     Bitmap image = Picasso.with(WidgetRemoteViewsService.this)
-                            .load(String.format("%1$sv=3&s=60", userImage))
+                            .load(String.format(getString(R.string.profile_image_format), userImage))
                             .get();
                     views.setImageViewBitmap(R.id.widget_item_image, image);
                 } catch (IOException e) {

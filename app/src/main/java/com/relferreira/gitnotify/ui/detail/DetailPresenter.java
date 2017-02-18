@@ -1,7 +1,6 @@
 package com.relferreira.gitnotify.ui.detail;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.relferreira.gitnotify.domain.EventInteractor;
 import com.relferreira.gitnotify.domain.GithubInteractor;
@@ -57,14 +56,12 @@ public class DetailPresenter extends BasePresenter<DetailView> implements Decode
 
     @Override
     public void successLoadingData(List items) {
-        Log.i("teste", "teste");
         if(isViewAttached())
             getView().setAdapterData(items);
     }
 
     @Override
     public void errorLoadingData(String error) {
-        Log.e("teste", "error");
         if(isViewAttached())
             getView().showError();
     }

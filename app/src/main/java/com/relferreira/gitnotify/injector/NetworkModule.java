@@ -49,7 +49,6 @@ public class NetworkModule {
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder();
         httpClient.addInterceptor(apiInterceptor);
         httpClient.addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.HEADERS));
-//        httpClient.addNetworkInterceptor(new StethoInterceptor());
         return httpClient.build();
     }
 
